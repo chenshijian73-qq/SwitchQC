@@ -79,7 +79,7 @@ export function LogFatal(message: string): void;
 
 // [LogInfo](https://wails.io/docs/reference/runtime/log#loginfo)
 // logs the given message at the `info` log level.
-export function LogInfo(message: string): void;
+export function LogInfo(message: string, switchState: boolean): void;
 
 // [LogWarning](https://wails.io/docs/reference/runtime/log#logwarning)
 // logs the given message at the `warning` log level.

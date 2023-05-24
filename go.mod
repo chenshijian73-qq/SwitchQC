@@ -4,7 +4,7 @@ go 1.18
 
 // replace github.com/wailsapp/wails/v2 v2.5.1 => /Users/chenshijian/gopath/pkg/mod
 
-require github.com/wailsapp/wails/v2 v2.5.1
+require github.com/wailsapp/wails/v2 v2.4.1
 
 require (
 	github.com/bep/debounce v1.2.1 // indirect

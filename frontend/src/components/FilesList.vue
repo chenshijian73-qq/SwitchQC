@@ -1,12 +1,15 @@
 <template>
   <div style="display: flex; flex-direction: column; height: 100%;">
-    <button @click="createFile" style="align-self: flex-start; margin-top: auto;">创建文件</button>
     <div style="height: 95vh;">
-      <!-- <h3>文件列表</h3> -->
-      <ul>
+      <button @click="createFile" style="align-self: flex-start; margin-top: auto; color: #488d0d">+</button>
+      <ul style="text-align: left;padding: 5px;">
         <li v-for="(file, index) in files" :key="index" style="display: flex; align-items: center;">
-          <span @click="selectFile(file)">{{ file.name }}</span>
-          <button @click="deleteFile(file)" style="margin-left: 5px;">x</button>
+          <button @click="selectFile(file)" style="text-align: left;margin-right: 5px;width: 90vh;">
+            {{ file.name }}
+          </button>
+          <button v-if="switchState" @click="toggleSwitch" style="color: green;">ON</button>
+          <button v-else="!switchState" @click="toggleSwitch" style="color: #ff7271;">OFF</button>
+<!--          <button @click="deleteFile(file)" style="text-align: right;margin-left: 5px; color: #ff7271"> x </button>-->
         </li>
       </ul>
     </div>
@@ -15,10 +18,20 @@
 
 <script>
 import { ref } from 'vue';
+import {
+  GetFiles,
+  LogInfo,
+} from '../../wailsjs';
 
 export default {
   setup() {
     const files = ref([]);
+
+    const switchState = ref(true)
+    const toggleSwitch = () => {
+      LogInfo("hello:", this.switchState)
+      this.switchState = !this.switchState;
+    };
 
     const selectFile = (file) => {
       this.$emit('file-selected', file);
@@ -26,6 +39,7 @@ export default {
 
     const createFile = () => {
       // 调用后端方法以创建新文件
+      LogInfo("createFile:", this.switchState)
     };
 
     const deleteFile = (file) => {
@@ -34,9 +48,11 @@ export default {
 
     return {
       files,
+      switchState,
       selectFile,
       createFile,
       deleteFile,
+      toggleSwitch,
     };
   },
   mounted() {
@@ -44,22 +60,10 @@ export default {
   },
   methods: {
     async loadFiles() {
-      // 从本地文件夹加载 .quickcmd 文件列表
-      // 这里可以替换为实际的 API 调用或其他方法
-      this.files = [
-        { name: 'file1.quickcmd', content: 'File 1 content' },
-        { name: 'file2.quickcmd', content: 'File 2 content' },
-        { name: 'file3.quickcmd', content: 'File 3 content' },
-        { name: 'file3.quickcmd', content: 'File 3 content' },
-        { name: 'file3.quickcmd', content: 'File 3 content' },
-        { name: 'file3.quickcmd', content: 'File 3 content' },
-        { name: 'file3.quickcmd', content: 'File 3 content' },
-        { name: 'file3.quickcmd', content: 'File 3 content' },
-        { name: 'file3.quickcmd', content: 'File 3 content' },
-        { name: 'file3.quickcmd', content: 'File 3 content' },
-        { name: 'file3.quickcmd', content: 'File 3 content' },
-        { name: 'file3.quickcmd', content: 'File 3 content' },
-      ];
+      GetFiles().then((res) => {
+        this.files = res
+        // LogInfo("res:", res)
+      });
     },
   },
 };
