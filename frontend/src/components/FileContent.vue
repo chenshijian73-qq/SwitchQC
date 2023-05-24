@@ -1,8 +1,8 @@
 <template>
     <div class="container">
-        <h3>文件内容</h3>
+        <!-- <h3>文件内容</h3> -->
         <div class="textarea-container">
-        <textarea v-model="fileContent" rows="10" cols="50"></textarea>
+        <textarea v-model="fileContent" style="width: 100%; height: 100vh;"></textarea>
         </div>
     </div>
 
@@ -20,10 +20,6 @@
   display: flex;
 }
 
-textarea {
-  width: 100%;
-  height: 100%;
-}
 </style>
 
 <script>

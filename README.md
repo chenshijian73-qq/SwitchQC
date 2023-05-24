@@ -1,4 +1,5 @@
 ## Introduce
+框架：wails2
 前端实现： Vue3
 后端实现： Golang
 

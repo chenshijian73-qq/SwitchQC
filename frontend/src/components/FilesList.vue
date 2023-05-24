@@ -1,7 +1,8 @@
 <template>
   <div style="display: flex; flex-direction: column; height: 100%;">
-    <div>
-      <h3>文件列表</h3>
+    <button @click="createFile" style="align-self: flex-start; margin-top: auto;">创建文件</button>
+    <div style="height: 95vh;">
+      <!-- <h3>文件列表</h3> -->
       <ul>
         <li v-for="(file, index) in files" :key="index" style="display: flex; align-items: center;">
           <span @click="selectFile(file)">{{ file.name }}</span>
@@ -9,7 +10,6 @@
         </li>
       </ul>
     </div>
-    <button @click="createFile" style="align-self: flex-start; margin-top: auto;">创建文件</button>
   </div>
 </template>
 
@@ -49,6 +49,15 @@ export default {
       this.files = [
         { name: 'file1.quickcmd', content: 'File 1 content' },
         { name: 'file2.quickcmd', content: 'File 2 content' },
+        { name: 'file3.quickcmd', content: 'File 3 content' },
+        { name: 'file3.quickcmd', content: 'File 3 content' },
+        { name: 'file3.quickcmd', content: 'File 3 content' },
+        { name: 'file3.quickcmd', content: 'File 3 content' },
+        { name: 'file3.quickcmd', content: 'File 3 content' },
+        { name: 'file3.quickcmd', content: 'File 3 content' },
+        { name: 'file3.quickcmd', content: 'File 3 content' },
+        { name: 'file3.quickcmd', content: 'File 3 content' },
+        { name: 'file3.quickcmd', content: 'File 3 content' },
         { name: 'file3.quickcmd', content: 'File 3 content' },
       ];
     },
