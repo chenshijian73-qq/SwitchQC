@@ -1,66 +1,31 @@
 <template>
-  <div id="app">
-    <h1>SwitchHosts</h1>
-    <button @click="addHost">添加 Host</button>
-    <button @click="removeHost">删除 Host</button>
-    <button @click="editHost">编辑 Host</button>
-    <button @click="toggleHost">切换 Host</button>
-    <button @click="viewHost">查看 Host</button>
-  </div>
-  <div>
-    <h3>Host 文件列表</h3>
-    <ul>
-      <li v-for="(host, index) in hosts" :key="index">
-        {{ host }}
-      </li>
-    </ul>
+  <div id="app" style="display: flex; height: 100%;">
+    <FileList @file-selected="selectFile" style="width: 20%; height: 100%; overflow-y: auto; border-right: 1px solid #ccc;" />
+    <FileContent :selected-file="selectedFile" style="width: 80%; height: 100%; padding-left: 10px; overflow-y: auto;" />
   </div>
 </template>
 
-<script setup>
-import {
-  AddHost,
-  RemoveHost,
-  EditHost,
-  ToggleHost,
-  ViewHost,
-  LogInfo,
-} from '../wailsjs';
+<script>
+import { ref } from 'vue';
+import FileList from './components/FilesList.vue';
+import FileContent from './components/FileContent.vue';
 
-const addHost = async () => {
-  LogInfo("addHost");
-  AddHost().then((res) => {
-    LogInfo("addHost finished")
-  });
+export default {
+  components: {
+    FileList,
+    FileContent,
+  },
+  setup() {
+    const selectedFile = ref(null);
+
+    const selectFile = (file) => {
+      selectedFile.value = file;
+    };
+
+    return {
+      selectedFile,
+      selectFile,
+    };
+  },
 };
-
-const removeHost = async () => {
-  LogInfo("RemoveHost");
-  RemoveHost().then((res) => {
-    LogInfo("RemoveHost finished")
-  });
-};
-
-const editHost = async () => {
-  LogInfo("EditHost");
-  EditHost().then((res) => {
-    LogInfo("EditHost finished")
-  });
-};
-
-const toggleHost = async () => {
-  LogInfo("ToggleHost");
-  ToggleHost().then((res) => {
-    LogInfo("ToggleHost finished")
-  });
-};
-
-const viewHost = async () => {
-  LogInfo("ViewHost");
-  ViewHost().then((res) => {
-    LogInfo("ViewHost finished")
-  });
-};
-
-
 </script>
