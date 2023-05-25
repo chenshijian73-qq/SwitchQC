@@ -4,7 +4,9 @@
     <FileContent :selected-file="selectedFile" style="width: 80%; height: 100%; padding-left: 10px; overflow-y: scroll;" />
   </div>
 </template>
-
+<style>
+  @import 'ant-design-vue/dist/reset.css';
+</style>
 <script>
 import { ref } from 'vue';
 import FileList from './components/FilesList.vue';

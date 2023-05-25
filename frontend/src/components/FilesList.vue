@@ -7,8 +7,8 @@
           <button @click="selectFile(file)" style="text-align: left;margin-right: 5px;width: 90vh;">
             {{ file.name }}
           </button>
-          <button v-if="switchState" @click="toggleSwitch" style="color: green;">ON</button>
-          <button v-else="!switchState" @click="toggleSwitch" style="color: #ff7271;">OFF</button>
+          <Button v-if="switchState" @click="toggleSwitch" style="color: green;">ON</Button>
+          <Button v-else @click="toggleSwitch" style="color: #ff7271;">OFF</Button>
 <!--          <button @click="deleteFile(file)" style="text-align: right;margin-left: 5px; color: #ff7271"> x </button>-->
         </li>
       </ul>
@@ -22,15 +22,21 @@ import {
   GetFiles,
   LogInfo,
 } from '../../wailsjs';
+import Button from 'ant-design-vue/lib/button';
+import 'ant-design-vue/lib/button/style'
 
 export default {
+  components: {
+    Button,
+  },
   setup() {
     const files = ref([]);
 
     const switchState = ref(true)
     const toggleSwitch = () => {
-      LogInfo("hello:", this.switchState)
-      this.switchState = !this.switchState;
+      LogInfo("switchState")
+      console.log(switchState.value)
+      switchState.value = !switchState.value;
     };
 
     const selectFile = (file) => {
@@ -39,7 +45,7 @@ export default {
 
     const createFile = () => {
       // 调用后端方法以创建新文件
-      LogInfo("createFile:", this.switchState)
+      LogInfo("createFile")
     };
 
     const deleteFile = (file) => {
@@ -61,8 +67,7 @@ export default {
   methods: {
     async loadFiles() {
       GetFiles().then((res) => {
-        this.files = res
-        // LogInfo("res:", res)
+        this.files = res;
       });
     },
   },

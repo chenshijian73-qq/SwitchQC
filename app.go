@@ -57,7 +57,7 @@ type QuickCmdFile struct {
 
 func (a *App) GetFiles() []QuickCmdFile {
 
-	dirPath := "/Users/shijianchen/GolandProjects/quickcmd/files"
+	dirPath := "files"
 
 	var files []QuickCmdFile
 
@@ -84,7 +84,7 @@ func (a *App) GetFiles() []QuickCmdFile {
 				println("Error:", err.Error())
 				return nil
 			}
-			before, _ := strings.CutSuffix(fileInfo.Name(), ".quickcmd")
+			before := strings.TrimSuffix(fileInfo.Name(), ".quickcmd")
 			files = append(files, QuickCmdFile{
 				Name:    before,
 				Content: string(fileContent),
