@@ -8,10 +8,11 @@ import (
 	"github.com/gogf/gf/v2/os/gtime"
 )
 
-// Files is the golang structure for table files.
-type Files struct {
+// QcFile is the golang structure for table qc_file.
+type QcFile struct {
 	Id       int         `json:"id"       ` //
 	Filename string      `json:"filename" ` //
+	Path     string      `json:"path"     ` //
 	Status   bool        `json:"status"   ` //
 	CreateAt *gtime.Time `json:"createAt" ` //
 	UpdateAt *gtime.Time `json:"updateAt" ` //

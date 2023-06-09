@@ -9,11 +9,12 @@ import (
 	"github.com/gogf/gf/v2/os/gtime"
 )
 
-// Files is the golang structure of table files for DAO operations like Where/Data.
-type Files struct {
-	g.Meta   `orm:"table:files, do:true"`
+// QcFile is the golang structure of table qc_file for DAO operations like Where/Data.
+type QcFile struct {
+	g.Meta   `orm:"table:qc_file, do:true"`
 	Id       interface{} //
 	Filename interface{} //
+	Path     interface{} //
 	Status   interface{} //
 	CreateAt *gtime.Time //
 	UpdateAt *gtime.Time //

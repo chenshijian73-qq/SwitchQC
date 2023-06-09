@@ -8,19 +8,19 @@ import (
 	"changeme/internal/dao/internal"
 )
 
-// internalFilesDao is internal type for wrapping internal DAO implements.
-type internalFilesDao = *internal.FilesDao
+// internalQcFileDao is internal type for wrapping internal DAO implements.
+type internalQcFileDao = *internal.QcFileDao
 
-// filesDao is the data access object for table files.
+// qcFileDao is the data access object for table qc_file.
 // You can define custom methods on it to extend its functionality as you wish.
-type filesDao struct {
-	internalFilesDao
+type qcFileDao struct {
+	internalQcFileDao
 }
 
 var (
-	// Files is globally public accessible object for table files operations.
-	Files = filesDao{
-		internal.NewFilesDao(),
+	// QcFile is globally public accessible object for table qc_file operations.
+	QcFile = qcFileDao{
+		internal.NewQcFileDao(),
 	}
 )
 
