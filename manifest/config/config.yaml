@@ -1,0 +1,4 @@
+database:
+  default:
+    link:   "sqlite::@file(manifest/db/quick.db)"
+    debug:  true

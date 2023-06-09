@@ -3,6 +3,7 @@ package main
 import (
 	"embed"
 
+	_ "github.com/mattn/go-sqlite3"
 	"github.com/wailsapp/wails/v2"
 	"github.com/wailsapp/wails/v2/pkg/logger"
 	"github.com/wailsapp/wails/v2/pkg/menu"
