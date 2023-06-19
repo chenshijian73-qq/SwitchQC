@@ -1,32 +1,33 @@
 package main
 
 import (
+	"changeme/internal/config"
+	"changeme/internal/db"
 	"embed"
-
-	_ "github.com/mattn/go-sqlite3"
 	"github.com/wailsapp/wails/v2"
-	"github.com/wailsapp/wails/v2/pkg/logger"
 	"github.com/wailsapp/wails/v2/pkg/menu"
 	"github.com/wailsapp/wails/v2/pkg/menu/keys"
 	"github.com/wailsapp/wails/v2/pkg/options"
 	"github.com/wailsapp/wails/v2/pkg/options/assetserver"
-	// "github.com/wailsapp/wails/v2/pkg/options/mac"
 	"github.com/wailsapp/wails/v2/pkg/runtime"
+	"sync"
+
+	_ "github.com/mattn/go-sqlite3"
 )
 
-type SwitchHosts struct {
-	log logger.Logger
-}
-
-func NewSwitchHosts(log *logger.Logger) *SwitchHosts {
-	return &SwitchHosts{
-		log: *log,
-	}
-}
+var (
+	dbPool *sync.Pool
+)
 
 var assets embed.FS
 
 func main() {
+	if err := config.Init(); err != nil { //初始化config
+		panic(err)
+	}
+	if err := db.Init(); err != nil { //初始化db
+		panic(err)
+	}
 
 	app := NewApp()
 

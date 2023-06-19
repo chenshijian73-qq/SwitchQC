@@ -5,5 +5,5 @@ gfcli:
   gen:
     dao:
       - link:     "sqlite::@file(manifest/db/quick.db)"
-        tables:   "files"
+        tables:   "qc_file"
         jsonCase: "CamelLower"

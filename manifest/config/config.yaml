@@ -1,4 +1,5 @@
-database:
-  default:
-    link:   "sqlite::@file(manifest/db/quick.db)"
-    debug:  true
+sqlite:
+  filePath: manifest/db/qc.db
+  maxIdleCons: 10
+  maxOpenCons: 100
+  connMaxLifetime: 280
