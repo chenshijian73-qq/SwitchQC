@@ -5,10 +5,13 @@ import (
 	"fmt"
 	"gopkg.in/yaml.v2"
 	"io/ioutil"
+	"time"
 )
 
 type Configs struct {
-	Db sqlite `yaml:"sqlite"`
+	App app    `yaml:"app"`
+	Log log    `yaml:"log"`
+	Db  sqlite `yaml:"sqlite"`
 }
 
 type sqlite struct {
@@ -16,6 +19,15 @@ type sqlite struct {
 	MaxIdleCons     int    `yaml:"maxIdleCons"`
 	MaxOpenCons     int    `yaml:"maxOpenCons"`
 	ConnMaxLifetime int    `yaml:"connMaxLifetime"`
+}
+
+type app struct {
+	Level     string        `yaml:"level"`
+	GWTimeOut time.Duration `yaml:"GWTimeOut"`
+}
+
+type log struct {
+	FilePath string `yaml:"filePath"`
 }
 
 var Conf Configs

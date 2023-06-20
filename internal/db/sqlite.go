@@ -26,7 +26,12 @@ func Init() (err error) {
 	sqlDb.SetMaxOpenConns(conf.MaxOpenCons)
 	sqlDb.SetConnMaxLifetime(time.Duration(10) * time.Second)
 
-	return autoMigrate() //自动迁移
+	err = autoMigrate() //自动迁移
+	if err != nil {
+		return
+	}
+
+	return err
 }
 
 func autoMigrate() (err error) {

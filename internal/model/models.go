@@ -66,8 +66,20 @@ func (t *Models[T]) Get() (err error) {
 	return
 }
 
+func (t *Models[T]) GetNoDeleted() (err error) {
+	if err = t.db.Where("delete_at IS NULL").First(t.Model, t.Model).Error; err != nil && err == gorm.ErrRecordNotFound {
+		err = nil
+	}
+	return
+}
+
 func (t *Models[T]) Gets() (row []T, err error) {
 	err = t.db.Find(&row, t.Model).Error
+	return
+}
+
+func (t *Models[T]) GetsNoDeleted() (row []T, err error) {
+	err = t.db.Where("delete_at IS NULL").Find(&row, t.Model).Error
 	return
 }
 
