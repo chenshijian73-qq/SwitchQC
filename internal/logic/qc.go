@@ -15,7 +15,7 @@ import (
 )
 
 type Qc struct {
-	Id       int64  `json:"id"`
+	ID       uint   `json:"ID"`
 	Name     string `json:"name"`
 	Filepath string `json:"filepath"`
 	Content  string `json:"content"`
@@ -36,8 +36,9 @@ func (qcLogic *QcLogic) CreateQC(qc Qc) (err error) {
 	}
 	m := model.NewModels[tables.Qc]()
 	m.Model = &tables.Qc{
-		Id:       qc.Id,
+		ID:       qc.ID,
 		Filename: qc.Name,
+		Content:  qc.Content,
 		Path:     strings.Replace(qc.Filepath, "~", os.Getenv("HOME"), 1),
 		Status:   qc.Status,
 		CreateAt: gtime.New(time.Now()),
@@ -60,7 +61,7 @@ func (qcLogic *QcLogic) GetQCList() (qcs []Qc, err error) {
 	if num > 0 {
 		qcs = make([]Qc, num)
 		for i, row := range rows {
-			qcs[i].Id = row.Id
+			qcs[i].ID = row.ID
 			qcs[i].Name = row.Filename
 			qcs[i].Filepath = strings.Replace(row.Path, "~", os.Getenv("HOME"), 1)
 			qcs[i].Status = row.Status
@@ -83,8 +84,9 @@ func (qcLogic *QcLogic) GetQCList() (qcs []Qc, err error) {
 func (qcLogic *QcLogic) UpdateQC(qc Qc) (err error) {
 	m := model.NewModels[tables.Qc]()
 	m.Model = &tables.Qc{
-		Id:       qc.Id,
+		ID:       qc.ID,
 		Filename: qc.Name,
+		Content:  qc.Content,
 		Path:     qc.Filepath,
 		Status:   qc.Status,
 		UpdateAt: gtime.New(time.Now()),
@@ -97,7 +99,8 @@ func (qcLogic *QcLogic) UpdateQC(qc Qc) (err error) {
 func (qcLogic *QcLogic) DeleteQC(qc Qc) (err error) {
 	m := model.NewModels[tables.Qc]()
 	m.Model = &tables.Qc{
-		Id:       qc.Id,
+		ID:       qc.ID,
+		Content:  qc.Content,
 		DeleteAt: gtime.New(time.Now()),
 	}
 	m.Update("delete_at")

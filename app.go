@@ -3,10 +3,6 @@ package main
 import (
 	"context"
 	"fmt"
-	"io/ioutil"
-	"os"
-	"path/filepath"
-	"strings"
 )
 
 // App struct
@@ -23,6 +19,14 @@ func NewApp() *App {
 // so we can call the runtime methods
 func (a *App) startup(ctx context.Context) {
 	a.ctx = ctx
+}
+
+func (a *App) domReady(ctx context.Context) {
+
+}
+
+func (a *App) shutdown(ctx context.Context) {
+
 }
 
 // Greet returns a greeting for the given name
@@ -57,40 +61,5 @@ type QuickCmdFile struct {
 
 func (a *App) GetFiles() []QuickCmdFile {
 
-	dirPath := "files"
-
-	var files []QuickCmdFile
-
-	// 打开目录
-	dir, err := os.Open(dirPath)
-	if err != nil {
-		println("Error:", err.Error())
-		return nil
-	}
-	defer dir.Close()
-
-	// 读取目录中的文件
-	fileInfos, err := dir.Readdir(-1)
-	if err != nil {
-		println("Error:", err.Error())
-		return nil
-	}
-
-	// 遍历文件，筛选出后缀名为 ".quickcmd" 的文件
-	for _, fileInfo := range fileInfos {
-		if !fileInfo.IsDir() && strings.HasSuffix(fileInfo.Name(), ".quickcmd") {
-			fileContent, err := ioutil.ReadFile(filepath.Join(dirPath, fileInfo.Name()))
-			if err != nil {
-				println("Error:", err.Error())
-				return nil
-			}
-			before := strings.TrimSuffix(fileInfo.Name(), ".quickcmd")
-			files = append(files, QuickCmdFile{
-				Name:    before,
-				Content: string(fileContent),
-			})
-		}
-	}
-
-	return files
+	return nil
 }

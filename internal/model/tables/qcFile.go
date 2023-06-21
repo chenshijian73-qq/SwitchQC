@@ -5,8 +5,9 @@ import (
 )
 
 type Qc struct {
-	Id        int64       `json:"id"`                         //
-	Filename  string      `json:"filename"`                   //
+	ID        uint        `gorm:"primary_key"`
+	Filename  string      `json:"filename"` //
+	Content   string      `gorm:"type:text;not null"`
 	Path      string      `json:"path"`                       //
 	Status    bool        `gorm:"type:boolean;default:true"`  //
 	IsDeleted bool        `gorm:"type:boolean;default:false"` //

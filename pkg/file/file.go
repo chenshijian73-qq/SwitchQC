@@ -55,3 +55,8 @@ func DeleteFile(filepath string) (err error) {
 	log.Info(fmt.Sprintf("delete file %s", filepath))
 	return nil
 }
+
+func CreateFile(filepath string) (err error) {
+
+	return
+}
