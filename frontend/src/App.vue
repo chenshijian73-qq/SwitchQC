@@ -21,43 +21,42 @@
   </div>
 </template>
 
-<script>
-export default {
-  data() {
-    return {
-      showNav: true,
-      qcFiles: [
-        { name: 'file1', content: 'This is file1 content.', enabled: true },
-        { name: 'file2', content: 'This is file2 content.', enabled: false },
-        { name: 'file3', content: 'This is file3 content.', enabled: true },
-      ],
-      selectedFile: {},
-      contextMenuVisible: false,
-    };
-  },
-  methods: {
-    addFile() {
-      // 添加文件的逻辑
-    },
-    selectFile(file, event) {
-      this.selectedFile = file;
-      if (event.button === 2) {
-        this.showContextMenu(file, event);
-      }
-    },
-    editFile(file) {
-      // 编辑文件信息的逻辑
-      console.log('编辑文件信息', file);
-    },
-    removeFile(file) {
-      // 移动文件到回收站的逻辑
-      console.log('移动到回收站', file);
-    },
-    saveFile() {
-      // 保存文件的逻辑
-    },
-  },
-};
+<script setup>
+import { ref } from 'vue';
+
+const showNav = ref(true);
+const qcFiles = ref([
+  { name: 'file1', content: 'This is file1 content.', enabled: true },
+  { name: 'file2', content: 'This is file2 content.', enabled: false },
+  { name: 'file3', content: 'This is file3 content.', enabled: true },
+]);
+const selectedFile = ref({});
+const contextMenuVisible = ref(false);
+
+function addFile() {
+  // 添加文件的逻辑
+}
+
+function selectFile(file, event) {
+  selectedFile.value = file;
+  if (event.button === 2) {
+    showContextMenu(file, event);
+  }
+}
+
+function editFile(file) {
+  // 编辑文件信息的逻辑
+  console.log('编辑文件信息', file);
+}
+
+function removeFile(file) {
+  // 移动文件到回收站的逻辑
+  console.log('移动到回收站', file);
+}
+
+function saveFile() {
+  // 保存文件的逻辑
+}
 </script>
 
 <style scoped>

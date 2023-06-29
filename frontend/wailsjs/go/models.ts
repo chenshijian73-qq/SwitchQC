@@ -1,4 +1,4 @@
-export namespace main {
+export namespace logic {
 	
 	export class QuickCmdFile {
 	    name: string;

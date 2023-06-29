@@ -3,6 +3,7 @@ package main
 import (
 	"changeme/internal/config"
 	"changeme/internal/db"
+	"changeme/internal/logic"
 	"embed"
 	"github.com/wailsapp/wails/v2"
 	"github.com/wailsapp/wails/v2/pkg/menu"
@@ -24,28 +25,28 @@ var (
 var icon []byte
 var assets embed.FS
 
-func main() {
+func initData() {
 	if err := config.Init(); err != nil { //初始化config
 		panic(err)
 	}
-	//if err := log.Init(); err != nil {
-	//	panic(err)
-	//}
+
 	if err := db.Init(); err != nil { //初始化db
 		panic(err)
 	}
 	//if err := dataInit.Init(); err != nil { //初始化db
 	//	panic(err)
 	//}
+}
 
-	app := NewApp()
+func RunApp() {
+	app := logic.NewApp()
 
 	AppMenu := menu.NewMenu()
 	FileMenu := AppMenu.AddSubmenu("File")
 	// FileMenu.AddText("&Open", keys.CmdOrCtrl("o"), openFile)
 	FileMenu.AddSeparator()
 	FileMenu.AddText("Quit", keys.CmdOrCtrl("q"), func(_ *menu.CallbackData) {
-		runtime.Quit(app.ctx)
+		runtime.Quit(app.Ctx)
 	})
 
 	AppMenu.Append(menu.EditMenu()) // on macos platform, we should append EditMenu to enable Cmd+C,Cmd+V,Cmd+Z... shortcut
@@ -67,9 +68,9 @@ func main() {
 		AssetServer: &assetserver.Options{
 			Assets: assets,
 		},
-		OnStartup:                        app.startup,
-		OnDomReady:                       app.domReady,
-		OnShutdown:                       app.shutdown,
+		OnStartup:                        app.Startup,
+		OnDomReady:                       app.DomReady,
+		OnShutdown:                       app.Shutdown,
 		CSSDragProperty:                  "--wails-draggable",
 		CSSDragValue:                     "drag",
 		EnableFraudulentWebsiteDetection: false,
@@ -114,4 +115,9 @@ func main() {
 	if err != nil {
 		panic(err)
 	}
+}
+
+func main() {
+	initData()
+	RunApp()
 }
