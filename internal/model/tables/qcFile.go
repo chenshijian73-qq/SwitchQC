@@ -7,7 +7,7 @@ import (
 type Qc struct {
 	ID        uint        `gorm:"primary_key"`
 	Filename  string      `json:"filename"` //
-	Content   string      `gorm:"type:text;not null"`
+	Content   string      `gorm:"type:text;"`
 	Path      string      `json:"path"`                       //
 	Status    bool        `gorm:"type:boolean;default:true"`  //
 	IsDeleted bool        `gorm:"type:boolean;default:false"` //

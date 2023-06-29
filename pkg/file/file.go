@@ -7,6 +7,16 @@ import (
 	"os"
 )
 
+func CreateFile(filepath string, content string) (err error) {
+	err = ioutil.WriteFile(filepath, []byte(content), 0644)
+	if err != nil {
+		return
+	}
+	log.Info(fmt.Sprintf("File %s created successfully!", filepath))
+	fmt.Println("File created successfully!")
+	return
+}
+
 func SaveFile(filepath string, content string) (err error) {
 	// 打开文件
 	f, err := os.OpenFile(filepath, os.O_CREATE|os.O_RDWR|os.O_TRUNC, 0644)
@@ -54,9 +64,4 @@ func DeleteFile(filepath string) (err error) {
 	}
 	log.Info(fmt.Sprintf("delete file %s", filepath))
 	return nil
-}
-
-func CreateFile(filepath string) (err error) {
-
-	return
 }
