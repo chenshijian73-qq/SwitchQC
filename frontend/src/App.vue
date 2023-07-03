@@ -18,12 +18,34 @@
         <a-textarea v-model="selectedFile.content" :disabled="!selectedFile.enabled" @input="saveFile" />
       </div>
     </div>
+    <a-drawer
+        title="添加文件"
+        :visible="addFileVisible"
+        :closable="false"
+        :placement="placement"
+        width="400px"
+        @close="addFileVisible = false"
+    >
+      <a-form ref="form" :model="form" :rules="rules">
+        <a-form-item label="文件名" :label-col="{ span: 6 }" :wrapper-col="{ span: 16 }" prop="name">
+          <a-input v-model="form.name" />
+        </a-form-item>
+        <a-form-item label="内容" :label-col="{ span: 16 }" :wrapper-col="{ span: 16 }" prop="content">
+          <a-input v-model="form.content" />
+        </a-form-item>
+      </a-form>
+      <div slot="footer">
+        <a-button @click="addFileVisible = false">取消</a-button>
+        <a-button type="primary" @click="handleSubmit">确定</a-button>
+      </div>
+    </a-drawer>
   </div>
 </template>
 
 <script setup>
-import {onMounted, ref} from 'vue';
+import {createApp, onMounted, ref} from 'vue';
 import { GetFiles, LogInfo } from '../wailsjs';
+import {Form, Input, Modal} from "ant-design-vue";
 
 const showNav = ref(true);
 let qcFiles = ref([
@@ -35,16 +57,41 @@ let qcFiles = ref([
 function getFiles() {
   GetFiles().then(response => {
     qcFiles.value = response;
-    console.log("hello")
-    console.log(qcFiles)
   });
 }
 
 const selectedFile = ref({});
 const contextMenuVisible = ref(false);
 
+const addFileVisible = ref(false);
+const placement = ref('right');
+
+const form = ref({
+  name: '',
+  content: '',
+});
+
+const rules = ref({
+  name: [
+    { required: true, message: '请输入文件名', trigger: 'blur' },
+    { min: 2, max: 20, message: '文件名长度在 2 到 20 个字符之间', trigger: 'blur' },
+  ],
+  content: [
+    { required: true, message: '请输入文件内容', trigger: 'blur' },
+  ],
+});
+
 function addFile() {
-  // 添加文件的逻辑
+  addFileVisible.value = true;
+}
+
+function handleSubmit() {
+  const { name, content } = form.value;
+  qcFiles.value.push({ name, content, enabled: true });
+  LogInfo(`添加文件 ${name} 成功`);
+  addFileVisible.value = false;
+  form.value.name = '';
+  form.value.content = '';
 }
 
 function selectFile(file, event) {
