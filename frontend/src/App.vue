@@ -22,14 +22,24 @@
 </template>
 
 <script setup>
-import { ref } from 'vue';
+import {onMounted, ref} from 'vue';
+import { GetFiles, LogInfo } from '../wailsjs';
 
 const showNav = ref(true);
-const qcFiles = ref([
+let qcFiles = ref([
   { name: 'file1', content: 'This is file1 content.', enabled: true },
   { name: 'file2', content: 'This is file2 content.', enabled: false },
   { name: 'file3', content: 'This is file3 content.', enabled: true },
 ]);
+
+function getFiles() {
+  GetFiles().then(response => {
+    qcFiles.value = response;
+    console.log("hello")
+    console.log(qcFiles)
+  });
+}
+
 const selectedFile = ref({});
 const contextMenuVisible = ref(false);
 
@@ -57,6 +67,11 @@ function removeFile(file) {
 function saveFile() {
   // 保存文件的逻辑
 }
+
+onMounted(
+    getFiles
+);
+
 </script>
 
 <style scoped>

@@ -3,7 +3,6 @@ package main
 import (
 	"changeme/internal/config"
 	"changeme/internal/db"
-	"changeme/internal/logic"
 	"embed"
 	"github.com/wailsapp/wails/v2"
 	"github.com/wailsapp/wails/v2/pkg/menu"
@@ -39,7 +38,7 @@ func initData() {
 }
 
 func RunApp() {
-	app := logic.NewApp()
+	app := NewApp()
 
 	AppMenu := menu.NewMenu()
 	FileMenu := AppMenu.AddSubmenu("File")

@@ -6,7 +6,7 @@ export function AddFile():Promise<void>;
 
 export function EditFile():Promise<void>;
 
-export function GetFiles():Promise<Array<logic.QuickCmdFile>>;
+export function GetFiles():Promise<Array<logic.Qc>>;
 
 export function Greet(arg1:string):Promise<string>;
 

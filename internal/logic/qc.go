@@ -19,7 +19,7 @@ type Qc struct {
 	Name     string `json:"name"`
 	Filepath string `json:"filepath"`
 	Content  string `json:"content"`
-	Status   bool   `json:"status"`
+	Enabled  bool   `json:"enabled"`
 }
 
 type QcLogic struct {
@@ -40,7 +40,7 @@ func (qcLogic *QcLogic) CreateQC(qc Qc) (err error) {
 		Filename: qc.Name,
 		Content:  qc.Content,
 		Path:     strings.Replace(qc.Filepath, "~", os.Getenv("HOME"), 1),
-		Status:   qc.Status,
+		Status:   qc.Enabled,
 		CreateAt: gtime.New(time.Now()),
 	}
 	err = m.Create()
@@ -64,7 +64,7 @@ func (qcLogic *QcLogic) GetQCList() (qcs []Qc, err error) {
 			qcs[i].ID = row.ID
 			qcs[i].Name = row.Filename
 			qcs[i].Filepath = strings.Replace(row.Path, "~", os.Getenv("HOME"), 1)
-			qcs[i].Status = row.Status
+			qcs[i].Enabled = row.Status
 			fullPath := qcs[i].Filepath + qcs[i].Name
 			if _, err := os.Stat(fullPath); os.IsNotExist(err) {
 				log.Error(fmt.Sprintf("file %s dont exist\n", fullPath))
@@ -88,7 +88,7 @@ func (qcLogic *QcLogic) UpdateQC(qc Qc) (err error) {
 		Filename: qc.Name,
 		Content:  qc.Content,
 		Path:     qc.Filepath,
-		Status:   qc.Status,
+		Status:   qc.Enabled,
 		UpdateAt: gtime.New(time.Now()),
 	}
 	m.Update("filename", "path", "status", "update_at")

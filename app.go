@@ -1,8 +1,10 @@
-package logic
+package main
 
 import (
+	"changeme/internal/logic"
 	"context"
 	"fmt"
+	log "github.com/sirupsen/logrus"
 )
 
 // App struct
@@ -54,12 +56,11 @@ func (a *App) ViewFile() {
 	fmt.Println("查看 File")
 }
 
-type QuickCmdFile struct {
-	Name    string `json:"name"`
-	Content string `json:"content"`
-}
-
-func (a *App) GetFiles() []QuickCmdFile {
-
-	return nil
+func (a *App) GetFiles() []logic.Qc {
+	qcLogic := logic.NewQcLogic()
+	qcs, err := qcLogic.GetQCList()
+	if err != nil {
+		log.Error(err)
+	}
+	return qcs
 }
