@@ -43,15 +43,15 @@
         </ul>
       </div>
       <div class="content">
-        <a-textarea v-model="selectedFile.content" :disabled="!selectedFile.enabled" auto-size=true @change="saveContent(selectedFile)" />
+        <a-textarea v-model="selectedFile.content" :auto-size="{minRows:20,maxRows:20}" @change="saveContent(selectedFile)" />
       </div>
     </div>
     <a-drawer
         title="添加文件"
         :visible="addFileVisible"
         :closable="false"
-        :placement="placement"
-        width="400px"
+        :placement="right"
+        width="40%"
         @ok="handleAddFileSubmit"
         @cancel="addFileVisible = false"
     >
@@ -60,7 +60,7 @@
           <a-input v-model="form.name" />
         </a-form-item>
         <a-form-item label="内容" :label-col="{ span: 16 }" :wrapper-col="{ span: 16 }" prop="content">
-          <a-textarea v-model="form.content" auto-size=true />
+          <a-textarea v-model="form.content" placeholder="Please enter something" :auto-size="{minRows:20,maxRows:20}" />
         </a-form-item>
         <a-form-item label="状态" :label-col="{ span: 16 }" :wrapper-col="{ span: 16 }" prop="enabled">
           <a-switch v-model="form.enabled" />
