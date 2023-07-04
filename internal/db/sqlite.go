@@ -74,7 +74,7 @@ func CreateQcDB() (qcDBFile string, err error) {
 			log.Error(fmt.Sprintf("create ~/.qc dir failed：%s", err))
 			return "", err
 		}
-		log.Info("create ~/.qc dir failed success")
+		log.Info("create ~/.qc dir success")
 	}
 
 	// 判断 qc.db 文件是否存在，如果不存在，则创建

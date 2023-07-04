@@ -52,17 +52,15 @@ func RunApp() {
 
 	AppMenu.Append(menu.EditMenu()) // on macos platform, we should append EditMenu to enable Cmd+C,Cmd+V,Cmd+Z... shortcut
 
-	// mac.TitleBarDefault().UseToolbar = true
-
 	err := wails.Run(&options.App{
-		Width:             1024,
-		Height:            768,
-		Title:             "QuickCMD",
-		BackgroundColour:  &options.RGBA{R: 27, G: 38, B: 54, A: 0},
-		DisableResize:     true,
-		Fullscreen:        false,
-		Frameless:         false,
-		StartHidden:       true,
+		Width:            1024,
+		Height:           768,
+		Title:            "QuickCMD",
+		BackgroundColour: &options.RGBA{R: 27, G: 38, B: 54, A: 0},
+		DisableResize:    true,
+		//Fullscreen:       false,
+		//Frameless:         false,
+		//StartHidden:       true,
 		AlwaysOnTop:       true,
 		HideWindowOnClose: true,
 		Menu:              AppMenu,
@@ -86,14 +84,14 @@ func RunApp() {
 			DisableWindowIcon:    false, // 是否关闭窗口上的图标
 		},
 		Mac: &mac.Options{
-			TitleBar: &mac.TitleBar{
-				TitlebarAppearsTransparent: true,
-				HideTitle:                  false,
-				HideTitleBar:               false,
-				FullSizeContent:            false,
-				UseToolbar:                 false,
-				HideToolbarSeparator:       true,
-			},
+			//TitleBar: &mac.TitleBar{
+			//	TitlebarAppearsTransparent: true,
+			//	HideTitle:                  false,
+			//	HideTitleBar:               false,
+			//	FullSizeContent:            false,
+			//	UseToolbar:                 false,
+			//	HideToolbarSeparator:       false,
+			//},
 			WebviewIsTransparent: true,
 			WindowIsTranslucent:  true,
 			Appearance:           mac.NSAppearanceNameVibrantLight,

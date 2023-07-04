@@ -43,7 +43,7 @@
         </ul>
       </div>
       <div class="content">
-        <a-textarea v-model="selectedFile.content" :auto-size="{minRows:20,maxRows:20}" @change="saveContent(selectedFile)" />
+        <a-textarea v-model="selectedFile.content" :auto-size="{minRows:32,maxRows:32}" @change="saveContent(selectedFile)" />
       </div>
     </div>
     <a-drawer
@@ -86,7 +86,6 @@ const showNav = ref(true);
 let qcFiles = ref([
   { name: 'file1', content: 'This is file1 content.', enabled: true },
   { name: 'file2', content: 'This is file2 content.', enabled: false },
-  { name: 'file3', content: 'This is file3 content.', enabled: true },
 ].map(file => ({ ...file, fileMenuVisible: false })));
 
 function getFiles() {
@@ -118,34 +117,30 @@ function showAddFile() {
   addFileVisible.value = true;
 }
 async function handleAddFileSubmit() {
-
-  const valid = await target.value.validate();
-  if (valid && nameUnique.value) { // 校验表单结果和文件名唯一性同时通过
-    const isNameUnique = qcFiles.value.every(file => file.name !== form.name);
-    if (!isNameUnique) {
-      message.error('文件名已存在');
-      return false;
-    }
-    const {name, content, enabled} = form.value;
-    AddFile({
-      Name: name,
-      Content: content,
-      Enabled: enabled,
-    }).then(response => {
-      if (response == false) {
-        message.error(`添加文件 ${name} 失败`)
-      } else {
-        qcFiles.value.push({name, content, enabled, fileMenuVisible: false});
-        LogInfo(`添加文件 ${name} 成功`);
-        message.info(`添加文件 ${name} 成功`)
-        addFileVisible.value = false;
-        form.value.name = '';
-        form.value.content = '';
-        form.value.enabled = true;
-      }
-    })
+  const isNameUnique = qcFiles.value.every(file => file.name !== form.value.name);
+  if (!isNameUnique) {
+    message.error('文件名已存在');
+    return false;
   }
-
+  const {name, content, enabled} = form.value;
+  AddFile({
+    Name: name,
+    Content: content,
+    Enabled: enabled,
+  }).then(response => {
+    if (response == false) {
+      message.error(`添加文件 ${name} 失败`)
+    } else {
+      qcFiles.value.push({name, content, enabled, fileMenuVisible: false});
+      LogInfo(`添加文件 ${name} 成功`);
+      message.info(`添加文件 ${name} 成功`)
+      addFileVisible.value = false;
+      form.value.name = '';
+      form.value.content = '';
+      form.value.enabled = true;
+      getFiles()
+    }
+  })
 }
 
 const selectedFile = ref({});
