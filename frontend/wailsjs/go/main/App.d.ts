@@ -11,4 +11,4 @@ export function GetFiles():Promise<Array<logic.Qc>>;
 
 export function Greet(arg1:string):Promise<string>;
 
-export function RemoveFile():Promise<void>;
+export function RemoveFile(arg1:logic.Qc):Promise<boolean>;

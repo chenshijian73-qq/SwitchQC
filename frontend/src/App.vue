@@ -9,8 +9,36 @@
       <div class="nav" v-if="showNav">
         <ul>
           <li v-for="(file, index) in qcFiles" :key="index" @click="selectFile(file, $event)" @contextmenu.prevent>
+            <a-trigger
+                :trigger="['click', 'hover']"
+                clickToClose
+                position="right"
+                v-model:popupVisible="fileMenuVisible[file.name]"
+            >
+              <div :class="`button-trigger ${fileMenuVisible[file.name] ? 'button-trigger-active' : ''}`">
+                <IconClose v-if="fileMenuVisible[file.name]" />
+                <IconMenu v-else />
+              </div>
+              <template #content>
+                <a-menu
+                    :style="{ marginBottom: '-4px' }"
+                    mode="popButton"
+                    :tooltipProps="{ position: 'left' }"
+                    showCollapseButton
+                >
+                  <a-menu-item key="1" @click="removeFile(file)">
+                    <template #icon><IconEdit /></template>
+                    编辑
+                  </a-menu-item>
+                  <a-menu-item key="1" @click="removeFile(file)">
+                    <template #icon><IconDelete /></template>
+                    删除
+                  </a-menu-item>
+                </a-menu>
+              </template>
+            </a-trigger>
             <span class="name">{{ file.name }}</span>
-            <a-switch v-model="file.enabled" @change="editFile(file)"/>
+            <a-switch v-model="file.enabled" @change="changeStatus(file)"/>
           </li>
         </ul>
       </div>
@@ -44,19 +72,25 @@
 
 <script setup>
 import {onMounted, ref} from 'vue';
-import { GetFiles, AddFile, EditFile, LogInfo } from '../wailsjs';
+import { GetFiles, AddFile, EditFile, RemoveFile, LogInfo } from '../wailsjs';
 import {message} from "ant-design-vue";
+import {
+  IconEdit,
+  IconDelete,
+  IconClose,
+  IconMenu,
+} from '@arco-design/web-vue/es/icon';
 
 const showNav = ref(true);
 let qcFiles = ref([
   { name: 'file1', content: 'This is file1 content.', enabled: true },
   { name: 'file2', content: 'This is file2 content.', enabled: false },
   { name: 'file3', content: 'This is file3 content.', enabled: true },
-]);
+].map(file => ({ ...file, fileMenuVisible: false })));
 
 function getFiles() {
   GetFiles().then(response => {
-    qcFiles.value = response;
+    qcFiles.value = response.map(file => ({ ...file, fileMenuVisible: false }));
   });
 }
 
@@ -89,7 +123,7 @@ function handleAddFileSubmit() {
     if (response == false) {
       message.error(`添加文件 ${name} 失败`)
     } else {
-      qcFiles.value.push({ name, content, enabled });
+      qcFiles.value.push({ name, content, enabled, fileMenuVisible: false });
       LogInfo(`添加文件 ${name} 成功`);
       message.info(`添加文件 ${name} 成功`)
       addFileVisible.value = false;
@@ -101,22 +135,32 @@ function handleAddFileSubmit() {
 }
 
 const selectedFile = ref({});
-const contextMenuVisible = ref(false);
-function selectFile(file, event) {
-  selectedFile.value = file;
-  if (event.button === 2) {
-    showContextMenu(file, event);
-  }
+const fileMenuVisible = ref(false);
+function toggleMenu() {
+  this.fileMenuVisible = !this.fileMenuVisible;
 }
 
-function editFile(file) {
+function selectFile(file, event) {
+  event.stopPropagation();
+  qcFiles.value.forEach(f => {
+    if (f === file) {
+      f.fileMenuVisible = true;
+      this.selectedFile = f;
+    } else {
+      f.fileMenuVisible = false;
+    }
+  });
+}
+
+function changeStatus(file) {
   // 编辑文件信息的逻辑
   console.log('修改文件信息', file);
   EditFile(file).then(res => {
     if (res == false){
-      message.error(`修改文件 ${file.name} 信息失败`)
+      message.error(`修改文件 ${file.name} 状态失败`)
     } else {
-      message.info(`修改文件 ${file.name} 信息成功`)
+      message.info(`修改文件 ${file.name} 状态成功`)
+      getFiles()
     }
   })
 }
@@ -126,15 +170,23 @@ function saveContent(file) {
       message.error(`修改文件 ${file.name} 内容失败`)
     } else {
       message.info(`修改文件 ${file.name} 内容成功`)
+      getFiles()
     }
   })
 }
 
 function removeFile(file) {
   // 移动文件到回收站的逻辑
-  console.log('移动到回收站', file);
-}
+  RemoveFile(file).then(res => {
+    if (res == false){
+      message.error(`删除文件 ${file.name} 失败`)
+    } else {
+      message.info(`删除文件 ${file.name} 成功`)
+      getFiles()
+    }
+  })
 
+}
 
 onMounted(
     getFiles
@@ -182,7 +234,7 @@ li {
 }
 
 .name {
-  margin-left: 8px;
+  margin-left: 1px;
 }
 
 .content {
@@ -197,4 +249,32 @@ li {
   height: 80vh;
 }
 
+.button-trigger {
+  display: inline-block;
+  width: 20px;
+  height: 20px;
+  line-height: 20px;
+  text-align: center;
+  border-radius: 50%;
+  background-color: #1890ff;
+  color: #fff;
+  cursor: pointer;
+  margin-right: 10px;
+}
+
+.button-trigger-active {
+  background-color: #ff4d4f;
+}
+
+.ant-switch-checked {
+  background-color: #1890ff;
+}
+
+.ant-switch-checked .ant-switch-handle::before {
+  background-color: #fff;
+}
+
+.ant-switch:focus {
+  box-shadow: none;
+}
 </style>

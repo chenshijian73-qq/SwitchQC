@@ -18,6 +18,6 @@ export function Greet(arg1) {
   return window['go']['main']['App']['Greet'](arg1);
 }
 
-export function RemoveFile() {
-  return window['go']['main']['App']['RemoveFile']();
+export function RemoveFile(arg1) {
+  return window['go']['main']['App']['RemoveFile'](arg1);
 }

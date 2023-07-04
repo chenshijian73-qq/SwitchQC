@@ -107,7 +107,7 @@ func (qcLogic *QcLogic) DeleteQC(qc Qc) (err error) {
 		Content:  qc.Content,
 		DeleteAt: gtime.New(time.Now()),
 	}
-	m.Update("delete_at")
+	m.Update("content", "delete_at")
 	m.Get()
 	err = file.DeleteFile(m.Model.Path + m.Model.Filename)
 	return

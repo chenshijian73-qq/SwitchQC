@@ -56,8 +56,13 @@ func (a *App) AddFile(form Form) bool {
 	return true
 }
 
-func (a *App) RemoveFile() {
-	fmt.Println("deletehost")
+func (a *App) RemoveFile(data logic.Qc) bool {
+	qcLogic := logic.NewQcLogic()
+	err := qcLogic.DeleteQC(data)
+	if err != nil {
+		return false
+	}
+	return true
 }
 
 func (a *App) EditFile(data logic.Qc) bool {
