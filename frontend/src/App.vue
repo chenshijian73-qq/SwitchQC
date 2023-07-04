@@ -37,7 +37,7 @@
                 </a-menu>
               </template>
             </a-trigger>
-            <span class="name">{{ file.name }}</span>
+            <span class="name">{{ file.name.slice(0, file.name.lastIndexOf('.')) }}</span>
             <a-switch v-model="file.enabled" @change="changeStatus(file)"/>
           </li>
         </ul>
@@ -108,7 +108,7 @@ async function checkNameUnique(value) {
   if (!value) {
     nameUnique.value = null;
   } else {
-    const isNameUnique = qcFiles.value.every(file => file.name !== value);
+    const isNameUnique = qcFiles.value.every(file => file.name.slice(0, file.name.lastIndexOf('.')) !== value);
     nameUnique.value = isNameUnique;
   }
 }
