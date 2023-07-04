@@ -36,24 +36,37 @@ func (a *App) Greet(name string) string {
 	return fmt.Sprintf("Hello %s, It's show time!", name)
 }
 
-func (a *App) AddFile() {
-	fmt.Println("addhost3")
+type Form struct {
+	Name    string
+	Content string
+	Enabled bool
+}
+
+func (a *App) AddFile(form Form) bool {
+	qcLogic := logic.NewQcLogic()
+	err := qcLogic.CreateQC(logic.Qc{
+		Name:     form.Name,
+		Filepath: QcPath,
+		Content:  form.Content,
+		Enabled:  form.Enabled,
+	})
+	if err != nil {
+		return false
+	}
+	return true
 }
 
 func (a *App) RemoveFile() {
 	fmt.Println("deletehost")
 }
 
-func (a *App) EditFile() {
-	fmt.Println("编辑 File")
-}
-
-func (a *App) ToggleFile() {
-	fmt.Println("切换 File")
-}
-
-func (a *App) ViewFile() {
-	fmt.Println("查看 File")
+func (a *App) EditFile(data logic.Qc) bool {
+	qcLogic := logic.NewQcLogic()
+	err := qcLogic.UpdateQC(data)
+	if err != nil {
+		return false
+	}
+	return true
 }
 
 func (a *App) GetFiles() []logic.Qc {

@@ -24,6 +24,8 @@ var (
 var icon []byte
 var assets embed.FS
 
+const QcPath = "~/.qc/"
+
 func initData() {
 	if err := config.Init(); err != nil { //初始化config
 		panic(err)

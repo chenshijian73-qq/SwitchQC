@@ -34,6 +34,7 @@ func (qcLogic *QcLogic) CreateQC(qc Qc) (err error) {
 	if filepath.Ext(qc.Name) != ".qc" {
 		qc.Name = qc.Name + ".qc"
 	}
+
 	m := model.NewModels[tables.Qc]()
 	m.Model = &tables.Qc{
 		ID:       qc.ID,
@@ -43,11 +44,14 @@ func (qcLogic *QcLogic) CreateQC(qc Qc) (err error) {
 		Status:   qc.Enabled,
 		CreateAt: gtime.New(time.Now()),
 	}
+	err = file.SaveFile(m.Model.Path+m.Model.Filename, qc.Content)
+	if err != nil {
+		return
+	}
 	err = m.Create()
 	if err != nil {
 		return
 	}
-	err = file.SaveFile(m.Model.Path+m.Model.Filename, qc.Content)
 	return
 }
 
@@ -91,7 +95,7 @@ func (qcLogic *QcLogic) UpdateQC(qc Qc) (err error) {
 		Status:   qc.Enabled,
 		UpdateAt: gtime.New(time.Now()),
 	}
-	m.Update("filename", "path", "status", "update_at")
+	m.Update("filename", "path", "status", "content", "update_at")
 	err = file.SaveFileIfModified(qc.Filepath+qc.Name, qc.Content)
 	return
 }
