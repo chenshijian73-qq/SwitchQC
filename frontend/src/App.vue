@@ -55,9 +55,10 @@
         @ok="handleAddFileSubmit"
         @cancel="addFileVisible = false"
     >
-      <a-form ref="form" :model="form" :rules="rules">
-        <a-form-item label="文件名" :label-col="{ span: 6 }" :wrapper-col="{ span: 16 }" prop="name">
+      <a-form ref="target" :model="form">
+        <a-form-item label="文件名" :label-col="{ span: 6 }" :wrapper-col="{ span: 8 }" prop="name" :rules="checkNameUnique(form.name)">
           <a-input v-model="form.name" />
+          <div v-if="nameUnique === false" style="color: red">文件名已存在</div>
         </a-form-item>
         <a-form-item label="内容" :label-col="{ span: 16 }" :wrapper-col="{ span: 16 }" prop="content">
           <a-textarea v-model="form.content" placeholder="Please enter something" :auto-size="{minRows:20,maxRows:20}" />
@@ -96,49 +97,59 @@ function getFiles() {
 
 const addFileVisible = ref(false);
 const placement = ref('right');
+const target = ref(null);
 const form = ref({
   name: '',
   content: '',
   enabled: true,
 });
-const rules = ref({
-  name: [
-    { required: true, message: '请输入文件名', trigger: 'blur' },
-    { min: 2, max: 20, message: '文件名长度在 2 到 20 个字符之间', trigger: 'blur' },
-  ],
-  content: [
-    { required: true, message: '请输入文件内容', trigger: 'blur' },
-  ],
-});
+
+const nameUnique = ref(null);
+async function checkNameUnique(value) {
+  if (!value) {
+    nameUnique.value = null;
+  } else {
+    const isNameUnique = qcFiles.value.every(file => file.name !== value);
+    nameUnique.value = isNameUnique;
+  }
+}
+
 function showAddFile() {
   addFileVisible.value = true;
 }
-function handleAddFileSubmit() {
-  const { name, content, enabled } = form.value;
-  AddFile({
-    Name: name,
-    Content: content,
-    Enabled: enabled,
-  }).then(response => {
-    if (response == false) {
-      message.error(`添加文件 ${name} 失败`)
-    } else {
-      qcFiles.value.push({ name, content, enabled, fileMenuVisible: false });
-      LogInfo(`添加文件 ${name} 成功`);
-      message.info(`添加文件 ${name} 成功`)
-      addFileVisible.value = false;
-      form.value.name = '';
-      form.value.content = '';
-      form.value.enabled = true;
+async function handleAddFileSubmit() {
+
+  const valid = await target.value.validate();
+  if (valid && nameUnique.value) { // 校验表单结果和文件名唯一性同时通过
+    const isNameUnique = qcFiles.value.every(file => file.name !== form.name);
+    if (!isNameUnique) {
+      message.error('文件名已存在');
+      return false;
     }
-  })
+    const {name, content, enabled} = form.value;
+    AddFile({
+      Name: name,
+      Content: content,
+      Enabled: enabled,
+    }).then(response => {
+      if (response == false) {
+        message.error(`添加文件 ${name} 失败`)
+      } else {
+        qcFiles.value.push({name, content, enabled, fileMenuVisible: false});
+        LogInfo(`添加文件 ${name} 成功`);
+        message.info(`添加文件 ${name} 成功`)
+        addFileVisible.value = false;
+        form.value.name = '';
+        form.value.content = '';
+        form.value.enabled = true;
+      }
+    })
+  }
+
 }
 
 const selectedFile = ref({});
 const fileMenuVisible = ref(false);
-function toggleMenu() {
-  this.fileMenuVisible = !this.fileMenuVisible;
-}
 
 function selectFile(file, event) {
   event.stopPropagation();
