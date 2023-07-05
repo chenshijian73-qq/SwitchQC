@@ -41,12 +41,12 @@ func TestQueryQc(t *testing.T) {
 
 	qc := NewModels[tables.Qc]()
 	qc.Model = &tables.Qc{
-		Id:       798,
+		ID:       798,
 		Filename: "hello",
 	}
 	err := qc.Create()
 	if err != nil {
 		return
 	}
-	fmt.Println(qc.Model.Id)
+	fmt.Println(qc.Model.ID)
 }

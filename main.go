@@ -4,6 +4,7 @@ import (
 	"changeme/internal/db"
 	"changeme/internal/logic"
 	"embed"
+	_ "github.com/mattn/go-sqlite3"
 	"github.com/wailsapp/wails/v2"
 	"github.com/wailsapp/wails/v2/pkg/menu"
 	"github.com/wailsapp/wails/v2/pkg/menu/keys"
@@ -13,15 +14,11 @@ import (
 	"github.com/wailsapp/wails/v2/pkg/options/mac"
 	"github.com/wailsapp/wails/v2/pkg/options/windows"
 	"github.com/wailsapp/wails/v2/pkg/runtime"
-	"sync"
-
-	_ "github.com/mattn/go-sqlite3"
 )
 
-var (
-	dbPool *sync.Pool
-)
 var icon []byte
+
+//go:embed all:frontend/dist
 var assets embed.FS
 
 const QcPath = "~/.qc/"
@@ -70,7 +67,7 @@ func RunApp() {
 		AssetServer: &assetserver.Options{
 			Assets: assets,
 		},
-		OnStartup:                        app.Startup,
+		OnStartup:                        app.startup,
 		OnDomReady:                       app.DomReady,
 		OnShutdown:                       app.Shutdown,
 		CSSDragProperty:                  "--wails-draggable",
@@ -87,14 +84,6 @@ func RunApp() {
 			DisableWindowIcon:    false, // 是否关闭窗口上的图标
 		},
 		Mac: &mac.Options{
-			//TitleBar: &mac.TitleBar{
-			//	TitlebarAppearsTransparent: true,
-			//	HideTitle:                  false,
-			//	HideTitleBar:               false,
-			//	FullSizeContent:            false,
-			//	UseToolbar:                 false,
-			//	HideToolbarSeparator:       false,
-			//},
 			WebviewIsTransparent: true,
 			WindowIsTranslucent:  true,
 			Appearance:           mac.NSAppearanceNameVibrantLight,
@@ -108,9 +97,6 @@ func RunApp() {
 			Icon:                icon,
 			WindowIsTranslucent: false,
 			WebviewGpuPolicy:    linux.WebviewGpuPolicyAlways,
-		},
-		Debug: options.Debug{
-			OpenInspectorOnStartup: false,
 		},
 	})
 
