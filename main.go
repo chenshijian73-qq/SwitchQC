@@ -1,7 +1,6 @@
 package main
 
 import (
-	"changeme/internal/config"
 	"changeme/internal/db"
 	"changeme/internal/logic"
 	"embed"
@@ -28,9 +27,9 @@ var assets embed.FS
 const QcPath = "~/.qc/"
 
 func initData() {
-	if err := config.Init(); err != nil { //初始化config
-		panic(err)
-	}
+	//if err := config.Init(); err != nil { //初始化config
+	//	panic(err)
+	//}
 
 	if err := db.Init(); err != nil { //初始化db
 		panic(err)
@@ -59,7 +58,7 @@ func RunApp() {
 	err := wails.Run(&options.App{
 		Width:            1024,
 		Height:           768,
-		Title:            "QuickCMD",
+		Title:            "QC",
 		BackgroundColour: &options.RGBA{R: 27, G: 38, B: 54, A: 0},
 		//DisableResize:    true,
 		Fullscreen: false,
