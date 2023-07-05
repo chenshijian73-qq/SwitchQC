@@ -7,40 +7,40 @@
     </div>
     <div class="main">
       <div class="nav" v-if="showNav">
-        <ul>
-          <li v-for="(file, index) in qcFiles" :key="index" :style="{ backgroundColor: selectedFile === file ? '#e6f7ff' : 'transparent' }" @click="selectFile(file, $event)" @contextmenu.prevent>
-            <a-trigger
-                :trigger="['click', 'hover']"
-                clickToClose
-                position="right"
-                v-model:popupVisible="fileMenuVisible[file.name]"
-            >
-              <div :class="`button-trigger ${fileMenuVisible[file.name] ? 'button-trigger-active' : ''}`">
-                <IconClose v-if="fileMenuVisible[file.name]" />
-                <IconMenu v-else />
-              </div>
-              <template #content>
-                <a-menu
-                    :style="{ marginBottom: '-4px' }"
-                    mode="popButton"
-                    :tooltipProps="{ position: 'left' }"
-                    showCollapseButton
-                >
-                  <a-menu-item key="1" @click="removeFile(file)">
-                    <template #icon><IconEdit /></template>
-                    编辑
-                  </a-menu-item>
-                  <a-menu-item key="1" @click="removeFile(file)">
-                    <template #icon><IconDelete /></template>
-                    删除
-                  </a-menu-item>
-                </a-menu>
-              </template>
-            </a-trigger>
-            <span class="name">{{ file.name.slice(0, file.name.lastIndexOf('.')) }}</span>
-            <a-switch v-model="file.enabled" @change="changeStatus(file)"/>
-          </li>
-        </ul>
+        <a-menu mode="pop">
+          <a-menu-item v-for="(file, index) in qcFiles" :key="index" :style="{ backgroundColor: selectedFile === file ? '#e6f7ff' : 'transparent' }" @click="selectFile(file, $event)">
+            <div class="file-info">
+            <a-switch v-model="file.enabled" size="small" @change="changeStatus(file)"/>
+              <span class="name">{{ file.name.slice(0, file.name.lastIndexOf('.')) }}</span>
+              <span class="menu-trigger">
+              <a-trigger
+                  :trigger="['click', 'hover']"
+                  clickToClose
+                  position="right"
+                  v-model:popupVisible="fileMenuVisible[file.name]"
+              >
+                <div :class="`button-trigger ${fileMenuVisible[file.name] ? 'button-trigger-active' : ''}`">
+                  <IconClose v-if="fileMenuVisible[file.name]" />
+                  <IconDoubleRight v-else />
+                </div>
+                <template #content>
+                  <a-menu
+                      :style="{ marginBottom: '-4px' }"
+                      mode="popButton"
+                      :tooltipProps="{ position: 'right' }"
+                      showCollapseButton
+                  >
+                    <a-menu-item key="index" class="red-icon" @click="removeFile(file)">
+                      <template #icon><IconDelete class="red-icon"/></template>
+                      Remove
+                    </a-menu-item>
+                  </a-menu>
+                </template>
+              </a-trigger>
+            </span>
+            </div>
+          </a-menu-item>
+        </a-menu>
       </div>
       <div class="content">
         <a-textarea v-model="selectedFile.content" :auto-size="{minRows:32,maxRows:32}" @change="saveContent(selectedFile)" />
@@ -76,7 +76,7 @@ import {onMounted, ref} from 'vue';
 import { GetFiles, AddFile, EditFile, RemoveFile, LogInfo } from '../wailsjs';
 import {message} from "ant-design-vue";
 import {
-  IconEdit,
+  IconDoubleRight,
   IconDelete,
   IconClose,
   IconMenu,
@@ -240,19 +240,34 @@ li {
 }
 
 .name {
-  margin-left: 1px;
+  margin-left: 10px;
+  margin-right: 10px;
+}
+.menu-trigger {
+  display: flex;
+  justify-content: flex-end;
 }
 
 .content {
   flex: 1;
-  padding: 16px;
+  padding: 10px;
   width: 100%;
-  height: 80vh;
+  height: 85vh;
 }
 
 .content a-textarea {
   width: 100%;
   height: 80vh;
+}
+
+.red-icon {
+  color: red;
+}
+
+.file-info {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
 }
 
 .button-trigger {
@@ -262,10 +277,9 @@ li {
   line-height: 20px;
   text-align: center;
   border-radius: 50%;
-  background-color: #1890ff;
   color: #fff;
   cursor: pointer;
-  margin-right: 10px;
+  /*margin-right: 10px;*/
 }
 
 .button-trigger-active {

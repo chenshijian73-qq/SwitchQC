@@ -86,7 +86,7 @@ func RunApp() {
 		Mac: &mac.Options{
 			WebviewIsTransparent: true,
 			WindowIsTranslucent:  true,
-			Appearance:           mac.NSAppearanceNameVibrantLight,
+			Appearance:           mac.NSAppearanceNameAqua,
 			About: &mac.AboutInfo{
 				Title:   "Simple QuickCmd",
 				Message: "For fun",
