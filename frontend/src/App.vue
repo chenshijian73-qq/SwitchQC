@@ -8,7 +8,7 @@
     <div class="main">
       <div class="nav" v-if="showNav">
         <ul>
-          <li v-for="(file, index) in qcFiles" :key="index" @click="selectFile(file, $event)" @contextmenu.prevent>
+          <li v-for="(file, index) in qcFiles" :key="index" :style="{ backgroundColor: selectedFile === file ? '#e6f7ff' : 'transparent' }" @click="selectFile(file, $event)" @contextmenu.prevent>
             <a-trigger
                 :trigger="['click', 'hover']"
                 clickToClose

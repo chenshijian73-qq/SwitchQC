@@ -118,6 +118,8 @@ func (qcLogic *QcLogic) UpdateQC(qc Qc) (err error) {
 }
 
 func (qcLogic *QcLogic) DeleteQC(qc Qc) (err error) {
+	DeleteQcConfig(qc)
+
 	m := model.NewModels[tables.Qc]()
 	m.Model = &tables.Qc{
 		ID:       qc.ID,
@@ -128,7 +130,6 @@ func (qcLogic *QcLogic) DeleteQC(qc Qc) (err error) {
 	m.Get()
 	err = file.DeleteFile(m.Model.Path + m.Model.Filename)
 
-	DeleteQcConfig(qc)
 	return
 }
 
@@ -168,18 +169,21 @@ func InitConfigQc() (err error) {
 func UpdateConfigQcFile() (err error) {
 	logic := NewQcLogic()
 	qcs, err := logic.GetQCList()
-	for _, qc := range qcs {
-		if qc.Enabled {
-			OpenQcConfig(qc)
-		} else {
-			DeleteQcConfig(qc)
+	if len(qcs) > 1 {
+		for _, qc := range qcs {
+			if qc.Enabled {
+				OpenQcConfig(qc)
+			} else {
+				DeleteQcConfig(qc)
+			}
 		}
+		err = sourceConfig()
+		if err != nil {
+			return err
+		}
+	} else {
+		log.Info("no qcFile using...")
 	}
-	err = sourceConfig()
-	if err != nil {
-		return err
-	}
-
 	return
 }
 
