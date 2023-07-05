@@ -53,6 +53,7 @@ func (a *App) AddFile(form Form) bool {
 	if err != nil {
 		return false
 	}
+
 	return true
 }
 
@@ -71,12 +72,20 @@ func (a *App) EditFile(data logic.Qc) bool {
 	if err != nil {
 		return false
 	}
+	err = logic.UpdateConfigQcFile()
+	if err != nil {
+		log.Error(err)
+	}
 	return true
 }
 
 func (a *App) GetFiles() []logic.Qc {
 	qcLogic := logic.NewQcLogic()
 	qcs, err := qcLogic.GetQCList()
+	if err != nil {
+		log.Error(err)
+	}
+	err = logic.UpdateConfigQcFile()
 	if err != nil {
 		log.Error(err)
 	}

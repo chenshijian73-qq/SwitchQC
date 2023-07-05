@@ -3,6 +3,7 @@ package main
 import (
 	"changeme/internal/config"
 	"changeme/internal/db"
+	"changeme/internal/logic"
 	"embed"
 	"github.com/wailsapp/wails/v2"
 	"github.com/wailsapp/wails/v2/pkg/menu"
@@ -37,6 +38,9 @@ func initData() {
 	//if err := dataInit.Init(); err != nil { //初始化db
 	//	panic(err)
 	//}
+	if err := logic.InitConfigQc(); err != nil {
+		panic(err)
+	}
 }
 
 func RunApp() {

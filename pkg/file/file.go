@@ -1,10 +1,12 @@
 package file
 
 import (
+	"bufio"
 	"fmt"
 	log "github.com/sirupsen/logrus"
 	"io/ioutil"
 	"os"
+	"regexp"
 )
 
 func CreateFile(filepath string, content string) (err error) {
@@ -64,4 +66,61 @@ func DeleteFile(filepath string) (err error) {
 	}
 	log.Info(fmt.Sprintf("delete file %s", filepath))
 	return nil
+}
+
+func DeleteMatchRow(filePath, key string) (err error) {
+	// 1. 打开文件并读取内容
+	file, err := os.OpenFile(filePath, os.O_RDWR, 0777)
+	if err != nil {
+		log.Error(err)
+		return
+	}
+	defer file.Close()
+
+	scanner := bufio.NewScanner(file)
+	var lines []string
+	for scanner.Scan() {
+		lines = append(lines, scanner.Text())
+	}
+
+	// 2. 将文件内容按行分割成字符串切片
+	if err = scanner.Err(); err != nil {
+		log.Error(err)
+		return
+	}
+
+	// 3. 遍历切片并删除匹配特定模式的行
+	var filteredLines []string
+	re := regexp.MustCompile(key)
+	for _, line := range lines {
+		if !re.MatchString(line) {
+			filteredLines = append(filteredLines, line)
+		}
+	}
+
+	// 4. 将切片重新组合成一个字符串，并将其写回到原始文件中
+	output := []byte(fmt.Sprintf("%s\n", filteredLines[0]))
+	for _, line := range filteredLines[1:] {
+		output = append(output, []byte(fmt.Sprintf("%s\n", line))...)
+	}
+
+	err = file.Truncate(0)
+	if err != nil {
+		log.Error(err)
+		return
+	}
+
+	_, err = file.Seek(0, 0)
+	if err != nil {
+		log.Error(err)
+		return
+	}
+
+	_, err = file.Write(output)
+	if err != nil {
+		log.Error(err)
+		return
+	}
+
+	return
 }
