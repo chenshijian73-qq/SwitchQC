@@ -4,7 +4,9 @@ import (
 	"changeme/internal/model"
 	"changeme/internal/model/tables"
 	"changeme/pkg/file"
+	"fmt"
 	"github.com/gogf/gf/v2/os/gtime"
+	log "github.com/sirupsen/logrus"
 	"os"
 	"time"
 )
@@ -44,12 +46,25 @@ func Init() error {
 	return err
 }
 
-func qcInitData() error {
+func qcInitData() (err error) {
 	qc := model.NewModels[tables.Qc]()
-	_, err := qc.Creates(datas...)
-
+	//_, err := qc.Creates(datas...)
 	for _, data := range datas {
-		file.CreateFile(data.Path+data.Filename, data.Content)
+		row, err := qc.GetByName(data.Filename)
+		if err != nil {
+			return err
+		}
+		if row.Filename == "" {
+			qc.Model = &data
+			err = qc.Create()
+			if err != nil {
+				return err
+			}
+			file.CreateFile(data.Path+data.Filename, data.Content)
+			log.Info(fmt.Sprintf("create init qc file %s", data.Filename))
+		} else {
+			log.Info(fmt.Sprintf("file %s is already existed", row.Filename))
+		}
 	}
 
 	return err

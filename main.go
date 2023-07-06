@@ -3,6 +3,7 @@ package main
 import (
 	"changeme/internal/db"
 	"changeme/internal/logic"
+	"changeme/internal/logic/dataInit"
 	"embed"
 	_ "github.com/mattn/go-sqlite3"
 	"github.com/wailsapp/wails/v2"
@@ -31,9 +32,9 @@ func initData() {
 	if err := db.Init(); err != nil { //初始化db
 		panic(err)
 	}
-	//if err := dataInit.Init(); err != nil { //初始化db
-	//	panic(err)
-	//}
+	if err := dataInit.Init(); err != nil { //初始化db
+		panic(err)
+	}
 	if err := logic.InitConfigQc(); err != nil {
 		panic(err)
 	}

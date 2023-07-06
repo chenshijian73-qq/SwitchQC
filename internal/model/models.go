@@ -87,6 +87,10 @@ func (t *Models[T]) GetsByIds(ids []int64) (row []T, err error) {
 	err = t.db.Where("id IN (?)", ids).Find(&row).Error
 	return
 }
+func (t *Models[T]) GetByName(name string) (row T, err error) {
+	err = t.db.Where("filename = (?)", name).Find(&row).Error
+	return
+}
 
 func (t *Models[T]) ToJson() (row []byte, err error) {
 	return json.Marshal(t)
