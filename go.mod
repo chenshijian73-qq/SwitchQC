@@ -11,7 +11,7 @@ require (
 	github.com/mattn/go-sqlite3 v1.14.17
 	github.com/natefinch/lumberjack v2.0.0+incompatible
 	github.com/sirupsen/logrus v1.9.3
-	github.com/wailsapp/wails/v2 v2.4.1
+	github.com/wailsapp/wails/v2 v2.5.1
 	gopkg.in/yaml.v2 v2.2.2
 	gorm.io/driver/sqlite v1.5.2
 	gorm.io/gorm v1.25.2-0.20230530020048-26663ab9bf55

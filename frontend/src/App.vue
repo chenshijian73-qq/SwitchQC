@@ -8,7 +8,7 @@
     <div class="main">
       <div class="nav" v-if="showNav">
         <a-menu mode="pop">
-          <a-menu-item v-for="(file, index) in qcFiles" :key="index" :style="{ backgroundColor: selectedFile === file ? '#e6f7ff' : 'transparent' }" @click="selectFile(file, $event)">
+          <a-menu-item v-for="(file, index) in qcFiles" :key="index" :style="{ backgroundColor: selectedFile.name === file.name ? '#e6f7ff' : 'transparent' }" @click="selectFile(file)">
             <div class="file-info">
             <a-switch v-model="file.enabled" size="small" @change="changeStatus(file)"/>
               <span class="name">{{ file.name.slice(0, file.name.lastIndexOf('.')) }}</span>
@@ -43,7 +43,7 @@
         </a-menu>
       </div>
       <div class="content">
-        <a-textarea v-model="selectedFile.content" :auto-size="{minRows:32,maxRows:32}" @change="saveContent(selectedFile)" />
+        <a-textarea v-model="selectedFile.content" :auto-size="{minRows:32,maxRows:32}" @change="saveContent()" v-if="selectedFile"/>
       </div>
     </div>
     <a-drawer
@@ -83,6 +83,7 @@ import {
 } from '@arco-design/web-vue/es/icon';
 
 const showNav = ref(true);
+const fileMenuVisible = ref(false);
 let qcFiles = ref([
   { name: 'file1', content: 'This is file1 content.', enabled: true },
   { name: 'file2', content: 'This is file2 content.', enabled: false },
@@ -144,14 +145,11 @@ async function handleAddFileSubmit() {
 }
 
 const selectedFile = ref({});
-const fileMenuVisible = ref(false);
-
-function selectFile(file, event) {
-  event.stopPropagation();
+function selectFile(file) {
   qcFiles.value.forEach(f => {
-    if (f === file) {
+    if (f.name === file.name) {
       f.fileMenuVisible = true;
-      this.selectedFile = f;
+      selectedFile.value = f;
     } else {
       f.fileMenuVisible = false;
     }

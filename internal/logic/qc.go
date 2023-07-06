@@ -78,6 +78,7 @@ func (qcLogic *QcLogic) GetQCList() (qcs []Qc, err error) {
 			qcs[i].Name = row.Filename
 			qcs[i].Filepath = strings.Replace(row.Path, "~", os.Getenv("HOME"), 1)
 			qcs[i].Enabled = row.Status
+			//qcs[i].Content = row.Content
 			fullPath := qcs[i].Filepath + qcs[i].Name
 			if _, err := os.Stat(fullPath); os.IsNotExist(err) {
 				log.Error(fmt.Sprintf("file %s dont exist\n", fullPath))
