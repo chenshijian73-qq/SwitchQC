@@ -9,8 +9,15 @@
   },
   "dependencies": {
     "@arco-design/web-vue": "^2.47.1",
+    "@codemirror/lang-html": "^6.4.5",
+    "@codemirror/lang-javascript": "^6.1.9",
+    "@codemirror/lang-json": "^6.0.1",
     "ant-design-vue": "^4.0.0-rc.4",
-    "vue": "^3.3.4"
+    "codemirror": "^5.65.13",
+    "codemirror-editor-vue3": "^2.3.0",
+    "script-loader": "^0.7.2",
+    "vue": "^3.3.4",
+    "vue-codemirror": "^5.0.1"
   },
   "devDependencies": {
     "@vitejs/plugin-vue": "^4.2.3",

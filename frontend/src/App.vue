@@ -43,7 +43,7 @@
         </a-menu>
       </div>
       <div class="content">
-        <a-textarea v-model="selectedFile.content" :auto-size="{minRows:32,maxRows:32}" @change="saveContent()" v-if="selectedFile"/>
+        <codemirror v-model="selectedFile.content" :options="cmOptions" :style="{ height: '100%' }" placeholder="Code here..." @blur="saveContent(selectedFile)" :disabled="disableCode" />
       </div>
     </div>
     <a-drawer
@@ -61,7 +61,7 @@
           <div v-if="nameUnique === false" style="color: red">文件名已存在</div>
         </a-form-item>
         <a-form-item label="内容" :label-col="{ span: 16 }" :wrapper-col="{ span: 16 }" prop="content">
-          <a-textarea v-model="form.content" placeholder="Please enter something" :auto-size="{minRows:20,maxRows:20}" />
+          <codemirror v-model="form.content" :style="{ height: '100%', width: '100%'}" placeholder="Please enter something" />
         </a-form-item>
         <a-form-item label="状态" :label-col="{ span: 16 }" :wrapper-col="{ span: 16 }" prop="enabled">
           <a-switch v-model="form.enabled" />
@@ -79,11 +79,29 @@ import {
   IconDoubleRight,
   IconDelete,
   IconClose,
-  IconMenu,
 } from '@arco-design/web-vue/es/icon';
+import {Codemirror} from "vue-codemirror";
+import 'codemirror/lib/codemirror.css'
+import 'codemirror/theme/neo.css'
+import 'codemirror/mode/shell/shell.js'
+import "codemirror/addon/hint/anyword-hint.js";
+// require active-line.js
+import 'codemirror/addon/selection/active-line.js';
+// closebrackets
+import 'codemirror/addon/edit/closebrackets.js';
+// keyMap
+import 'codemirror/mode/clike/clike.js';
+import 'codemirror/addon/edit/matchbrackets.js';
+import 'codemirror/addon/comment/comment.js';
+import 'codemirror/addon/dialog/dialog.js';
+import 'codemirror/addon/dialog/dialog.css';
+import 'codemirror/addon/search/searchcursor.js';
+import 'codemirror/addon/search/search.js';
+import 'codemirror/keymap/emacs.js';
 
 const showNav = ref(true);
 const fileMenuVisible = ref(false);
+let disableCode = ref(true);
 let qcFiles = ref([
   { name: 'file1', content: 'This is file1 content.', enabled: true },
   { name: 'file2', content: 'This is file2 content.', enabled: false },
@@ -103,6 +121,28 @@ const form = ref({
   content: '',
   enabled: true,
 });
+const cmOptions = {
+  theme: 'neo',  // 主题
+  mode: 'shell' , // 代码格式
+  tabSize: 4,  // tab的空格个数
+  indentUnit: 2,  // 一个块（编辑语言中的含义）应缩进多少个空格
+  autocorrect: true,  // 自动更正
+  spellcheck: true,  // 拼写检查
+  lint: true,  // 检查格式
+  lineNumbers: true,  //是否显示行数
+  lineWrapping: true, //是否自动换行
+  styleActiveLine: true,  //line选择是是否高亮
+  keyMap: 'sublime',  // sublime编辑器效果
+  matchBrackets: true,  //括号匹配
+  autoCloseBrackets: true,  // 在键入时将自动关闭括号和引号
+  matchTags: { bothTags: true },  // 将突出显示光标周围的标签
+  foldGutter: true,  // 可将对象折叠，与下面的gutters一起使用
+  highlightSelectionMatches: {
+    minChars: 2,
+    style: "matchhighlight",
+    showToken: true
+  },
+}
 
 const nameUnique = ref(null);
 async function checkNameUnique(value) {
@@ -150,12 +190,12 @@ function selectFile(file) {
     if (f.name === file.name) {
       f.fileMenuVisible = true;
       selectedFile.value = f;
+      disableCode = false;
     } else {
       f.fileMenuVisible = false;
     }
   });
 }
-
 function changeStatus(file) {
   // 编辑文件信息的逻辑
   console.log('修改文件信息', file);
@@ -169,16 +209,17 @@ function changeStatus(file) {
   })
 }
 function saveContent(file) {
-  EditFile(file).then(res => {
+  console.log(file)
+  console.log(selectedFile.value)
+  EditFile(selectedFile.value).then(res => {
     if (res == false){
-      message.error(`修改文件 ${file.name} 内容失败`)
+      message.error(`修改文件 ${selectedFile.value.name} 内容失败`)
     } else {
-      message.info(`修改文件 ${file.name} 内容成功`)
+      message.info(`修改文件 ${selectedFile.value.name} 内容成功`)
       getFiles()
     }
   })
 }
-
 function removeFile(file) {
   // 移动文件到回收站的逻辑
   RemoveFile(file).then(res => {
@@ -203,6 +244,12 @@ onMounted(
   display: flex;
   flex-direction: column;
   height: 100%;
+  background-color: #f4fbff;
+}
+
+.code-mirror{
+  font-size : 13px;
+  line-height : 150%;
 }
 
 .header {
@@ -294,5 +341,13 @@ li {
 
 .ant-switch:focus {
   box-shadow: none;
+}
+
+.CodeMirror-focused .cm-matchhighlight {
+  background-position: bottom;
+  background-repeat: repeat-x;
+}
+.CodeMirror-selection-highlight-scrollbar {
+  background-color: green;
 }
 </style>
