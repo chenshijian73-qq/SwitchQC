@@ -49,39 +49,13 @@
         <CodeEditor :selectedFile="selectedFile"/>
       </div>
     </div>
-    <a-drawer
-        title="添加文件"
-        :visible="addFileVisible"
-        :closable="false"
-        :placement="'right'"
-        width="40%"
-        @ok="handleAddFileSubmit"
-        @cancel="addFileVisible = false"
-    >
-      <a-form ref="target" :model="form">
-        <a-form-item label="文件名"  prop="name" :rules="checkNameUnique(form.name)">
-          <a-input v-model="form.name" :style="{width:'30%'}" allow-clear />
-          <span v-if="nameUnique === false" style="color: red; margin-left: 10px">文件名已存在</span>
-        </a-form-item>
-        <a-form-item label="内容"  prop="content">
-          <codemirror v-model="form.content"
-                      :style="{ height: '200px', width: '100%'}"
-                      :autofocus="true"
-                      :tabSize="2"
-                      :extensions="extensions"
-                      placeholder="Please enter something" />
-        </a-form-item>
-        <a-form-item label="状态" :label-col="{ span: 16 }" :wrapper-col="{ span: 16 }" prop="enabled">
-          <a-switch v-model="form.enabled" />
-        </a-form-item>
-      </a-form>
-    </a-drawer>
+    <AddFileDrawer :qcFiles="qcFiles" :addFileVisible="addFileVisible" :getFiles="getFiles" :closeAddFile="closeAddFile" />
   </div>
 </template>
 
 <script setup>
 import './app.css'
-import {onMounted, ref} from 'vue';
+import {onBeforeMount, onMounted, ref} from 'vue';
 import { GetFiles, AddFile, EditFile, RemoveFile, LogInfo } from '../wailsjs';
 import {message} from "ant-design-vue";
 import {
@@ -90,46 +64,8 @@ import {
   IconDelete,
   IconPlus,
 } from '@arco-design/web-vue/es/icon';
-import { Codemirror } from "vue-codemirror";
 import CodeEditor from "@/components/CodeEditor.vue";
-import {EditorView} from "@codemirror/view";
-import {javascript} from "@codemirror/lang-javascript";
-
-// codeEditor config
-let codeTheme = EditorView.theme({
-  // 输入的字体颜色
-  "&": {
-    color: "#0052D9",
-    backgroundColor: "#FFFFFF"
-  },
-  ".cm-content": {
-    caretColor: "#0052D9",
-  },
-  // 激活背景色
-  ".cm-activeLine": {
-    backgroundColor: "#FAFAFA"
-  },
-  // 激活序列的背景色
-  ".cm-activeLineGutter": {
-    backgroundColor: "#FAFAFA"
-  },
-  //光标的颜色
-  "&.cm-focused .cm-cursor": {
-    borderLeftColor: "#0052D9"
-  },
-  // 选中的状态
-  "&.cm-focused .cm-selectionBackground, ::selection": {
-    backgroundColor: "#95bdfd",
-    color:'#6c9820',
-  },
-  // 左侧侧边栏的颜色
-  ".cm-gutters": {
-    backgroundColor: "#FFFFFF",
-    color: "#ffcc98", //侧边栏文字颜色
-    border: "none"
-  }
-}, { dark: false })
-const extensions = [javascript(), codeTheme];
+import AddFileDrawer from "@/components/AddFileDrawer.vue";
 
 const fileMenuVisible = ref(false);
 let disableCode = ref(true);
@@ -153,41 +89,12 @@ const form = ref({
 });
 
 const nameUnique = ref(null);
-async function checkNameUnique(value) {
-  if (!value) {
-    nameUnique.value = null;
-  } else {
-    const isNameUnique = qcFiles.value.every(file => file.name.slice(0, file.name.lastIndexOf('.')) !== value);
-    nameUnique.value = isNameUnique;
-  }
-}
 
 function showAddFile() {
   addFileVisible.value = true;
 }
-async function handleAddFileSubmit() {
-  const isNameUnique = qcFiles.value.every(file => file.name !== form.value.name);
-  if (!isNameUnique) {
-    message.error('文件名已存在');
-    return false;
-  }
-  const {name, content, enabled} = form.value;
-  AddFile({
-    Name: name,
-    Content: content,
-    Enabled: enabled,
-  }).then(err => {
-    if (err !== "") {
-      message.error(`添加文件 ${name} 失败: ${err}`)
-    } else {
-      message.info(`添加文件 ${name} 成功`)
-      addFileVisible.value = false;
-      form.value.name = '';
-      form.value.content = '';
-      form.value.enabled = true;
-      getFiles()
-    }
-  })
+function closeAddFile() {
+  addFileVisible.value = false;
 }
 
 const selectedFile = ref({});
@@ -207,15 +114,8 @@ function changeStatus(file) {
     }
   })
 }
-function saveContent() {
-  EditFile(selectedFile.value).then(err => {
-    if (err !== ""){
-      message.error(`修改 ${selectedFile.value.name} 内容失败: ${err}`)
-    }
-  })
-}
+
 function removeFile(file) {
-  // 移动文件到回收站的逻辑
   RemoveFile(file).then(err => {
     if (err !== ""){
       message.error(`删除文件 ${file.name} 失败: ${err}`)
@@ -230,7 +130,7 @@ function removeFile(file) {
 
 }
 
-onMounted(
+onBeforeMount(
     getFiles
 );
 

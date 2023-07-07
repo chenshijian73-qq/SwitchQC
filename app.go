@@ -37,12 +37,15 @@ func (a *App) Greet(name string) string {
 }
 
 type Form struct {
-	Name    string
-	Content string
-	Enabled bool
+	Name    string `json:"name"`
+	Content string `json:"content"`
+	Enabled bool   `json:"enabled"`
 }
 
 func (a *App) AddFile(form Form) (error string) {
+	if form.Name == "" {
+		return "The file name cannot be empty!"
+	}
 	qcLogic := logic.NewQcLogic()
 	err := qcLogic.CreateQC(logic.Qc{
 		Name:     form.Name,

@@ -23,3 +23,24 @@ export namespace logic {
 
 }
 
+export namespace main {
+	
+	export class Form {
+	    name: string;
+	    content: string;
+	    enabled: boolean;
+	
+	    static createFrom(source: any = {}) {
+	        return new Form(source);
+	    }
+	
+	    constructor(source: any = {}) {
+	        if ('string' === typeof source) source = JSON.parse(source);
+	        this.name = source["name"];
+	        this.content = source["content"];
+	        this.enabled = source["enabled"];
+	    }
+	}
+
+}
+

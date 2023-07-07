@@ -9,7 +9,7 @@ type Qc struct {
 	Filename  string      `json:"filename"` //
 	Content   string      `gorm:"type:text;"`
 	Path      string      `json:"path"`                       //
-	Status    bool        `gorm:"type:boolean;default:true"`  //
+	Enabled    bool        `gorm:"type:boolean;default:true"`  //
 	IsDeleted bool        `gorm:"type:boolean;default:false"` //
 	CreateAt  *gtime.Time `json:"createAt"`                   //
 	UpdateAt  *gtime.Time `json:"updateAt"`                   //

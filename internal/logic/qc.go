@@ -58,7 +58,7 @@ func (qcLogic *QcLogic) CreateQC(qc Qc) (err error) {
 		Filename: qc.Name,
 		Content:  qc.Content,
 		Path:     strings.Replace(qc.Filepath, "~", os.Getenv("HOME"), 1),
-		Status:   qc.Enabled,
+		Enabled:   qc.Enabled,
 		CreateAt: gtime.New(time.Now()),
 	}
 
@@ -84,7 +84,7 @@ func (qcLogic *QcLogic) GetQCList() (qcs []Qc, err error) {
 			qcs[i].ID = row.ID
 			qcs[i].Name = row.Filename
 			qcs[i].Filepath = strings.Replace(row.Path, "~", os.Getenv("HOME"), 1)
-			qcs[i].Enabled = row.Status
+			qcs[i].Enabled = row.Enabled
 			//qcs[i].Content = row.Content
 			fullPath := qcs[i].Filepath + qcs[i].Name
 			if _, err := os.Stat(fullPath); os.IsNotExist(err) {
@@ -109,7 +109,7 @@ func (qcLogic *QcLogic) UpdateQC(qc Qc) (err error) {
 		Filename: qc.Name,
 		Content:  qc.Content,
 		Path:     qc.Filepath,
-		Status:   qc.Enabled,
+		Enabled:   qc.Enabled,
 		UpdateAt: gtime.New(time.Now()),
 	}
 	m.Update("filename", "path", "status", "content", "update_at")
@@ -142,7 +142,7 @@ func (qcLogic *QcLogic) DeleteQC(qc Qc) (err error) {
 }
 
 func InitConfigQc() (err error) {
-	homeDir, _ := os.UserHomeDir()
+	homeDir := os.Getenv("HOME")
 	qcConfigPath := homeDir + "/.qc/.qc"
 	// 创建 ～/.qc/.qc文件
 	qcConfigFile, err := os.OpenFile(qcConfigPath, os.O_CREATE|os.O_WRONLY, 0777)
@@ -199,7 +199,10 @@ func UpdateALlConfigQcFile() (err error) {
 		for _, qc := range qcs {
 			if qc.Enabled {
 				CheckQcFileExist(qc)
-				AddQcConfig(qc)
+				err := AddQcConfig(qc)
+				if err != nil {
+					return err
+				}
 				err = sourceConfig()
 				if err != nil {
 					DeleteQcConfig(qc)
@@ -218,8 +221,10 @@ func UpdateALlConfigQcFile() (err error) {
 
 // AddQcConfig 在 ～/.qc/.qc 添加 source $file
 func AddQcConfig(qc Qc) (err error) {
-	homeDir, _ := os.UserHomeDir()
-	qcConfigPath := homeDir + "/.qc/.qc"
+	qcConfigPath := os.Getenv("HOME") + "/.qc/.qc"
+	if qc.Name == "" {
+		return fmt.Errorf("the file name cannot be empty")
+	}
 	sourceCmd := fmt.Sprintf("source %s%s\n", qc.Filepath, qc.Name)
 	checkSourceCmd := fmt.Sprintf("cat %s |grep '%s'", qcConfigPath, strings.ReplaceAll(sourceCmd, "\n", ""))
 	sourceIsExist, _ := exec.Command("bash", "-c", checkSourceCmd).CombinedOutput()
