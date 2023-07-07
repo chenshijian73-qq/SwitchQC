@@ -1,6 +1,5 @@
 <template>
-  <div class="code-editor">
-    <codemirror v-model="codeContent"
+    <codemirror v-model="selectedFile.content"
                 :style="{ height: '100%' }"
                 :autofocus="true"
                 :tabSize="2"
@@ -8,17 +7,18 @@
                 placeholder="Please select file to display content"
                 @blur="handleBlur"
                 :disabled="disableCode" />
-  </div>
 </template>
 
 <script setup>
-import { ref, watchEffect, emit } from 'vue';
+import {ref, watch} from 'vue';
 import { Codemirror } from "vue-codemirror";
 import { javascript } from "@codemirror/lang-javascript";
 import { EditorView } from "@codemirror/view"
+import {EditFile} from "../../wailsjs";
+import {message} from "ant-design-vue";
 
-const codeContent = ref('');
-let myTheme = EditorView.theme({
+// codeEditor config
+let codeTheme = EditorView.theme({
   // 输入的字体颜色
   "&": {
     color: "#0052D9",
@@ -29,11 +29,11 @@ let myTheme = EditorView.theme({
   },
   // 激活背景色
   ".cm-activeLine": {
-    backgroundColor: "#FAFAFA"
+    backgroundColor: "#d3e1f5"
   },
   // 激活序列的背景色
   ".cm-activeLineGutter": {
-    backgroundColor: "#FAFAFA"
+    backgroundColor: "#c4d9f8"
   },
   //光标的颜色
   "&.cm-focused .cm-cursor": {
@@ -46,18 +46,39 @@ let myTheme = EditorView.theme({
   },
   // 左侧侧边栏的颜色
   ".cm-gutters": {
-    backgroundColor: "#FFFFFF",
-    color: "#ffcc98", //侧边栏文字颜色
+    backgroundColor: "#ffffff",
+    color: "#ea8767", //侧边栏文字颜色
     border: "none"
   }
 }, { dark: false })
-const extensions = [javascript(), myTheme];const disableCode = false;
+const extensions = [javascript(), codeTheme];
+
+const props = defineProps({
+  selectedFile: {
+    type: Object,
+    required: true,
+  },
+});
+
+const selectedFile = ref({});
+const disableCode = ref(true);
 
 function handleBlur() {
-  emit('save', codeContent.value);
+  EditFile(selectedFile.value).then(err => {
+    console.log(`${err}`)
+    if (err !== ""){
+      message.error(`修改 ${props.selectedFile.name} 内容失败: ${err}`)
+    }
+  })
 }
 
-watchEffect(() => {
-  codeContent.value = props.codeContent;
+watch(() => props.selectedFile, (value) => {
+  if (value) {
+    selectedFile.value = value;
+    disableCode.value = false;
+  } else {
+    disableCode.value = true;
+  }
 });
+
 </script>

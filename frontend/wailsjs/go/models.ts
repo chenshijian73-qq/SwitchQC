@@ -1,7 +1,7 @@
 export namespace logic {
 	
 	export class Qc {
-	    ID: number;
+	    id: number;
 	    name: string;
 	    filepath: string;
 	    content: string;
@@ -13,7 +13,7 @@ export namespace logic {
 	
 	    constructor(source: any = {}) {
 	        if ('string' === typeof source) source = JSON.parse(source);
-	        this.ID = source["ID"];
+	        this.id = source["id"];
 	        this.name = source["name"];
 	        this.filepath = source["filepath"];
 	        this.content = source["content"];

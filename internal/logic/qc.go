@@ -17,7 +17,7 @@ import (
 )
 
 type Qc struct {
-	ID       uint   `json:"ID"`
+	ID       uint   `json:"id"`
 	Name     string `json:"name"`
 	Filepath string `json:"filepath"`
 	Content  string `json:"content"`

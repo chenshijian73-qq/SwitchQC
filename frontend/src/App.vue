@@ -1,7 +1,7 @@
 <template>
   <div class="app">
     <div class="main">
-      <div class="nav" v-if="showNav">
+      <div class="nav" >
         <a-menu mode="pop" :style="{ width: '200px', borderRadius: '4px', backgroundColor: 'transparent'}">
           <a-menu-item v-for="(file, index) in qcFiles" :key="index" :style="{ backgroundColor: selectedFile.name === file.name ? '#d9e5f6' : 'transparent' }" @click="selectFile(file)">
             <div class="file-info">
@@ -46,21 +46,14 @@
         </div>
       </div>
       <div class="content">
-        <codemirror v-model="selectedFile.content"
-                     :style="{ height: '100%' }"
-                     :autofocus="true"
-                     :tabSize="2"
-                     :extensions="extensions"
-                     placeholder="Please select file to display content"
-                     @blur="saveContent(selectedFile)"
-                     :disabled="disableCode" />
+        <CodeEditor :selectedFile="selectedFile"/>
       </div>
     </div>
     <a-drawer
         title="添加文件"
         :visible="addFileVisible"
         :closable="false"
-        :placement="right"
+        :placement="'right'"
         width="40%"
         @ok="handleAddFileSubmit"
         @cancel="addFileVisible = false"
@@ -98,10 +91,12 @@ import {
   IconPlus,
 } from '@arco-design/web-vue/es/icon';
 import { Codemirror } from "vue-codemirror";
-import { javascript } from "@codemirror/lang-javascript";
-import { EditorView } from "@codemirror/view"
+import CodeEditor from "@/components/CodeEditor.vue";
+import {EditorView} from "@codemirror/view";
+import {javascript} from "@codemirror/lang-javascript";
 
-let myTheme = EditorView.theme({
+// codeEditor config
+let codeTheme = EditorView.theme({
   // 输入的字体颜色
   "&": {
     color: "#0052D9",
@@ -134,14 +129,12 @@ let myTheme = EditorView.theme({
     border: "none"
   }
 }, { dark: false })
-const extensions = [javascript(), myTheme];
+const extensions = [javascript(), codeTheme];
 
-const showNav = ref(true);
 const fileMenuVisible = ref(false);
 let disableCode = ref(true);
 let qcFiles = ref([
-  { name: 'file1', content: 'This is file1 content.', enabled: true },
-  { name: 'file2', content: 'This is file2 content.', enabled: false },
+  { id: 0, name: 'file1', content: 'This is file1 content.', enabled: true },
 ].map(file => ({ ...file, fileMenuVisible: false })));
 
 function getFiles() {
