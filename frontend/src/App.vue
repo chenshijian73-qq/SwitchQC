@@ -14,14 +14,14 @@
               <span class="name">{{ file.name.slice(0, file.name.lastIndexOf('.')) }}</span>
               <span class="menu-trigger">
               <a-trigger
-                  :trigger="['click', 'hover']"
+                  :trigger="['hover']"
                   clickToClose
                   position="right"
-                  v-model:popupVisible="fileMenuVisible[file.name]"
+                  @show="file.fileMenuVisible=true"
+                  @hide="file.fileMenuVisible=false"
               >
-                <div :class="`button-trigger ${fileMenuVisible[file.name] ? 'button-trigger-active' : ''}`">
-                  <IconClose v-if="fileMenuVisible[file.name]" />
-                  <IconDoubleRight v-else />
+                <div :class="`button-trigger ${file.fileMenuVisible ? 'button-trigger-active' : ''}`">
+                  <IconDoubleRight class="icon-double-right " />
                 </div>
                 <template #content>
                   <a-menu
@@ -48,6 +48,7 @@
                      :autofocus="true"
                      :tabSize="2"
                      :extensions="extensions"
+                     placeholder="Please select file to display content"
                      @blur="saveContent(selectedFile)"
                      :disabled="disableCode" />
       </div>
@@ -177,12 +178,10 @@ async function handleAddFileSubmit() {
     Name: name,
     Content: content,
     Enabled: enabled,
-  }).then(response => {
-    if (response == false) {
-      message.error(`添加文件 ${name} 失败`)
+  }).then(err => {
+    if (err !== "") {
+      message.error(`添加文件 ${name} 失败: ${err}`)
     } else {
-      qcFiles.value.push({name, content, enabled, fileMenuVisible: false});
-      LogInfo(`添加文件 ${name} 成功`);
       message.info(`添加文件 ${name} 成功`)
       addFileVisible.value = false;
       form.value.name = '';
@@ -197,45 +196,36 @@ const selectedFile = ref({});
 function selectFile(file) {
   qcFiles.value.forEach(f => {
     if (f.name === file.name) {
-      f.fileMenuVisible = true;
       selectedFile.value = f;
       disableCode = false;
-    } else {
-      f.fileMenuVisible = false;
     }
   });
 }
+
 function changeStatus(file) {
-  // 编辑文件信息的逻辑
-  console.log('修改文件信息', file);
-  EditFile(file).then(res => {
-    if (res == false){
-      message.error(`修改文件 ${file.name} 状态失败`)
-    } else {
-      message.info(`修改文件 ${file.name} 状态成功`)
-      getFiles()
+  EditFile(file).then(err => {
+    if (err !== ""){
+      message.error(`修改文件 ${file.name} 状态失败: ${err}`)
     }
   })
 }
-function saveContent(file) {
-  console.log(file)
-  console.log(selectedFile.value)
-  EditFile(selectedFile.value).then(res => {
-    if (res == false){
-      message.error(`修改文件 ${selectedFile.value.name} 内容失败`)
-    } else {
-      message.info(`修改文件 ${selectedFile.value.name} 内容成功`)
-      getFiles()
+function saveContent() {
+  EditFile(selectedFile.value).then(err => {
+    if (err !== ""){
+      message.error(`修改 ${selectedFile.value.name} 内容失败: ${err}`)
     }
   })
 }
 function removeFile(file) {
   // 移动文件到回收站的逻辑
-  RemoveFile(file).then(res => {
-    if (res == false){
-      message.error(`删除文件 ${file.name} 失败`)
+  RemoveFile(file).then(err => {
+    if (err !== ""){
+      message.error(`删除文件 ${file.name} 失败: ${err}`)
     } else {
-      message.info(`删除文件 ${file.name} 成功`)
+      if( selectedFile.value.name == file.name){
+        selectedFile.value = {}
+        disableCode=true
+      }
       getFiles()
     }
   })
@@ -309,19 +299,22 @@ onMounted(
 }
 
 .button-trigger {
-  display: inline-block;
+  justify-content: space-between; /* 将子元素水平居中对齐 */
+  align-items: center;
   width: 20px;
   height: 20px;
-  line-height: 20px;
-  text-align: center;
   border-radius: 50%;
   color: #fff;
-  cursor: pointer;
-  /*margin-right: 10px;*/
+  margin-left: 10px;
+}
+
+.icon-double-right {
+  margin-bottom: 10px;
+  margin-left: 3px;
 }
 
 .button-trigger-active {
-  background-color: #ff4d4f;
+  background-color: #9bdcf8;
 }
 
 .ant-switch-checked {

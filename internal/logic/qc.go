@@ -37,6 +37,21 @@ func (qcLogic *QcLogic) CreateQC(qc Qc) (err error) {
 		qc.Name = qc.Name + ".qc"
 	}
 
+	err = file.SaveFile(strings.Replace(qc.Filepath, "~", os.Getenv("HOME"), 1)+qc.Name, qc.Content)
+	if err != nil {
+		return err
+	}
+
+	err = AddQcConfig(qc)
+	if err != nil {
+		return err
+	}
+	err = UpdateConfigQcFile(qc)
+	if err != nil {
+		return fmt.Errorf("添加文件失败，代码内容错误")
+	}
+	log.Info("testCreatQc")
+
 	m := model.NewModels[tables.Qc]()
 	m.Model = &tables.Qc{
 		ID:       qc.ID,
@@ -46,16 +61,8 @@ func (qcLogic *QcLogic) CreateQC(qc Qc) (err error) {
 		Status:   qc.Enabled,
 		CreateAt: gtime.New(time.Now()),
 	}
-	err = file.SaveFile(m.Model.Path+m.Model.Filename, qc.Content)
-	if err != nil {
-		return
-	}
-	err = m.Create()
-	if err != nil {
-		return
-	}
 
-	err = UpdateConfigQcFile()
+	err = m.Create()
 	if err != nil {
 		return
 	}
@@ -111,7 +118,7 @@ func (qcLogic *QcLogic) UpdateQC(qc Qc) (err error) {
 		return
 	}
 
-	err = UpdateConfigQcFile()
+	err = UpdateConfigQcFile(qc)
 	if err != nil {
 		return
 	}
@@ -127,7 +134,7 @@ func (qcLogic *QcLogic) DeleteQC(qc Qc) (err error) {
 		Content:  qc.Content,
 		DeleteAt: gtime.New(time.Now()),
 	}
-	m.Update("content", "delete_at")
+	m.Update("delete_at")
 	m.Get()
 	err = file.DeleteFile(m.Model.Path + m.Model.Filename)
 
@@ -159,7 +166,7 @@ func InitConfigQc() (err error) {
 		return fmt.Errorf("env SHELL=%s, shell bash/zsh dont find", shell)
 	}
 
-	err = UpdateConfigQcFile()
+	err = UpdateALlConfigQcFile()
 	if err != nil {
 		return err
 	}
@@ -167,20 +174,41 @@ func InitConfigQc() (err error) {
 	return
 }
 
-func UpdateConfigQcFile() (err error) {
+// UpdateConfigQcFile 更新 ～/.qc/.qc 的内容
+func UpdateConfigQcFile(qc Qc) (err error) {
+	if qc.Enabled {
+		CheckQcFileExist(qc)
+		AddQcConfig(qc)
+		err = sourceConfig()
+		if err != nil {
+			DeleteQcConfig(qc)
+			return fmt.Errorf("代码有错，请检查")
+		}
+	} else {
+		DeleteQcConfig(qc)
+		sourceConfig()
+	}
+	return
+}
+
+// UpdateALlConfigQcFile 更新全部 ～/.qc/.qc 的内容
+func UpdateALlConfigQcFile() (err error) {
 	logic := NewQcLogic()
 	qcs, err := logic.GetQCList()
 	if len(qcs) > 1 {
 		for _, qc := range qcs {
 			if qc.Enabled {
-				OpenQcConfig(qc)
+				CheckQcFileExist(qc)
+				AddQcConfig(qc)
+				err = sourceConfig()
+				if err != nil {
+					DeleteQcConfig(qc)
+					return fmt.Errorf("代码有错，请检查")
+				}
 			} else {
 				DeleteQcConfig(qc)
+				sourceConfig()
 			}
-		}
-		err = sourceConfig()
-		if err != nil {
-			return err
 		}
 	} else {
 		log.Info("no qcFile using...")
@@ -188,10 +216,10 @@ func UpdateConfigQcFile() (err error) {
 	return
 }
 
-func OpenQcConfig(qc Qc) (err error) {
+// AddQcConfig 在 ～/.qc/.qc 添加 source $file
+func AddQcConfig(qc Qc) (err error) {
 	homeDir, _ := os.UserHomeDir()
 	qcConfigPath := homeDir + "/.qc/.qc"
-
 	sourceCmd := fmt.Sprintf("source %s%s\n", qc.Filepath, qc.Name)
 	checkSourceCmd := fmt.Sprintf("cat %s |grep '%s'", qcConfigPath, strings.ReplaceAll(sourceCmd, "\n", ""))
 	sourceIsExist, _ := exec.Command("bash", "-c", checkSourceCmd).CombinedOutput()
@@ -212,6 +240,7 @@ func OpenQcConfig(qc Qc) (err error) {
 	return
 }
 
+// DeleteQcConfig 在 ～/.qc/.qc 删除 source $file
 func DeleteQcConfig(qc Qc) (err error) {
 	homeDir, _ := os.UserHomeDir()
 	qcConfigPath := homeDir + "/.qc/.qc"
@@ -223,6 +252,7 @@ func DeleteQcConfig(qc Qc) (err error) {
 	return
 }
 
+// 添加 'source ～/.qc/.qc' 到 bashrc 或 zshrc
 func addConfigToShell(shellConfigPath, qcSource string) error {
 	checkSourceCmd := fmt.Sprintf(`cat %s |grep '%s'`, shellConfigPath, strings.ReplaceAll(qcSource, "\n", ""))
 	sourceIsExist, _ := exec.Command("bash", "-c", checkSourceCmd).CombinedOutput()
@@ -268,4 +298,15 @@ func sourceConfig() (err error) {
 	}
 
 	return
+}
+
+func CheckQcFileExist(qc Qc) (err error) {
+	f := strings.Replace(qc.Filepath, "~", os.Getenv("HOME"), 1) + qc.Name
+	if !file.IsExist(f) {
+		err = file.SaveFile(f, qc.Content)
+		if err != nil {
+			return fmt.Errorf("file %s dont exist, create file err: %s", qc.Name, err)
+		}
+	}
+	return nil
 }

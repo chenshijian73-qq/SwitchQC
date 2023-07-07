@@ -42,7 +42,7 @@ type Form struct {
 	Enabled bool
 }
 
-func (a *App) AddFile(form Form) bool {
+func (a *App) AddFile(form Form) (error string) {
 	qcLogic := logic.NewQcLogic()
 	err := qcLogic.CreateQC(logic.Qc{
 		Name:     form.Name,
@@ -51,41 +51,32 @@ func (a *App) AddFile(form Form) bool {
 		Enabled:  form.Enabled,
 	})
 	if err != nil {
-		return false
+		return err.Error()
 	}
-
-	return true
+	return ""
 }
 
-func (a *App) RemoveFile(data logic.Qc) bool {
+func (a *App) RemoveFile(data logic.Qc) (error string) {
 	qcLogic := logic.NewQcLogic()
 	err := qcLogic.DeleteQC(data)
 	if err != nil {
-		return false
+		return err.Error()
 	}
-	return true
+	return ""
 }
 
-func (a *App) EditFile(data logic.Qc) bool {
+func (a *App) EditFile(data logic.Qc) (error string) {
 	qcLogic := logic.NewQcLogic()
 	err := qcLogic.UpdateQC(data)
 	if err != nil {
-		return false
+		return err.Error()
 	}
-	err = logic.UpdateConfigQcFile()
-	if err != nil {
-		log.Error(err)
-	}
-	return true
+	return ""
 }
 
 func (a *App) GetFiles() []logic.Qc {
 	qcLogic := logic.NewQcLogic()
 	qcs, err := qcLogic.GetQCList()
-	if err != nil {
-		log.Error(err)
-	}
-	err = logic.UpdateConfigQcFile()
 	if err != nil {
 		log.Error(err)
 	}

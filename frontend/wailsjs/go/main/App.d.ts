@@ -3,12 +3,12 @@
 import {main} from '../models';
 import {logic} from '../models';
 
-export function AddFile(arg1:main.Form):Promise<boolean>;
+export function AddFile(arg1:main.Form):Promise<string>;
 
-export function EditFile(arg1:logic.Qc):Promise<boolean>;
+export function EditFile(arg1:logic.Qc):Promise<string>;
 
 export function GetFiles():Promise<Array<logic.Qc>>;
 
 export function Greet(arg1:string):Promise<string>;
 
-export function RemoveFile(arg1:logic.Qc):Promise<boolean>;
+export function RemoveFile(arg1:logic.Qc):Promise<string>;

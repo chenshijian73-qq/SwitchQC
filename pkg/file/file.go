@@ -19,6 +19,13 @@ func CreateFile(filepath string, content string) (err error) {
 	return
 }
 
+func IsExist(filepath string) bool {
+	if _, err := os.Stat(filepath); os.IsNotExist(err) {
+		return false
+	}
+	return true
+}
+
 func SaveFile(filepath string, content string) (err error) {
 	// 打开文件
 	f, err := os.OpenFile(filepath, os.O_CREATE|os.O_RDWR|os.O_TRUNC, 0644)
