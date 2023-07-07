@@ -4,7 +4,7 @@
       :visible="addFileVisible"
       :closable="false"
       :placement="'right'"
-      width="40%"
+      width="50%"
       @ok="handleAddFileSubmit"
       @cancel="props.closeAddFile"
   >
@@ -29,7 +29,6 @@
 </template>
 
 <script setup>
-import {EditorView} from "@codemirror/view";
 import {javascript} from "@codemirror/lang-javascript";
 import {Codemirror} from "vue-codemirror";
 import {ref, watch} from "vue";
@@ -37,40 +36,7 @@ import {message} from "ant-design-vue";
 import {AddFile} from "../../wailsjs";
 
 // codeEditor config
-let codeTheme = EditorView.theme({
-  // 输入的字体颜色
-  "&": {
-    color: "#0052D9",
-    backgroundColor: "#FFFFFF"
-  },
-  ".cm-content": {
-    caretColor: "#0052D9",
-  },
-  // 激活背景色
-  ".cm-activeLine": {
-    backgroundColor: "#FAFAFA"
-  },
-  // 激活序列的背景色
-  ".cm-activeLineGutter": {
-    backgroundColor: "#FAFAFA"
-  },
-  //光标的颜色
-  "&.cm-focused .cm-cursor": {
-    borderLeftColor: "#0052D9"
-  },
-  // 选中的状态
-  "&.cm-focused .cm-selectionBackground, ::selection": {
-    backgroundColor: "#95bdfd",
-    color:'#6c9820',
-  },
-  // 左侧侧边栏的颜色
-  ".cm-gutters": {
-    backgroundColor: "#FFFFFF",
-    color: "#ffcc98", //侧边栏文字颜色
-    border: "none"
-  }
-}, { dark: false })
-const extensions = [javascript(), codeTheme];
+const extensions = [javascript()];
 
 const props = defineProps({
   qcFiles: {
