@@ -55,6 +55,18 @@
   dependencies:
     regenerator-runtime "^0.13.11"
 
+"@codemirror/autocomplete@^0.19.0":
+  version "0.19.15"
+  resolved "https://registry.npmjs.org/@codemirror/autocomplete/-/autocomplete-0.19.15.tgz"
+  integrity sha512-GQWzvvuXxNUyaEk+5gawbAD8s51/v2Chb++nx0e2eGWrphWk42isBtzOMdc3DxrxrZtPZ55q2ldNp+6G8KJLIQ==
+  dependencies:
+    "@codemirror/language" "^0.19.0"
+    "@codemirror/state" "^0.19.4"
+    "@codemirror/text" "^0.19.2"
+    "@codemirror/tooltip" "^0.19.12"
+    "@codemirror/view" "^0.19.0"
+    "@lezer/common" "^0.15.0"
+
 "@codemirror/autocomplete@^6.0.0":
   version "6.8.1"
   resolved "https://registry.npmjs.org/@codemirror/autocomplete/-/autocomplete-6.8.1.tgz"
@@ -74,6 +86,27 @@
     "@codemirror/state" "^6.2.0"
     "@codemirror/view" "^6.0.0"
     "@lezer/common" "^1.0.0"
+
+"@codemirror/gutter@^0.19.4":
+  version "0.19.9"
+  resolved "https://registry.npmjs.org/@codemirror/gutter/-/gutter-0.19.9.tgz"
+  integrity sha512-PFrtmilahin1g6uL27aG5tM/rqR9DZzZYZsIrCXA5Uc2OFTFqx4owuhoU9hqfYxHp5ovfvBwQ+txFzqS4vog6Q==
+  dependencies:
+    "@codemirror/rangeset" "^0.19.0"
+    "@codemirror/state" "^0.19.0"
+    "@codemirror/view" "^0.19.23"
+
+"@codemirror/highlight@^0.19.6":
+  version "0.19.8"
+  resolved "https://registry.npmjs.org/@codemirror/highlight/-/highlight-0.19.8.tgz"
+  integrity sha512-v/lzuHjrYR8MN2mEJcUD6fHSTXXli9C1XGYpr+ElV6fLBIUhMTNKR3qThp611xuWfXfwDxeL7ppcbkM/MzPV3A==
+  dependencies:
+    "@codemirror/language" "^0.19.0"
+    "@codemirror/rangeset" "^0.19.0"
+    "@codemirror/state" "^0.19.3"
+    "@codemirror/view" "^0.19.39"
+    "@lezer/common" "^0.15.0"
+    style-mod "^4.0.0"
 
 "@codemirror/lang-css@^6.0.0":
   version "6.2.0"
@@ -122,6 +155,17 @@
     "@codemirror/language" "^6.0.0"
     "@lezer/json" "^1.0.0"
 
+"@codemirror/language@^0.19.0":
+  version "0.19.10"
+  resolved "https://registry.npmjs.org/@codemirror/language/-/language-0.19.10.tgz"
+  integrity sha512-yA0DZ3RYn2CqAAGW62VrU8c4YxscMQn45y/I9sjBlqB1e2OTQLg4CCkMBuMSLXk4xaqjlsgazeOQWaJQOKfV8Q==
+  dependencies:
+    "@codemirror/state" "^0.19.0"
+    "@codemirror/text" "^0.19.0"
+    "@codemirror/view" "^0.19.0"
+    "@lezer/common" "^0.15.5"
+    "@lezer/lr" "^0.15.0"
+
 "@codemirror/language@^6.0.0", "@codemirror/language@^6.4.0", "@codemirror/language@^6.6.0", "@codemirror/language@6.x":
   version "6.8.0"
   resolved "https://registry.npmjs.org/@codemirror/language/-/language-6.8.0.tgz"
@@ -134,6 +178,19 @@
     "@lezer/lr" "^1.0.0"
     style-mod "^4.0.0"
 
+"@codemirror/lint@^0.19.0":
+  version "0.19.6"
+  resolved "https://registry.npmjs.org/@codemirror/lint/-/lint-0.19.6.tgz"
+  integrity sha512-Pbw1Y5kHVs2J+itQ0uez3dI4qY9ApYVap7eNfV81x1/3/BXgBkKfadaw0gqJ4h4FDG7OnJwb0VbPsjJQllHjaA==
+  dependencies:
+    "@codemirror/gutter" "^0.19.4"
+    "@codemirror/panel" "^0.19.0"
+    "@codemirror/rangeset" "^0.19.1"
+    "@codemirror/state" "^0.19.4"
+    "@codemirror/tooltip" "^0.19.16"
+    "@codemirror/view" "^0.19.22"
+    crelt "^1.0.5"
+
 "@codemirror/lint@^6.0.0":
   version "6.4.0"
   resolved "https://registry.npmjs.org/@codemirror/lint/-/lint-6.4.0.tgz"
@@ -142,6 +199,21 @@
     "@codemirror/state" "^6.0.0"
     "@codemirror/view" "^6.0.0"
     crelt "^1.0.5"
+
+"@codemirror/panel@^0.19.0":
+  version "0.19.1"
+  resolved "https://registry.npmjs.org/@codemirror/panel/-/panel-0.19.1.tgz"
+  integrity sha512-sYeOCMA3KRYxZYJYn5PNlt9yNsjy3zTNTrbYSfVgjgL9QomIVgOJWPO5hZ2sTN8lufO6lw0vTBsIPL9MSidmBg==
+  dependencies:
+    "@codemirror/state" "^0.19.0"
+    "@codemirror/view" "^0.19.0"
+
+"@codemirror/rangeset@^0.19.0", "@codemirror/rangeset@^0.19.1", "@codemirror/rangeset@^0.19.5":
+  version "0.19.9"
+  resolved "https://registry.npmjs.org/@codemirror/rangeset/-/rangeset-0.19.9.tgz"
+  integrity sha512-V8YUuOvK+ew87Xem+71nKcqu1SXd5QROMRLMS/ljT5/3MCxtgrRie1Cvild0G/Z2f1fpWxzX78V0U4jjXBorBQ==
+  dependencies:
+    "@codemirror/state" "^0.19.0"
 
 "@codemirror/search@^6.0.0":
   version "6.5.0"
@@ -152,12 +224,54 @@
     "@codemirror/view" "^6.0.0"
     crelt "^1.0.5"
 
+"@codemirror/state@^0.19.0", "@codemirror/state@^0.19.3", "@codemirror/state@^0.19.4":
+  version "0.19.9"
+  resolved "https://registry.npmjs.org/@codemirror/state/-/state-0.19.9.tgz"
+  integrity sha512-psOzDolKTZkx4CgUqhBQ8T8gBc0xN5z4gzed109aF6x7D7umpDRoimacI/O6d9UGuyl4eYuDCZmDFr2Rq7aGOw==
+  dependencies:
+    "@codemirror/text" "^0.19.0"
+
 "@codemirror/state@^6.0.0", "@codemirror/state@^6.1.4", "@codemirror/state@^6.2.0", "@codemirror/state@6.x":
   version "6.2.1"
   resolved "https://registry.npmjs.org/@codemirror/state/-/state-6.2.1.tgz"
   integrity sha512-RupHSZ8+OjNT38zU9fKH2sv+Dnlr8Eb8sl4NOnnqz95mCFTZUaiRP8Xv5MeeaG0px2b8Bnfe7YGwCV3nsBhbuw==
 
-"@codemirror/view@^6.0.0", "@codemirror/view@^6.2.2", "@codemirror/view@^6.6.0", "@codemirror/view@6.x":
+"@codemirror/text@^0.19.0", "@codemirror/text@^0.19.2":
+  version "0.19.6"
+  resolved "https://registry.npmjs.org/@codemirror/text/-/text-0.19.6.tgz"
+  integrity sha512-T9jnREMIygx+TPC1bOuepz18maGq/92q2a+n4qTqObKwvNMg+8cMTslb8yxeEDEq7S3kpgGWxgO1UWbQRij0dA==
+
+"@codemirror/tooltip@^0.19.12", "@codemirror/tooltip@^0.19.16":
+  version "0.19.16"
+  resolved "https://registry.npmjs.org/@codemirror/tooltip/-/tooltip-0.19.16.tgz"
+  integrity sha512-zxKDHryUV5/RS45AQL+wOeN+i7/l81wK56OMnUPoTSzCWNITfxHn7BToDsjtrRKbzHqUxKYmBnn/4hPjpZ4WJQ==
+  dependencies:
+    "@codemirror/state" "^0.19.0"
+    "@codemirror/view" "^0.19.0"
+
+"@codemirror/view@^0.19.0", "@codemirror/view@^0.19.22", "@codemirror/view@^0.19.39":
+  version "0.19.48"
+  resolved "https://registry.npmjs.org/@codemirror/view/-/view-0.19.48.tgz"
+  integrity sha512-0eg7D2Nz4S8/caetCTz61rK0tkHI17V/d15Jy0kLOT8dTLGGNJUponDnW28h2B6bERmPlVHKh8MJIr5OCp1nGw==
+  dependencies:
+    "@codemirror/rangeset" "^0.19.5"
+    "@codemirror/state" "^0.19.3"
+    "@codemirror/text" "^0.19.0"
+    style-mod "^4.0.0"
+    w3c-keyname "^2.2.4"
+
+"@codemirror/view@^0.19.23":
+  version "0.19.48"
+  resolved "https://registry.npmjs.org/@codemirror/view/-/view-0.19.48.tgz"
+  integrity sha512-0eg7D2Nz4S8/caetCTz61rK0tkHI17V/d15Jy0kLOT8dTLGGNJUponDnW28h2B6bERmPlVHKh8MJIr5OCp1nGw==
+  dependencies:
+    "@codemirror/rangeset" "^0.19.5"
+    "@codemirror/state" "^0.19.3"
+    "@codemirror/text" "^0.19.0"
+    style-mod "^4.0.0"
+    w3c-keyname "^2.2.4"
+
+"@codemirror/view@^6.0.0", "@codemirror/view@^6.14.1", "@codemirror/view@^6.2.2", "@codemirror/view@^6.6.0", "@codemirror/view@6.x":
   version "6.14.1"
   resolved "https://registry.npmjs.org/@codemirror/view/-/view-6.14.1.tgz"
   integrity sha512-ofcsI7lRFo4N0rfnd+V3Gh2boQU3DmaaSKhDOvXUWjeOeuupMXer2e/3i9TUFN7aEIntv300EFBWPEiYVm2svg==
@@ -191,6 +305,11 @@
   resolved "https://registry.npmjs.org/@jridgewell/sourcemap-codec/-/sourcemap-codec-1.4.15.tgz"
   integrity sha512-eF2rxCRulEKXHTRiDrDy6erMYWqNw4LPdQ8UQA4huuxaQsVeRPFl2oM8oDGxMFhJUWZf9McpLtJasDDZb/Bpeg==
 
+"@lezer/common@^0.15.0", "@lezer/common@^0.15.5":
+  version "0.15.12"
+  resolved "https://registry.npmjs.org/@lezer/common/-/common-0.15.12.tgz"
+  integrity sha512-edfwCxNLnzq5pBA/yaIhwJ3U3Kz8VAUOTRg0hhxaizaI1N+qxV7EXDv/kLCkLeq2RzSFvxexlaj5Mzfn2kY0Ig==
+
 "@lezer/common@^1.0.0", "@lezer/common@^1.0.2":
   version "1.0.3"
   resolved "https://registry.npmjs.org/@lezer/common/-/common-1.0.3.tgz"
@@ -220,6 +339,13 @@
     "@lezer/highlight" "^1.0.0"
     "@lezer/lr" "^1.0.0"
 
+"@lezer/javascript@^0.15.0":
+  version "0.15.3"
+  resolved "https://registry.npmjs.org/@lezer/javascript/-/javascript-0.15.3.tgz"
+  integrity sha512-8jA2NpOfpWwSPZxRhd9BxK2ZPvGd7nLE3LFTJ5AbMhXAzMHeMjneV6GEVd7dAIee85dtap0jdb6bgOSO0+lfwA==
+  dependencies:
+    "@lezer/lr" "^0.15.0"
+
 "@lezer/javascript@^1.0.0":
   version "1.4.4"
   resolved "https://registry.npmjs.org/@lezer/javascript/-/javascript-1.4.4.tgz"
@@ -235,6 +361,13 @@
   dependencies:
     "@lezer/highlight" "^1.0.0"
     "@lezer/lr" "^1.0.0"
+
+"@lezer/lr@^0.15.0":
+  version "0.15.8"
+  resolved "https://registry.npmjs.org/@lezer/lr/-/lr-0.15.8.tgz"
+  integrity sha512-bM6oE6VQZ6hIFxDNKk8bKPa14hqFrV07J/vHGOeiAbJReIaQXmkVb6xQu4MR+JBTLa5arGRyAAjJe1qaQt3Uvg==
+  dependencies:
+    "@lezer/common" "^0.15.0"
 
 "@lezer/lr@^1.0.0", "@lezer/lr@^1.3.0":
   version "1.3.9"
@@ -258,6 +391,25 @@
   dependencies:
     core-js "^3.15.1"
     nanopop "^2.1.0"
+
+"@types/codemirror@^5.60.8":
+  version "5.60.8"
+  resolved "https://registry.npmjs.org/@types/codemirror/-/codemirror-5.60.8.tgz"
+  integrity sha512-VjFgDF/eB+Aklcy15TtOTLQeMjTo07k7KAjql8OK5Dirr7a6sJY4T1uVBDuTVG9VEmn1uUsohOpYnVfgC6/jyw==
+  dependencies:
+    "@types/tern" "*"
+
+"@types/estree@*":
+  version "1.0.1"
+  resolved "https://registry.npmjs.org/@types/estree/-/estree-1.0.1.tgz"
+  integrity sha512-LG4opVs2ANWZ1TJoKc937iMmNstM/d0ae1vNbnBvBhqCSezgVUOzcLCqbI5elV8Vy6WKwKjaqR+zO9VKirBBCA==
+
+"@types/tern@*":
+  version "0.23.4"
+  resolved "https://registry.npmjs.org/@types/tern/-/tern-0.23.4.tgz"
+  integrity sha512-JAUw1iXGO1qaWwEOzxTKJZ/5JxVeON9kvGZ/osgZaJImBnyjyn0cjovPsf6FNLmyGY8Vw9DoXZCMlfMkMwHRWg==
+  dependencies:
+    "@types/estree" "*"
 
 "@vitejs/plugin-vue@^4.2.3":
   version "4.2.3"
@@ -444,6 +596,19 @@ codemirror-editor-vue3@^2.3.0:
   dependencies:
     codemirror "^5.64.0"
     diff-match-patch "^1.0.5"
+
+codemirror-lang-cherry@^1.0.7:
+  version "1.0.7"
+  resolved "https://registry.npmjs.org/codemirror-lang-cherry/-/codemirror-lang-cherry-1.0.7.tgz"
+  integrity sha512-oUL6oiz4Nk30VZhz5abaRDyk6v4exNiN5aI7w4crC1Cj4LHU7ZWcKe3AQdpjUdxH/L7z/CA6q9O/Jn6c7ZctAA==
+  dependencies:
+    "@codemirror/autocomplete" "^0.19.0"
+    "@codemirror/highlight" "^0.19.6"
+    "@codemirror/language" "^0.19.0"
+    "@codemirror/lint" "^0.19.0"
+    "@codemirror/state" "^0.19.0"
+    "@codemirror/view" "^0.19.0"
+    "@lezer/javascript" "^0.15.0"
 
 codemirror@^5.64.0, codemirror@^5.65.13:
   version "5.65.13"
@@ -894,7 +1059,7 @@ vite@^4.0.0, vite@^4.3.9, vite@>=2.0.0:
   optionalDependencies:
     fsevents "~2.3.2"
 
-vue-codemirror@^5.0.1:
+vue-codemirror@^5.1.0:
   version "5.1.0"
   resolved "https://registry.npmjs.org/vue-codemirror/-/vue-codemirror-5.1.0.tgz"
   integrity sha512-U8t71S8Dk+9W3Yxfwv30E3vGYjfiKOqluoKkV1bW3Mh9y/T1cQAdGLzz7pN+Z8llivX+/8CJ5sg17xLPSOsvvQ==

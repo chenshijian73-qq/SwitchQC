@@ -43,7 +43,13 @@
         </a-menu>
       </div>
       <div class="content">
-        <codemirror v-model="selectedFile.content" :options="cmOptions" :style="{ height: '100%' }" placeholder="Code here..." @blur="saveContent(selectedFile)" :disabled="disableCode" />
+        <codemirror v-model="selectedFile.content"
+                     :style="{ height: '100%' }"
+                     :autofocus="true"
+                     :tabSize="2"
+                     :extensions="extensions"
+                     @blur="saveContent(selectedFile)"
+                     :disabled="disableCode" />
       </div>
     </div>
     <a-drawer
@@ -61,7 +67,12 @@
           <div v-if="nameUnique === false" style="color: red">文件名已存在</div>
         </a-form-item>
         <a-form-item label="内容" :label-col="{ span: 16 }" :wrapper-col="{ span: 16 }" prop="content">
-          <codemirror v-model="form.content" :style="{ height: '100%', width: '100%'}" placeholder="Please enter something" />
+          <codemirror v-model="form.content"
+                      :style="{ height: '200px', width: '100%'}"
+                      :autofocus="true"
+                      :tabSize="2"
+                      :extensions="extensions"
+                      placeholder="Please enter something" />
         </a-form-item>
         <a-form-item label="状态" :label-col="{ span: 16 }" :wrapper-col="{ span: 16 }" prop="enabled">
           <a-switch v-model="form.enabled" />
@@ -80,24 +91,44 @@ import {
   IconDelete,
   IconClose,
 } from '@arco-design/web-vue/es/icon';
-import {Codemirror} from "vue-codemirror";
-import 'codemirror/lib/codemirror.css'
-import 'codemirror/theme/neo.css'
-import 'codemirror/mode/shell/shell.js'
-import "codemirror/addon/hint/anyword-hint.js";
-// require active-line.js
-import 'codemirror/addon/selection/active-line.js';
-// closebrackets
-import 'codemirror/addon/edit/closebrackets.js';
-// keyMap
-import 'codemirror/mode/clike/clike.js';
-import 'codemirror/addon/edit/matchbrackets.js';
-import 'codemirror/addon/comment/comment.js';
-import 'codemirror/addon/dialog/dialog.js';
-import 'codemirror/addon/dialog/dialog.css';
-import 'codemirror/addon/search/searchcursor.js';
-import 'codemirror/addon/search/search.js';
-import 'codemirror/keymap/emacs.js';
+import { Codemirror } from "vue-codemirror";
+import { javascript } from "@codemirror/lang-javascript";
+import { EditorView } from "@codemirror/view"
+
+let myTheme = EditorView.theme({
+  // 输入的字体颜色
+  "&": {
+    color: "#0052D9",
+    backgroundColor: "#FFFFFF"
+  },
+  ".cm-content": {
+    caretColor: "#0052D9",
+  },
+  // 激活背景色
+  ".cm-activeLine": {
+    backgroundColor: "#FAFAFA"
+  },
+  // 激活序列的背景色
+  ".cm-activeLineGutter": {
+    backgroundColor: "#FAFAFA"
+  },
+  //光标的颜色
+  "&.cm-focused .cm-cursor": {
+    borderLeftColor: "#0052D9"
+  },
+  // 选中的状态
+  "&.cm-focused .cm-selectionBackground, ::selection": {
+    backgroundColor: "#95bdfd",
+    color:'#6c9820',
+  },
+  // 左侧侧边栏的颜色
+  ".cm-gutters": {
+    backgroundColor: "#FFFFFF",
+    color: "#ffcc98", //侧边栏文字颜色
+    border: "none"
+  }
+}, { dark: false })
+const extensions = [javascript(), myTheme];
 
 const showNav = ref(true);
 const fileMenuVisible = ref(false);
@@ -121,28 +152,6 @@ const form = ref({
   content: '',
   enabled: true,
 });
-const cmOptions = {
-  theme: 'neo',  // 主题
-  mode: 'shell' , // 代码格式
-  tabSize: 4,  // tab的空格个数
-  indentUnit: 2,  // 一个块（编辑语言中的含义）应缩进多少个空格
-  autocorrect: true,  // 自动更正
-  spellcheck: true,  // 拼写检查
-  lint: true,  // 检查格式
-  lineNumbers: true,  //是否显示行数
-  lineWrapping: true, //是否自动换行
-  styleActiveLine: true,  //line选择是是否高亮
-  keyMap: 'sublime',  // sublime编辑器效果
-  matchBrackets: true,  //括号匹配
-  autoCloseBrackets: true,  // 在键入时将自动关闭括号和引号
-  matchTags: { bothTags: true },  // 将突出显示光标周围的标签
-  foldGutter: true,  // 可将对象折叠，与下面的gutters一起使用
-  highlightSelectionMatches: {
-    minChars: 2,
-    style: "matchhighlight",
-    showToken: true
-  },
-}
 
 const nameUnique = ref(null);
 async function checkNameUnique(value) {
@@ -262,26 +271,15 @@ onMounted(
   display: flex;
   flex: 1;
   overflow: hidden;
+  padding: 1px;
+  height: 100%;
 }
 
 .nav {
   width: 200px;
   border-right: 1px solid #e8e8e8;
   overflow: auto;
-}
-
-ul {
-  list-style: none;
-  padding: 0;
-  margin: 0;
-}
-
-li {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  padding: 8px 16px;
-  cursor: pointer;
+  background-color: white;
 }
 
 .name {
@@ -298,11 +296,6 @@ li {
   padding: 10px;
   width: 100%;
   height: 85vh;
-}
-
-.content a-textarea {
-  width: 100%;
-  height: 80vh;
 }
 
 .red-icon {
