@@ -91,7 +91,7 @@ const props = defineProps({
   }
 });
 
-const addFileVisible = ref(false);
+const addFileVisible = ref(props.addFileVisible);
 const nameUnique = ref(null);
 const form = ref({
   name: '',
