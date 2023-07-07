@@ -36,7 +36,7 @@
             </div>
           </a-menu-item>
         </a-menu>
-        <div class="add-button">
+        <div class="options">
           <a-button type="primary" shape="circle" size="mini" @click="showAddFile">
             <icon-plus />
           </a-button>
@@ -87,6 +87,7 @@
 </template>
 
 <script setup>
+import './app.css'
 import {onMounted, ref} from 'vue';
 import { GetFiles, AddFile, EditFile, RemoveFile, LogInfo } from '../wailsjs';
 import {message} from "ant-design-vue";
@@ -243,121 +244,4 @@ onMounted(
 </script>
 
 <style scoped>
-.app {
-  display: flex;
-  flex-direction: column;
-  height: 100vh;
-  background-color: #edfaff;
-}
-
-.main {
-  display: flex;
-  flex: 1;
-  overflow: hidden;
-  padding: 10px;
-  height: 100%;
-}
-
-.nav {
-  position: relative; /* 将 .nav 元素设置为相对定位 */
-  width: 200px;
-  border-right: 1px solid #cecfd0;
-  overflow: auto;
-  height: 100%;
-}
-
-.add-button {
-  display: flex; /* 将 .add-button 元素设置为弹性容器 */
-  justify-content: space-between; /* 将内部元素分散对齐 */
-  align-items: center; /* 将内部元素垂直居中对齐 */
-  position: absolute; /* 将 .add-button 元素设置为绝对定位 */
-  bottom: 10px; /* 将 .add-button 元素放置在 .nav 的底部 */
-  left: 10px; /* 将 .add-button 元素放置在 .nav 的左侧 */
-  width: 85%; /* 将 .add-button 元素的宽度设置为与 .nav 元素相等 */
-  padding-left: 5px;
-  padding-right: 5px;
-  padding-top: 10px;
-  border-top: 1px solid #e8e8e8;
-}
-
-.content {
-  flex: 1;
-  padding-left: 10px;
-  padding-right: 10px;
-  width: 100%;
-  height: 100%;
-}
-
-.name {
-  margin-left: 10px;
-  margin-right: 10px;
-}
-.menu-trigger {
-  display: flex;
-  justify-content: flex-end;
-}
-
-.red-icon {
-  color: red;
-}
-
-.file-info {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-}
-
-.button-trigger {
-  justify-content: space-between; /* 将子元素水平居中对齐 */
-  align-items: center;
-  width: 20px;
-  height: 20px;
-  border-radius: 50%;
-  color: #fff;
-  margin-left: 10px;
-}
-
-.icon-double-right {
-  margin-bottom: 10px;
-  margin-left: 3px;
-}
-
-.button-trigger-active {
-  background-color: #9bdcf8;
-}
-
-.ant-switch-checked {
-  background-color: #1890ff;
-}
-
-.ant-switch-checked .ant-switch-handle::before {
-  background-color: #fff;
-}
-
-.ant-switch:focus {
-  box-shadow: none;
-}
-
-.CodeMirror-focused .cm-matchhighlight {
-  background-position: bottom;
-  background-repeat: repeat-x;
-}
-.CodeMirror-selection-highlight-scrollbar {
-  background-color: green;
-}
-
-.arco-input-wrapper {
-  display: inline-flex;
-  box-sizing: border-box;
-  /* width: 100%; */
-  padding-right: 12px;
-  padding-left: 12px;
-  color: var(--color-text-1);
-  font-size: 14px;
-  background-color: var(--color-fill-2);
-  border: 1px solid transparent;
-  border-radius: var(--border-radius-small);
-  cursor: text;
-  transition: color 0.1s cubic-bezier(0, 0, 1, 1), border-color 0.1s cubic-bezier(0, 0, 1, 1), background-color 0.1s cubic-bezier(0, 0, 1, 1);
-}
 </style>
