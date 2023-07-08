@@ -15,13 +15,13 @@
       </a-form-item>
       <a-form-item label="Content:"  prop="content">
         <codemirror v-model="form.content"
-                    :style="{ height: '200px', width: '100%'}"
+                    :style="{ height: '50vh', width: '100%'}"
                     :autofocus="true"
                     :tabSize="2"
                     :extensions="extensions"
                     placeholder="Please enter something" />
       </a-form-item>
-      <a-form-item label="状态" :label-col="{ span: 16 }" :wrapper-col="{ span: 16 }" prop="enabled">
+      <a-form-item label="Enabled:" :label-col="{ span: 16 }" :wrapper-col="{ span: 16 }" prop="enabled">
         <a-switch v-model="form.enabled" />
       </a-form-item>
     </a-form>
@@ -29,6 +29,8 @@
 </template>
 
 <script setup>
+import '../assets/add-file-drawer.css'
+
 import {javascript} from "@codemirror/lang-javascript";
 import {Codemirror} from "vue-codemirror";
 import {ref, watch} from "vue";

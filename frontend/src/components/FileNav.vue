@@ -36,6 +36,7 @@
 </template>
 
 <script setup>
+import '../assets/nav.css'
 import {ref, watch} from 'vue';
 import { EditFile } from '../../wailsjs';
 import {message} from "ant-design-vue";

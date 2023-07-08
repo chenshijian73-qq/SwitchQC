@@ -24,7 +24,6 @@
 import './assets/app.css'
 import {onBeforeMount, ref} from 'vue';
 import { GetFiles } from '../wailsjs';
-import {message} from "ant-design-vue";
 import {
   IconArchive,
   IconPlus,
@@ -35,7 +34,7 @@ import FileNav from "@/components/FileNav.vue";
 
 
 let qcFiles = ref([
-  { id: 0, name: 'file1', content: 'This is file1 content.', enabled: true },
+  { id: -1, name: 'file1', content: 'This is file1 content.', enabled: true },
 ].map(file => ({ ...file, fileMenuVisible: false })));
 const fileMenuVisible = ref(false);
 const addFileVisible = ref(false);

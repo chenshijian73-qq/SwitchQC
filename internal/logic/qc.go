@@ -58,7 +58,7 @@ func (qcLogic *QcLogic) CreateQC(qc Qc) (err error) {
 		Filename: qc.Name,
 		Content:  qc.Content,
 		Path:     strings.Replace(qc.Filepath, "~", os.Getenv("HOME"), 1),
-		Enabled:   qc.Enabled,
+		Enabled:  qc.Enabled,
 		CreateAt: gtime.New(time.Now()),
 	}
 
@@ -109,7 +109,7 @@ func (qcLogic *QcLogic) UpdateQC(qc Qc) (err error) {
 		Filename: qc.Name,
 		Content:  qc.Content,
 		Path:     qc.Filepath,
-		Enabled:   qc.Enabled,
+		Enabled:  qc.Enabled,
 		UpdateAt: gtime.New(time.Now()),
 	}
 	m.Update("filename", "path", "status", "content", "update_at")
@@ -219,7 +219,7 @@ func UpdateALlConfigQcFile() (err error) {
 	return
 }
 
-// AddQcConfig 在 ～/.qc/.qc 添加 source $file
+// AddQcConfig 添加 'source $file' 到 ～/.qc/.qc
 func AddQcConfig(qc Qc) (err error) {
 	qcConfigPath := os.Getenv("HOME") + "/.qc/.qc"
 	if qc.Name == "" {
@@ -249,7 +249,7 @@ func AddQcConfig(qc Qc) (err error) {
 func DeleteQcConfig(qc Qc) (err error) {
 	homeDir, _ := os.UserHomeDir()
 	qcConfigPath := homeDir + "/.qc/.qc"
-	err = file.DeleteMatchRow(qcConfigPath, qc.Filepath+qc.Name)
+	err = file.DeleteMatchRow(qcConfigPath, qc.Name)
 	if err != nil {
 		return
 	}

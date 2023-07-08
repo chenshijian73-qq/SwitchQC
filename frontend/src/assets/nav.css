@@ -1,0 +1,52 @@
+.menu-trigger {
+    display: flex;
+    justify-content: flex-end;
+}
+
+.name {
+    margin-left: 10px;
+    margin-right: 10px;
+    font-weight: bold;
+ }
+
+.file-info {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.red-icon {
+    color: red;
+}
+
+.icon-double-right {
+    margin-bottom: 10px;
+    margin-left: 3px;
+}
+
+.button-trigger-active {
+    background-color: #9bdcf8;
+}
+
+.button-trigger {
+    justify-content: space-between; /* 将子元素水平居中对齐 */
+    align-items: center;
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    color: #fff;
+    margin-left: 10px;
+}
+
+
+.ant-switch-checked {
+    background-color: #1890ff;
+}
+
+.ant-switch-checked .ant-switch-handle::before {
+    background-color: #fff;
+}
+
+.ant-switch:focus {
+    box-shadow: none;
+}
