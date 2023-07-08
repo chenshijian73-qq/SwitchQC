@@ -1,0 +1,8 @@
+.arco-btn-size-small.arco-btn-shape-circle {
+    width: 28px;
+    height: 28px;
+    padding: 0;
+    background-color: #d0d0d9;
+    text-align: center;
+    border-radius: var(--border-radius-circle);
+}

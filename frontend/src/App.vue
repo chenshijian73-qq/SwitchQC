@@ -7,9 +7,7 @@
           <a-button type="primary" shape="circle" size="mini" @click="showAddFile">
             <icon-plus />
           </a-button>
-          <a-button type="dashed" shape="circle" size="small" @click="">
-            <icon-archive />
-          </a-button>
+          <RecycleCin/>
         </div>
       </div>
       <div class="content">
@@ -31,6 +29,7 @@ import {
 import CodeEditor from "@/components/CodeEditor.vue";
 import AddFileDrawer from "@/components/AddFileDrawer.vue";
 import FileNav from "@/components/FileNav.vue";
+import RecycleCin from "@/components/RecycleCin.vue";
 
 
 let qcFiles = ref([
