@@ -42,6 +42,16 @@ type Form struct {
 	Enabled bool   `json:"enabled"`
 }
 
+func (a *App) GetFiles() []logic.Qc {
+	qcLogic := logic.NewQcLogic()
+	qcs, err := qcLogic.GetQCList()
+	if err != nil {
+		log.Error(err)
+		return nil
+	}
+	return qcs
+}
+
 func (a *App) AddFile(form Form) (error string) {
 	if form.Name == "" {
 		return "The file name cannot be empty!"
@@ -59,15 +69,6 @@ func (a *App) AddFile(form Form) (error string) {
 	return ""
 }
 
-func (a *App) RemoveFile(data logic.Qc) (error string) {
-	qcLogic := logic.NewQcLogic()
-	err := qcLogic.DeleteQC(data)
-	if err != nil {
-		return err.Error()
-	}
-	return ""
-}
-
 func (a *App) EditFile(data logic.Qc) (error string) {
 	qcLogic := logic.NewQcLogic()
 	err := qcLogic.UpdateQC(data)
@@ -77,11 +78,30 @@ func (a *App) EditFile(data logic.Qc) (error string) {
 	return ""
 }
 
-func (a *App) GetFiles() []logic.Qc {
+func (a *App) RemoveFile(data logic.Qc) (error string) {
 	qcLogic := logic.NewQcLogic()
-	qcs, err := qcLogic.GetQCList()
+	err := qcLogic.DeleteQC(data)
+	if err != nil {
+		return err.Error()
+	}
+	return ""
+}
+
+func (a *App) GetRecycleList() []logic.Qc {
+	qcLogic := logic.NewQcLogic()
+	qcs, err := qcLogic.GetRecycleList()
 	if err != nil {
 		log.Error(err)
 	}
 	return qcs
+}
+
+func (a *App) CleanBin() (error string) {
+	qcLogic := logic.NewQcLogic()
+	err := qcLogic.CleanBin()
+	if err != nil {
+		log.Error(err)
+		return err.Error()
+	}
+	return
 }

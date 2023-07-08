@@ -83,6 +83,11 @@ func (t *Models[T]) GetsNoDeleted() (row []T, err error) {
 	return
 }
 
+func (t *Models[T]) GetsDeleted() (row []T, err error) {
+	err = t.db.Where("delete_at IS NOT NULL").Find(&row, t.Model).Error
+	return
+}
+
 func (t *Models[T]) GetsByIds(ids []int64) (row []T, err error) {
 	err = t.db.Where("id IN (?)", ids).Find(&row).Error
 	return

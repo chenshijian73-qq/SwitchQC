@@ -102,6 +102,24 @@ func (qcLogic *QcLogic) GetQCList() (qcs []Qc, err error) {
 	return
 }
 
+func (qcLogic *QcLogic) GetRecycleList() (qcs []Qc, err error) {
+	m := model.NewModels[tables.Qc]()
+	rows, err := m.GetsDeleted()
+	if err != nil {
+		log.Error("GetRecycleList error")
+		return nil, err
+	}
+	num := len(rows)
+	if num > 0 {
+		qcs = make([]Qc, num)
+		for i, row := range rows {
+			qcs[i].ID = row.ID
+			qcs[i].Name = row.Filename
+		}
+	}
+	return
+}
+
 func (qcLogic *QcLogic) UpdateQC(qc Qc) (err error) {
 	m := model.NewModels[tables.Qc]()
 	m.Model = &tables.Qc{
@@ -138,6 +156,16 @@ func (qcLogic *QcLogic) DeleteQC(qc Qc) (err error) {
 	m.Get()
 	err = file.DeleteFile(m.Model.Path + m.Model.Filename)
 
+	return
+}
+
+func (qcLogic *QcLogic) CleanBin() (err error) {
+	m := model.NewModels[tables.Qc]()
+	_, err = m.GetsDeleted()
+	if err != nil {
+		return
+	}
+	err = m.Delete()
 	return
 }
 
