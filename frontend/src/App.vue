@@ -7,7 +7,7 @@
           <a-button type="primary" shape="circle" size="mini" @click="showAddFile">
             <icon-plus />
           </a-button>
-          <RecycleCin/>
+          <RecycleBin/>
         </div>
       </div>
       <div class="content">
@@ -23,24 +23,24 @@ import './assets/app.css'
 import {onBeforeMount, ref} from 'vue';
 import { GetFiles } from '../wailsjs';
 import {
-  IconArchive,
   IconPlus,
 } from '@arco-design/web-vue/es/icon';
 import CodeEditor from "@/components/CodeEditor.vue";
 import AddFileDrawer from "@/components/AddFileDrawer.vue";
 import FileNav from "@/components/FileNav.vue";
-import RecycleCin from "@/components/RecycleCin.vue";
+import RecycleBin from "@/components/RecycleBin.vue";
 
-
-let qcFiles = ref([
-  { id: -1, name: 'file1', content: 'This is file1 content.', enabled: true },
-].map(file => ({ ...file, fileMenuVisible: false })));
 const fileMenuVisible = ref(false);
 const addFileVisible = ref(false);
+
+let qcFiles = ref([]);
 
 function getFiles() {
   GetFiles().then(response => {
     qcFiles.value = response.map(file => ({ ...file, fileMenuVisible: false }));
+    response.forEach((file, index) => {
+      console.log(`File ${index}:`, file.Name);
+    });
   });
 }
 
@@ -54,7 +54,7 @@ function closeAddFile() {
 const selectedFile = ref({});
 function selectFile(file) {
   qcFiles.value.forEach(f => {
-    if (f.name === file.name) {
+    if (f.Name === file.Name) {
       selectedFile.value = f;
     }
   });

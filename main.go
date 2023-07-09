@@ -32,10 +32,10 @@ func initData() {
 	if err := db.Init(); err != nil { //初始化db
 		panic(err)
 	}
-	if err := dataInit.Init(); err != nil { //初始化db
+	if err := logic.InitConfigQc(); err != nil {
 		panic(err)
 	}
-	if err := logic.InitConfigQc(); err != nil {
+	if err := dataInit.Init(); err != nil { //初始化db
 		panic(err)
 	}
 }

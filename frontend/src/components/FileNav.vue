@@ -1,9 +1,9 @@
 <template>
   <a-menu mode="pop" :style="{ width: '200px', borderRadius: '4px', backgroundColor: 'transparent'}">
-    <a-menu-item v-for="(file, index) in qcFiles" :key="index" :style="{ backgroundColor: props.selectedFile.name === file.name ? '#d9e5f6' : 'transparent' }" @click="props.selectFile(file)">
+    <a-menu-item v-for="(file, index) in props.qcFiles" :key="index" :style="{ backgroundColor: props.selectedFile.Name === file.Name ? '#d9e5f6' : 'transparent' }" @click="props.selectFile(file)">
       <div class="file-info">
-        <a-switch v-model="file.enabled" size="small" @change="changeStatus(file)"/>
-        <span class="name">{{ file.name.slice(0, file.name.lastIndexOf('.')) }}</span>
+        <a-switch v-model="file.Enabled" size="small" @change="changeStatus(file)"/>
+        <span class="name">{{ file.Name.slice(0, file.Name.lastIndexOf('.')) }}</span>
         <span class="menu-trigger">
               <a-trigger
                   :trigger="['hover']"
@@ -51,12 +51,12 @@ const props = defineProps({
     type: Array,
     required: true,
   },
-  getFiles: {
-    type: Function,
-    required: true,
-  },
   selectedFile: {
     type: Object,
+    required: true,
+  },
+  getFiles: {
+    type: Function,
     required: true,
   },
   selectFile: {
@@ -65,13 +65,12 @@ const props = defineProps({
   }
 });
 
-const qcFiles = ref(props.qcFiles)
 const selectedFile = ref(props.selectedFile);
 
 function changeStatus(file) {
   EditFile(file).then(err => {
     if (err !== ""){
-      message.error(`修改文件 ${file.name} 状态失败: ${err}`)
+      message.error(`修改文件 ${file.Name} 状态失败: ${err}`)
     }
   })
 }
@@ -79,19 +78,15 @@ function changeStatus(file) {
 function removeFile(file) {
   RemoveFile(file).then(err => {
     if (err !== ""){
-      message.error(`删除文件 ${file.name} 失败: ${err}`)
+      message.error(`删除文件 ${file.Name} 失败: ${err}`)
     } else {
-      if( selectedFile.value.name == file.name){
+      if( selectedFile.value.name == file.Name){
         selectedFile.value = {}
       }
       props.getFiles()
     }
   })
 }
-
-watch(() => props.qcFiles, (values) => {
-  qcFiles.value = values
-});
 
 </script>
 

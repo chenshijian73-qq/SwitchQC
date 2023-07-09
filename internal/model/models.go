@@ -93,7 +93,7 @@ func (t *Models[T]) GetsByIds(ids []int64) (row []T, err error) {
 	return
 }
 func (t *Models[T]) GetByName(name string) (row T, err error) {
-	err = t.db.Where("filename = (?)", name).Find(&row).Error
+	err = t.db.Where("name = (?)", name).Find(&row).Error
 	return
 }
 

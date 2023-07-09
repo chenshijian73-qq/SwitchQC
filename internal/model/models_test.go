@@ -41,8 +41,8 @@ func TestQueryQc(t *testing.T) {
 
 	qc := NewModels[tables.Qc]()
 	qc.Model = &tables.Qc{
-		ID:       798,
-		Filename: "hello",
+		ID:   798,
+		Name: "hello",
 	}
 	err := qc.Create()
 	if err != nil {

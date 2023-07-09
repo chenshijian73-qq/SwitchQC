@@ -5,13 +5,12 @@ import (
 )
 
 type Qc struct {
-	ID        uint        `gorm:"primary_key"`
-	Filename  string      `json:"filename"` //
-	Content   string      `gorm:"type:text;"`
-	Path      string      `json:"path"`                       //
-	Enabled    bool        `gorm:"type:boolean;default:true"`  //
-	IsDeleted bool        `gorm:"type:boolean;default:false"` //
-	CreateAt  *gtime.Time `json:"createAt"`                   //
-	UpdateAt  *gtime.Time `json:"updateAt"`                   //
-	DeleteAt  *gtime.Time `json:"deleteAt"`                   //
+	ID       uint        `gorm:"primaryKey"`
+	Name     string      `gorm:"column:name"`
+	Content  string      `gorm:"type:text"`
+	Filepath string      `gorm:"column:filepath"`
+	Enabled  bool        `gorm:"type:boolean;default:true"`
+	CreateAt *gtime.Time `json:"createAt"` //
+	UpdateAt *gtime.Time `json:"updateAt"` //
+	DeleteAt *gtime.Time `json:"deleteAt"` //
 }

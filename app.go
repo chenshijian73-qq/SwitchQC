@@ -2,6 +2,7 @@ package main
 
 import (
 	"changeme/internal/logic"
+	"changeme/internal/model/tables"
 	"context"
 	"fmt"
 	log "github.com/sirupsen/logrus"
@@ -42,7 +43,7 @@ type Form struct {
 	Enabled bool   `json:"enabled"`
 }
 
-func (a *App) GetFiles() []logic.Qc {
+func (a *App) GetFiles() []tables.Qc {
 	qcLogic := logic.NewQcLogic()
 	qcs, err := qcLogic.GetQCList()
 	if err != nil {
@@ -57,7 +58,7 @@ func (a *App) AddFile(form Form) (error string) {
 		return "The file name cannot be empty!"
 	}
 	qcLogic := logic.NewQcLogic()
-	err := qcLogic.CreateQC(logic.Qc{
+	err := qcLogic.CreateQC(tables.Qc{
 		Name:     form.Name,
 		Filepath: QcPath,
 		Content:  form.Content,
@@ -69,7 +70,7 @@ func (a *App) AddFile(form Form) (error string) {
 	return ""
 }
 
-func (a *App) EditFile(data logic.Qc) (error string) {
+func (a *App) EditFile(data tables.Qc) (error string) {
 	qcLogic := logic.NewQcLogic()
 	err := qcLogic.UpdateQC(data)
 	if err != nil {
@@ -78,7 +79,7 @@ func (a *App) EditFile(data logic.Qc) (error string) {
 	return ""
 }
 
-func (a *App) RemoveFile(data logic.Qc) (error string) {
+func (a *App) RemoveFile(data tables.Qc) (error string) {
 	qcLogic := logic.NewQcLogic()
 	err := qcLogic.DeleteQC(data)
 	if err != nil {
@@ -87,7 +88,7 @@ func (a *App) RemoveFile(data logic.Qc) (error string) {
 	return ""
 }
 
-func (a *App) GetRecycleList() []logic.Qc {
+func (a *App) GetRecycleList() []tables.Qc {
 	qcLogic := logic.NewQcLogic()
 	qcs, err := qcLogic.GetRecycleList()
 	if err != nil {

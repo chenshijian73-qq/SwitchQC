@@ -71,13 +71,13 @@ async function checkNameUnique(value) {
   if (!value) {
     nameUnique.value = null;
   } else {
-    const isNameUnique = props.qcFiles.every(file => file.name.slice(0, file.name.lastIndexOf('.')) !== value);
+    const isNameUnique = props.qcFiles.every(file => file.Name.slice(0, file.Name.lastIndexOf('.')) !== value);
     nameUnique.value = isNameUnique;
   }
 }
 
 function handleAddFileSubmit() {
-  const isNameUnique = props.qcFiles.every(file => file.name !== form.value.name);
+  const isNameUnique = props.qcFiles.every(file => file.Name !== form.value.name);
   if (!isNameUnique) {
     message.error('文件名已存在');
     return false;

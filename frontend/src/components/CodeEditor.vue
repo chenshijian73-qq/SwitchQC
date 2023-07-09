@@ -1,5 +1,5 @@
 <template>
-    <codemirror v-model="selectedFile.content"
+    <codemirror v-model="selectedFile.Content"
                 :style="{ height: '100%' }"
                 :autofocus="true"
                 :tabSize="2"

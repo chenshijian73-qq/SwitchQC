@@ -8,21 +8,12 @@ import (
 	"fmt"
 	"github.com/gogf/gf/v2/os/gtime"
 	log "github.com/sirupsen/logrus"
-	"io/ioutil"
 	"os"
 	"os/exec"
 	"path/filepath"
 	"strings"
 	"time"
 )
-
-type Qc struct {
-	ID       uint   `json:"id"`
-	Name     string `json:"name"`
-	Filepath string `json:"filepath"`
-	Content  string `json:"content"`
-	Enabled  bool   `json:"enabled"`
-}
 
 type QcLogic struct {
 }
@@ -31,7 +22,7 @@ func NewQcLogic() *QcLogic {
 	return &QcLogic{}
 }
 
-func (qcLogic *QcLogic) CreateQC(qc Qc) (err error) {
+func (qcLogic *QcLogic) CreateQC(qc tables.Qc) (err error) {
 	// 如果文件名末尾不带 .qc 扩展名，则添加它
 	if filepath.Ext(qc.Name) != ".qc" {
 		qc.Name = qc.Name + ".qc"
@@ -50,14 +41,13 @@ func (qcLogic *QcLogic) CreateQC(qc Qc) (err error) {
 	if err != nil {
 		return fmt.Errorf("添加文件失败，代码内容错误")
 	}
-	log.Info("testCreatQc")
 
 	m := model.NewModels[tables.Qc]()
 	m.Model = &tables.Qc{
 		ID:       qc.ID,
-		Filename: qc.Name,
+		Name:     qc.Name,
 		Content:  qc.Content,
-		Path:     strings.Replace(qc.Filepath, "~", os.Getenv("HOME"), 1),
+		Filepath: strings.Replace(qc.Filepath, "~", os.Getenv("HOME"), 1),
 		Enabled:  qc.Enabled,
 		CreateAt: gtime.New(time.Now()),
 	}
@@ -70,67 +60,31 @@ func (qcLogic *QcLogic) CreateQC(qc Qc) (err error) {
 	return
 }
 
-func (qcLogic *QcLogic) GetQCList() (qcs []Qc, err error) {
+func (qcLogic *QcLogic) GetQCList() (qcs []tables.Qc, err error) {
 	m := model.NewModels[tables.Qc]()
-	rows, err := m.GetsNoDeleted()
+	qcs, err = m.GetsNoDeleted()
 	if err != nil {
-		log.Error("getQClist error")
+		log.Error("get list error")
 		return nil, err
-	}
-	num := len(rows)
-	if num > 0 {
-		qcs = make([]Qc, num)
-		for i, row := range rows {
-			qcs[i].ID = row.ID
-			qcs[i].Name = row.Filename
-			qcs[i].Filepath = strings.Replace(row.Path, "~", os.Getenv("HOME"), 1)
-			qcs[i].Enabled = row.Enabled
-			//qcs[i].Content = row.Content
-			fullPath := qcs[i].Filepath + qcs[i].Name
-			if _, err := os.Stat(fullPath); os.IsNotExist(err) {
-				log.Error(fmt.Sprintf("file %s dont exist\n", fullPath))
-				continue
-			}
-			content, err := ioutil.ReadFile(fullPath)
-			if err != nil {
-				log.Error(fmt.Sprintf("read %s error: %s\n", fullPath, err))
-				continue
-			}
-			qcs[i].Content = string(content)
-		}
 	}
 	return
 }
 
-func (qcLogic *QcLogic) GetRecycleList() (qcs []Qc, err error) {
+func (qcLogic *QcLogic) GetRecycleList() (qcs []tables.Qc, err error) {
 	m := model.NewModels[tables.Qc]()
-	rows, err := m.GetsDeleted()
+	qcs, err = m.GetsDeleted()
 	if err != nil {
 		log.Error("GetRecycleList error")
 		return nil, err
 	}
-	num := len(rows)
-	if num > 0 {
-		qcs = make([]Qc, num)
-		for i, row := range rows {
-			qcs[i].ID = row.ID
-			qcs[i].Name = row.Filename
-		}
-	}
 	return
 }
 
-func (qcLogic *QcLogic) UpdateQC(qc Qc) (err error) {
+func (qcLogic *QcLogic) UpdateQC(qc tables.Qc) (err error) {
 	m := model.NewModels[tables.Qc]()
-	m.Model = &tables.Qc{
-		ID:       qc.ID,
-		Filename: qc.Name,
-		Content:  qc.Content,
-		Path:     qc.Filepath,
-		Enabled:  qc.Enabled,
-		UpdateAt: gtime.New(time.Now()),
-	}
-	m.Update("filename", "path", "status", "content", "update_at")
+	qc.UpdateAt = gtime.New(time.Now())
+	m.Model = &qc
+	m.Update("name", "path", "status", "content", "update_at")
 	err = file.SaveFileIfModified(qc.Filepath+qc.Name, qc.Content)
 	if err != nil {
 		return
@@ -143,18 +97,16 @@ func (qcLogic *QcLogic) UpdateQC(qc Qc) (err error) {
 	return
 }
 
-func (qcLogic *QcLogic) DeleteQC(qc Qc) (err error) {
+func (qcLogic *QcLogic) DeleteQC(qc tables.Qc) (err error) {
 	DeleteQcConfig(qc)
 
 	m := model.NewModels[tables.Qc]()
-	m.Model = &tables.Qc{
-		ID:       qc.ID,
-		Content:  qc.Content,
-		DeleteAt: gtime.New(time.Now()),
-	}
+	qc.DeleteAt = gtime.Now()
+	m.Model = &qc
 	m.Update("delete_at")
+
 	m.Get()
-	err = file.DeleteFile(m.Model.Path + m.Model.Filename)
+	err = file.DeleteFile(m.Model.Filepath + m.Model.Name)
 
 	return
 }
@@ -203,7 +155,7 @@ func InitConfigQc() (err error) {
 }
 
 // UpdateConfigQcFile 更新 ～/.qc/.qc 的内容
-func UpdateConfigQcFile(qc Qc) (err error) {
+func UpdateConfigQcFile(qc tables.Qc) (err error) {
 	if qc.Enabled {
 		CheckQcFileExist(qc)
 		AddQcConfig(qc)
@@ -248,7 +200,7 @@ func UpdateALlConfigQcFile() (err error) {
 }
 
 // AddQcConfig 添加 'source $file' 到 ～/.qc/.qc
-func AddQcConfig(qc Qc) (err error) {
+func AddQcConfig(qc tables.Qc) (err error) {
 	qcConfigPath := os.Getenv("HOME") + "/.qc/.qc"
 	if qc.Name == "" {
 		return fmt.Errorf("the file name cannot be empty")
@@ -274,7 +226,7 @@ func AddQcConfig(qc Qc) (err error) {
 }
 
 // DeleteQcConfig 在 ～/.qc/.qc 删除 source $file
-func DeleteQcConfig(qc Qc) (err error) {
+func DeleteQcConfig(qc tables.Qc) (err error) {
 	homeDir, _ := os.UserHomeDir()
 	qcConfigPath := homeDir + "/.qc/.qc"
 	err = file.DeleteMatchRow(qcConfigPath, qc.Name)
@@ -333,7 +285,7 @@ func sourceConfig() (err error) {
 	return
 }
 
-func CheckQcFileExist(qc Qc) (err error) {
+func CheckQcFileExist(qc tables.Qc) (err error) {
 	f := strings.Replace(qc.Filepath, "~", os.Getenv("HOME"), 1) + qc.Name
 	if !file.IsExist(f) {
 		err = file.SaveFile(f, qc.Content)
