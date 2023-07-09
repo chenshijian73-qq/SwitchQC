@@ -48,7 +48,7 @@ func (t *Models[T]) Save() (err error) {
 }
 
 func (t *Models[T]) Delete() (err error) {
-	return t.db.Delete(t.Model, t.Model).Error
+	return t.db.Delete(t.Model).Error
 }
 
 func (t *Models[T]) Update(columns ...interface{}) (err error) {

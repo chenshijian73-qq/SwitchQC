@@ -6,16 +6,21 @@
     <template #title>
       RecycleBin
     </template>
-    <a-list ::style="{ width: '40vh'}" titleAlign="center">
+    <a-list :style="{ width: '50vh'}" titleAlign="center">
       <a-list-item v-for="(file, index) in recycleList" :index="index">
         <div class="list">
-          <a-button type="dashed" status="success" shape="circle" size="mini" @click="restoreFile(file)">
-            <icon-refresh />
-          </a-button>
           <span class="name">
               {{ file.Name.slice(0, file.Name.lastIndexOf('.')) }}
-          </span>
-          <span class="deleted-date-font">DeletedAt: {{ file.DeleteAt }}</span>
+           </span>
+          <a-space>
+            <span class="deleted-date-font">Deleted: {{ file.DeleteAt }}</span>
+            <a-button type="dashed" status="success" shape="circle" size="mini" @click="restoreFile(file)">
+              <icon-refresh />
+            </a-button>
+            <a-button type="dashed" status="danger" shape="circle" size="mini" @click="removeFromBin(file)">
+              <icon-minus />
+            </a-button>
+          </a-space>
         </div>
       </a-list-item>
     </a-list>
@@ -27,9 +32,11 @@ import '../assets/recycle-bin.css'
 import {
   IconRefresh,
   IconArchive,
+    IconMinus
 } from '@arco-design/web-vue/es/icon';
-import {GetRecycleList, CleanBin} from "../../wailsjs";
+import {GetRecycleList, DeleteFromBin, LogInfo, CleanBin} from "../../wailsjs";
 import {ref} from "vue";
+import {message} from "ant-design-vue";
 
 const recycleList = ref({})
 function getRecycleList() {
@@ -44,6 +51,18 @@ const restoreFile = (file) => {
   console.log("hello")
 }
 
+const removeFromBin = (file) => {
+  LogInfo("hello")
+  DeleteFromBin(file).then(err => {
+    if (err !== ""){
+      message.error(`删除文件 ${file.Name} 失败: ${err}`)
+    } else {
+      message.info("jlj")
+    }
+    getRecycleList()
+  })
+}
+
 const isShowBin = ref(false)
 const showBin = () => {
   getRecycleList()
@@ -54,8 +73,6 @@ const handleOk = () => {
 const handleCancel = () => {
   isShowBin.value = false
 }
-
-
 
 defineExpose({
   showBin,

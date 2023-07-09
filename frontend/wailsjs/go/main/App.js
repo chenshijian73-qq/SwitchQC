@@ -10,6 +10,10 @@ export function CleanBin() {
   return window['go']['main']['App']['CleanBin']();
 }
 
+export function DeleteFromBin(arg1) {
+  return window['go']['main']['App']['DeleteFromBin'](arg1);
+}
+
 export function EditFile(arg1) {
   return window['go']['main']['App']['EditFile'](arg1);
 }

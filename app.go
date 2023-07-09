@@ -24,10 +24,6 @@ func (a *App) startup(ctx context.Context) {
 	a.Ctx = ctx
 }
 
-func (a *App) DomReady(ctx context.Context) {
-
-}
-
 func (a *App) Shutdown(ctx context.Context) {
 
 }
@@ -95,6 +91,17 @@ func (a *App) GetRecycleList() []tables.Qc {
 		log.Error(err)
 	}
 	return qcs
+}
+
+func (a *App) DeleteFromBin(data tables.Qc) (error string) {
+	fmt.Println("jakjlkj")
+	//qcLogic := logic.NewQcLogic()
+	//err := qcLogic.DeleteQCFromBin(data)
+	//if err != nil {
+	//	log.Error(err)
+	//	return err.Error()
+	//}
+	return "error"
 }
 
 func (a *App) CleanBin() (error string) {

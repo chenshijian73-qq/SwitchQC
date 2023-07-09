@@ -7,6 +7,8 @@ export function AddFile(arg1:main.Form):Promise<string>;
 
 export function CleanBin():Promise<string>;
 
+export function DeleteFromBin(arg1:tables.Qc):Promise<string>;
+
 export function EditFile(arg1:tables.Qc):Promise<string>;
 
 export function GetFiles():Promise<Array<tables.Qc>>;
