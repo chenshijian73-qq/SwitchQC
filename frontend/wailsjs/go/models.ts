@@ -23,11 +23,11 @@ export namespace tables {
 	
 	export class Qc {
 	    // Go type: gtime
-	    createAt?: any;
+	    CreateAt?: any;
 	    // Go type: gtime
-	    updateAt?: any;
+	    UpdateAt?: any;
 	    // Go type: gtime
-	    deleteAt?: any;
+	    DeleteAt?: any;
 	
 	    static createFrom(source: any = {}) {
 	        return new Qc(source);
@@ -35,9 +35,9 @@ export namespace tables {
 	
 	    constructor(source: any = {}) {
 	        if ('string' === typeof source) source = JSON.parse(source);
-	        this.createAt = this.convertValues(source["createAt"], null);
-	        this.updateAt = this.convertValues(source["updateAt"], null);
-	        this.deleteAt = this.convertValues(source["deleteAt"], null);
+	        this.CreateAt = this.convertValues(source["CreateAt"], null);
+	        this.UpdateAt = this.convertValues(source["UpdateAt"], null);
+	        this.DeleteAt = this.convertValues(source["DeleteAt"], null);
 	    }
 	
 		convertValues(a: any, classs: any, asMap: boolean = false): any {

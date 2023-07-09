@@ -6,20 +6,26 @@
     <template #title>
       RecycleBin
     </template>
-    <a-menu mode="pop" :style="{ width: '200px', borderRadius: '4px', backgroundColor: 'transparent'}">
-      <a-menu-item v-for="(file, index) in recycleList" :index="index">
-        <div class="file-info">
-          <span class="name">{{ file.name.slice(0, file.name.lastIndexOf('.')) }}</span>
-          <span class="deleted-date">deletedAt: {{ file.deleted }}</span>
+    <a-list ::style="{ width: '40vh'}" titleAlign="center">
+      <a-list-item v-for="(file, index) in recycleList" :index="index">
+        <div class="list">
+          <a-button type="dashed" status="success" shape="circle" size="mini" @click="restoreFile(file)">
+            <icon-refresh />
+          </a-button>
+          <span class="name">
+              {{ file.Name.slice(0, file.Name.lastIndexOf('.')) }}
+          </span>
+          <span class="deleted-date-font">DeletedAt: {{ file.DeleteAt }}</span>
         </div>
-      </a-menu-item>
-    </a-menu>
+      </a-list-item>
+    </a-list>
   </a-modal>
 </template>
 
 <script setup>
 import '../assets/recycle-bin.css'
 import {
+  IconRefresh,
   IconArchive,
 } from '@arco-design/web-vue/es/icon';
 import {GetRecycleList, CleanBin} from "../../wailsjs";
@@ -29,7 +35,13 @@ const recycleList = ref({})
 function getRecycleList() {
   GetRecycleList().then(response => {
     recycleList.value = response;
+    // response.forEach((file, index) => {
+    //   console.log(`File ${index}:`, file);
+    // });
   });
+}
+const restoreFile = (file) => {
+  console.log("hello")
 }
 
 const isShowBin = ref(false)

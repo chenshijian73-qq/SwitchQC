@@ -46,11 +46,3 @@
     width: 100%;
     height: 100%;
 }
-
-.CodeMirror-focused .cm-matchhighlight {
-    background-position: bottom;
-    background-repeat: repeat-x;
-}
-.CodeMirror-selection-highlight-scrollbar {
-    background-color: green;
-}

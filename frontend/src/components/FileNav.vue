@@ -83,8 +83,8 @@ function removeFile(file) {
       if( selectedFile.value.name == file.Name){
         selectedFile.value = {}
       }
-      props.getFiles()
     }
+    props.getFiles()
   })
 }
 

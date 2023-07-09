@@ -38,9 +38,9 @@ let qcFiles = ref([]);
 function getFiles() {
   GetFiles().then(response => {
     qcFiles.value = response.map(file => ({ ...file, fileMenuVisible: false }));
-    response.forEach((file, index) => {
-      console.log(`File ${index}:`, file.Name);
-    });
+    // response.forEach((file, index) => {
+    //   console.log(`File ${index}:`, file.Name);
+    // });
   });
 }
 
