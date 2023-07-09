@@ -7,7 +7,7 @@
           <a-button type="primary" shape="circle" size="mini" @click="showAddFile">
             <icon-plus />
           </a-button>
-          <RecycleBin/>
+          <RecycleBin :getFiles="getFiles"/>
         </div>
       </div>
       <div class="content">
@@ -21,7 +21,7 @@
 <script setup>
 import './assets/app.css'
 import {onBeforeMount, ref} from 'vue';
-import { GetFiles } from '../wailsjs';
+import {GetFiles, LogInfo} from '../wailsjs';
 import {
   IconPlus,
 } from '@arco-design/web-vue/es/icon';
@@ -53,11 +53,12 @@ function closeAddFile() {
 
 const selectedFile = ref({});
 function selectFile(file) {
-  qcFiles.value.forEach(f => {
+  for (const f of qcFiles.value) {
     if (f.Name === file.Name) {
       selectedFile.value = f;
+      return;
     }
-  });
+  }
 }
 
 onBeforeMount(

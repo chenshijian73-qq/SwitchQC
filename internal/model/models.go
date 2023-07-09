@@ -47,8 +47,8 @@ func (t *Models[T]) Save() (err error) {
 	return t.db.Omit("created_by").Save(t.Model).Error
 }
 
-func (t *Models[T]) Delete() (err error) {
-	return t.db.Delete(t.Model).Error
+func (t *Models[T]) Delete(id uint) (err error) {
+	return t.db.Where("id = ?", id).Delete(t.Model).Error
 }
 
 func (t *Models[T]) Update(columns ...interface{}) (err error) {

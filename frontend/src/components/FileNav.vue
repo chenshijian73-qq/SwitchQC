@@ -65,8 +65,6 @@ const props = defineProps({
   }
 });
 
-const selectedFile = ref(props.selectedFile);
-
 function changeStatus(file) {
   EditFile(file).then(err => {
     if (err !== ""){
@@ -79,10 +77,6 @@ function removeFile(file) {
   RemoveFile(file).then(err => {
     if (err !== ""){
       message.error(`删除文件 ${file.Name} 失败: ${err}`)
-    } else {
-      if( selectedFile.value.name == file.Name){
-        selectedFile.value = {}
-      }
     }
     props.getFiles()
   })

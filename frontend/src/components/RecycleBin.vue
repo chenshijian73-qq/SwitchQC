@@ -34,9 +34,16 @@ import {
   IconArchive,
     IconMinus
 } from '@arco-design/web-vue/es/icon';
-import {GetRecycleList, DeleteFromBin, LogInfo, CleanBin} from "../../wailsjs";
+import {GetRecycleList, CleanFileFromBin, RestoreFileFromBin} from "../../wailsjs/go/main/Recycle";
 import {ref} from "vue";
 import {message} from "ant-design-vue";
+
+const props = defineProps({
+  getFiles: {
+    type: Function,
+    required: true,
+  },
+});
 
 const recycleList = ref({})
 function getRecycleList() {
@@ -48,16 +55,19 @@ function getRecycleList() {
   });
 }
 const restoreFile = (file) => {
-  console.log("hello")
+  RestoreFileFromBin(file).then(err => {
+    if (err !== ""){
+      message.error(`恢复文件 ${file.Name} 失败: ${err}`)
+    }
+    getRecycleList()
+    props.getFiles()
+  })
 }
 
-const removeFromBin = (file) => {
-  LogInfo("hello")
-  DeleteFromBin(file).then(err => {
+function removeFromBin(file) {
+  CleanFileFromBin(file).then(err => {
     if (err !== ""){
       message.error(`删除文件 ${file.Name} 失败: ${err}`)
-    } else {
-      message.info("jlj")
     }
     getRecycleList()
   })

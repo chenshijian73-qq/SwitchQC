@@ -83,33 +83,3 @@ func (a *App) RemoveFile(data tables.Qc) (error string) {
 	}
 	return ""
 }
-
-func (a *App) GetRecycleList() []tables.Qc {
-	qcLogic := logic.NewQcLogic()
-	qcs, err := qcLogic.GetRecycleList()
-	if err != nil {
-		log.Error(err)
-	}
-	return qcs
-}
-
-func (a *App) DeleteFromBin(data tables.Qc) (error string) {
-	fmt.Println("jakjlkj")
-	//qcLogic := logic.NewQcLogic()
-	//err := qcLogic.DeleteQCFromBin(data)
-	//if err != nil {
-	//	log.Error(err)
-	//	return err.Error()
-	//}
-	return "error"
-}
-
-func (a *App) CleanBin() (error string) {
-	qcLogic := logic.NewQcLogic()
-	err := qcLogic.CleanBin()
-	if err != nil {
-		log.Error(err)
-		return err.Error()
-	}
-	return
-}

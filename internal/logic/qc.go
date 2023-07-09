@@ -84,7 +84,7 @@ func (qcLogic *QcLogic) UpdateQC(qc tables.Qc) (err error) {
 	m := model.NewModels[tables.Qc]()
 	qc.UpdateAt = gtime.New(time.Now())
 	m.Model = &qc
-	m.Update("name", "path", "status", "content", "update_at", "delete_at")
+	m.Update("name", "path", "status", "content", "update_at")
 	err = file.SaveFileIfModified(qc.Filepath+qc.Name, qc.Content)
 	if err != nil {
 		return
@@ -111,20 +111,37 @@ func (qcLogic *QcLogic) DeleteQC(qc tables.Qc) (err error) {
 	return
 }
 
-func (qcLogic *QcLogic) DeleteQCFromBin(qc tables.Qc) (err error) {
+func (qcLogic *QcLogic) RestoreQCFromBin(qc tables.Qc) (err error) {
 	m := model.NewModels[tables.Qc]()
+	qc.DeleteAt = nil
 	m.Model = &qc
-	err = m.Delete()
+	err = m.Update("delete_at")
+
+	// 如果文件名末尾不带 .qc 扩展名，则添加它
+	if filepath.Ext(qc.Name) != ".qc" {
+		qc.Name = qc.Name + ".qc"
+	}
+	err = file.SaveFile(strings.Replace(qc.Filepath, "~", os.Getenv("HOME"), 1)+qc.Name, qc.Content)
+	if err != nil {
+		return err
+	}
+
+	err = AddQcConfig(qc)
+	if err != nil {
+		return err
+	}
+	err = UpdateConfigQcFile(qc)
+	if err != nil {
+		return fmt.Errorf("添加文件失败，代码内容错误")
+	}
+
 	return
 }
 
-func (qcLogic *QcLogic) CleanBin() (err error) {
+func (qcLogic *QcLogic) DeleteQCFromBin(qc tables.Qc) (err error) {
 	m := model.NewModels[tables.Qc]()
-	_, err = m.GetsDeleted()
-	if err != nil {
-		return
-	}
-	err = m.Delete()
+	m.Model = &qc
+	err = m.Delete(qc.ID)
 	return
 }
 

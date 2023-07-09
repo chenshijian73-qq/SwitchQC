@@ -6,24 +6,12 @@ export function AddFile(arg1) {
   return window['go']['main']['App']['AddFile'](arg1);
 }
 
-export function CleanBin() {
-  return window['go']['main']['App']['CleanBin']();
-}
-
-export function DeleteFromBin(arg1) {
-  return window['go']['main']['App']['DeleteFromBin'](arg1);
-}
-
 export function EditFile(arg1) {
   return window['go']['main']['App']['EditFile'](arg1);
 }
 
 export function GetFiles() {
   return window['go']['main']['App']['GetFiles']();
-}
-
-export function GetRecycleList() {
-  return window['go']['main']['App']['GetRecycleList']();
 }
 
 export function Greet(arg1) {

@@ -42,6 +42,7 @@ func initData() {
 
 func RunApp() {
 	app := NewApp()
+	recycle := NewRecycle()
 
 	AppMenu := menu.NewMenu()
 	FileMenu := AppMenu.AddSubmenu("File")
@@ -77,6 +78,7 @@ func RunApp() {
 
 		Bind: []interface{}{
 			app,
+			recycle,
 		},
 		// Windows平台特定选项
 		Windows: &windows.Options{

@@ -1,5 +1,5 @@
 <template>
-    <codemirror v-model="selectedFile.Content"
+    <codemirror v-model="props.selectedFile.Content"
                 :style="{ height: '100%' }"
                 :autofocus="true"
                 :tabSize="2"
@@ -60,11 +60,10 @@ const props = defineProps({
   },
 });
 
-const selectedFile = ref({});
 const disableCode = ref(true);
 
 function handleBlur() {
-  EditFile(selectedFile.value).then(err => {
+  EditFile(props.selectedFile).then(err => {
     console.log(`${err}`)
     if (err !== ""){
       message.error(`修改 ${props.selectedFile.name} 内容失败: ${err}`)
@@ -74,7 +73,6 @@ function handleBlur() {
 
 watch(() => props.selectedFile, (value) => {
   if (value) {
-    selectedFile.value = value;
     disableCode.value = false;
   } else {
     disableCode.value = true;
