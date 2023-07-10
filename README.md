@@ -1,5 +1,6 @@
 ## Introduce
 In the form of file classification, all aliases and variables are centralized in the desktop application for management, so that personnel can quickly find and modify the required configuration items, as well as add quick and concise commands to configure themselves.
+
 ![appicon.png](build%2Fappicon.png)
 - **Supported system**：Mac、Linux
 - **Frame**：wails2
