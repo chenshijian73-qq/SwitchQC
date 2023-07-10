@@ -106,7 +106,7 @@ func (qcLogic *QcLogic) DeleteQC(qc tables.Qc) (err error) {
 	m.Update("delete_at")
 
 	m.Get()
-	err = file.DeleteFile(m.Model.Filepath + m.Model.Name)
+	file.DeleteFile(m.Model.Filepath + m.Model.Name)
 
 	return
 }
