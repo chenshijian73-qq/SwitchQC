@@ -1,10 +1,10 @@
 ## Introduce
-以文件分类的形式，将所有的别名和变量集中在一个统一的地方进行管理，更好地管理配置系统中的别名和变量，方便人员快速找到需要的配置项并进行修改，以及配置自己的快捷简洁命令
+In the form of file classification, all aliases and variables are centralized in the desktop application for management, so that personnel can quickly find and modify the required configuration items, as well as add quick and concise commands to configure themselves.
 ![appicon.png](build%2Fappicon.png)
-- 支持系统：Mac、Linux
-- 框架：wails2
-- 前端： Vue3 + Arco
-- 后端： Golang
+- **Supported system**：Mac、Linux
+- **Frame**：wails2
+- **Frontend**： Vue3 + Arco
+- **Backend**： Golang
 
 ## How to build
 
@@ -12,6 +12,7 @@
 ```
 go install github.com/wailsapp/wails/v2/cmd/wails@latest
 ```
+**Reference：** https://wails.io/docs/gettingstarted/installation
 
 ### develop the program
 ```
@@ -46,3 +47,7 @@ Open RecycleBin:
 Retore or Remove file in RecycleBin
 ![img_6.png](images/img_6.png)
 
+
+## Star History
+
+[![Star History Chart](https://api.star-history.com/svg?repos=chenshijian73-qq/quickcmd&type=Date)](https://star-history.com/#chenshijian73-qq/quickcmd&Date)
