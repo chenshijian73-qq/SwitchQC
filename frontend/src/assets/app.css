@@ -1,0 +1,48 @@
+.app {
+    display: flex;
+    flex-direction: column;
+    height: 100vh;
+    background-color: #edfaff;
+}
+
+.main {
+    display: flex;
+    flex: 1;
+    overflow: hidden;
+    margin-padding: 10px;
+    padding-top: 10px;
+    padding-bottom: 10px;
+    height: 100%;
+}
+
+.nav {
+    position: relative; /* 将 .nav 元素设置为相对定位 */
+    width: 200px;
+    border-right: 1px solid #cecfd0;
+    overflow: auto;
+    height: 100%;
+}
+
+.options {
+    display: flex; /* 将 .add-button 元素设置为弹性容器 */
+    justify-content: space-between; /* 将内部元素分散对齐 */
+    align-items: center; /* 将内部元素垂直居中对齐 */
+    position: absolute; /* 将 .add-button 元素设置为绝对定位 */
+    bottom: 0px; /* 将 .add-button 元素放置在 .nav 的底部 */
+    left: 0px; /* 将 .add-button 元素放置在 .nav 的左侧 */
+    width: 90%; /* 将 .add-button 元素的宽度设置为与 .nav 元素相等 */
+    margin-left: 10px;
+    margin-right: 10px;
+    margin-top: 10px;
+    padding-top: 5px;
+    padding-bottom: 5px;
+    border-top: 1px solid #dadada;
+}
+
+.content {
+    flex: 1;
+    margin-padding-left: 10px;
+    padding-right: 10px;
+    width: 100%;
+    height: 100%;
+}

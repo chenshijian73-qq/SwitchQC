@@ -1,0 +1,38 @@
+.arco-drawer-header .arco-drawer-title {
+    margin-right: auto;
+    color: rgb(26 98 242);
+    font-size: 16px;
+    font-weight: bold;
+    text-align: left;
+}
+
+.arco-drawer-footer {
+    flex-shrink: 0;
+    box-sizing: border-box;
+    padding: 8px;
+    text-align: right;
+    border-top: 1px solid var(--color-neutral-3);
+}
+
+.arco-input-wrapper {
+    display: inline-flex;
+    box-sizing: border-box;
+    /* width: 100%; */
+    padding-right: 12px;
+    padding-left: 12px;
+    color: var(--color-text-1);
+    font-size: 14px;
+    background-color: var(--color-fill-2);
+    border: 1px solid transparent;
+    border-radius: var(--border-radius-small);
+    cursor: text;
+    transition: color 0.1s cubic-bezier(0, 0, 1, 1), border-color 0.1s cubic-bezier(0, 0, 1, 1), background-color 0.1s cubic-bezier(0, 0, 1, 1);
+}
+
+.arco-form-item-label-col > .arco-form-item-label {
+    max-width: 100%;
+    color: var(--color-text-2);
+    font-size: 14px;
+    font-weight: bold;
+    white-space: normal;
+}

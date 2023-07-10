@@ -1,0 +1,11 @@
+app:
+  level: debug
+  GWTimeOut:
+#  log:
+#    filePath: ~/.qc
+
+sqlite:
+  filePath: manifest/db/qc.db
+  maxIdleCons: 10
+  maxOpenCons: 100
+  connMaxLifetime: 280

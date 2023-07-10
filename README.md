@@ -1,25 +1,48 @@
 ## Introduce
-框架：wails2
-前端实现： Vue3
-后端实现： Golang
+以文件分类的形式，将所有的别名和变量集中在一个统一的地方进行管理，更好地管理配置系统中的别名和变量，方便人员快速找到需要的配置项并进行修改，以及配置自己的快捷简洁命令
+![appicon.png](build%2Fappicon.png)
+- 支持系统：Mac、Linux
+- 框架：wails2
+- 前端： Vue3 + Arco
+- 后端： Golang
 
-基于 Wails2 实现类似 switchhost 的功能。
-1、左边栏显示文件列表，文件来源默认本地文件目录，如 /.quickcmd，文件后缀为 .quickcmd;
-2、文件列表每个文件增加一个开关，可以开启或关闭
-3、右边栏为文本框，默认显示左边栏文件列表第一个文件的内容，可以手动点击任意文件，文本框显示对应文件内容。文本框支持增删改。
-4、增加按钮，可以点击创建文件、删除文件
+## How to build
 
-## 安装 waild
+### install waild
 ```
 go install github.com/wailsapp/wails/v2/cmd/wails@latest
 ```
 
-## 运行项目测试
+### develop the program
 ```
 wails dev
 ```
 
-## 编译项目
+### build app
 ```
-wails build
+wails build -clean
 ```
+
+### run app
+```
+# mac: After copying, double-click the app to run
+cp -r build/bin/QC.app ~/Applications/
+```
+
+## How to Use
+When you launch the program, the app screen is shown like this:
+![img.png](images/img.png)
+Click any file in the navigation bar to view and edit it:
+![img_1.png](images/img_1.png)
+Edit it and Open new terminal to test
+![img_7.png](images/img_7.png)
+![img_8.png](images/img_8.png)
+Delete file:
+![img_3.png](images/img_3.png)
+Add file:
+![img_4.png](images/img_4.png)
+Open RecycleBin:
+![img_5.png](images/img_5.png)
+Retore or Remove file in RecycleBin
+![img_6.png](images/img_6.png)
+

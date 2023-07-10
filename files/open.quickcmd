@@ -1,0 +1,4 @@
+alias sublime='open -a /Applications/Sublime\ Text.app'
+alias typora='open -a  /Applications/Typora.app'
+alias golang='open -a /Applications/GoLand.app'
+alias execl='open -a /Applications/Microsoft\ Excel.app'

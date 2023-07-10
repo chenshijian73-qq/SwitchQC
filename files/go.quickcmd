@@ -1,0 +1,4 @@
+export GO111MODULE=true
+export GOROOT=/Users/shijianchen/sdk/go1.19.4
+export GOPATH=$HOME/go
+export PATH=$GOROOT/bin:$GOPATH/bin:$PATH

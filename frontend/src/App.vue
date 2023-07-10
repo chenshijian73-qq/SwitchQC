@@ -1,31 +1,95 @@
 <template>
-  <div id="app" style="display: flex; height: 100%;">
-    <FileList @file-selected="selectFile" style="width: 20%; height: 100%; overflow-y: scroll; border-right: 1px solid #eec5c5;" />
-    <FileContent :selected-file="selectedFile" style="width: 80%; height: 100%; padding-left: 10px; overflow-y: scroll;" />
+  <div class="app">
+    <div class="main">
+      <div class="nav" >
+        <FileNav :selectedFile="selectedFile" :selectFile="selectFile" :qcFiles="qcFiles" :removeFile="removeFile"/>
+        <a-empty v-if="Object.keys(qcFiles).length==0">
+          No data, please add!
+        </a-empty>
+        <div class="options">
+          <a-button type="primary" shape="circle" size="mini" @click="showAddFile">
+            <icon-plus />
+          </a-button>
+          <RecycleBin :getFiles="getFiles"/>
+        </div>
+      </div>
+      <div class="content">
+        <CodeEditor :selectedFile="selectedFile" :disableCode="disableCode"/>
+      </div>
+    </div>
+    <AddFileDrawer :qcFiles="qcFiles" :addFileVisible="addFileVisible" :getFiles="getFiles" :closeAddFile="closeAddFile" />
   </div>
 </template>
 
-<script>
-import { ref } from 'vue';
-import FileList from './components/FilesList.vue';
-import FileContent from './components/FileContent.vue';
+<script setup>
+import './assets/app.css'
+import {onBeforeMount, ref} from 'vue';
+import {GetFiles, LogInfo, RemoveFile} from '../wailsjs';
+import {
+  IconPlus,
+} from '@arco-design/web-vue/es/icon';
+import CodeEditor from "@/components/CodeEditor.vue";
+import AddFileDrawer from "@/components/AddFileDrawer.vue";
+import FileNav from "@/components/FileNav.vue";
+import RecycleBin from "@/components/RecycleBin.vue";
+import {message} from "ant-design-vue";
 
-export default {
-  components: {
-    FileList,
-    FileContent,
-  },
-  setup() {
-    const selectedFile = ref(null);
+const fileMenuVisible = ref(false);
+const addFileVisible = ref(false);
+const disableCode = ref(true);
 
-    const selectFile = (file) => {
-      selectedFile.value = file;
-    };
+let qcFiles = ref([]);
 
-    return {
-      selectedFile,
-      selectFile,
-    };
-  },
-};
+function getFiles() {
+  GetFiles().then(response => {
+    qcFiles.value = response.map(file => ({ ...file, fileMenuVisible: false }));
+    // response.forEach((file, index) => {
+    //   console.log(`File ${index}:`, file.Name);
+    // });
+    console.log(qcFiles)
+  });
+}
+
+function showAddFile() {
+  addFileVisible.value = true;
+}
+function closeAddFile() {
+  addFileVisible.value = false;
+}
+
+const selectedFile = ref({});
+function selectFile(file) {
+  for (const f of qcFiles.value) {
+    if (f.Name === file.Name) {
+      selectedFile.value = f;
+      disableCode.value = false;
+      return;
+    }
+  }
+}
+
+function removeFile(file) {
+  RemoveFile(file).then(err => {
+    if (err !== ""){
+      message.error(`删除文件 ${file.Name} 失败: ${err}`)
+    } else {
+      LogInfo(file.Name)
+      console.log(selectedFile)
+      if ( file.Name === selectedFile.value.Name) {
+        LogInfo("lll")
+        selectedFile.value = {}
+        disableCode.value = true
+      }
+    }
+    getFiles()
+  })
+}
+
+onBeforeMount(
+    getFiles
+);
+
 </script>
+
+<style scoped>
+</style>
