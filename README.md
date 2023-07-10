@@ -28,24 +28,37 @@ wails build -clean
 ### run app
 ```
 # mac: After copying, double-click the app to run
-cp -r build/bin/QC.app ~/Applications/
+cp -r build/bin/QC.app /Applications
 ```
 
 ## How to Use
-When you launch the program, the app screen is shown like this:
+**When you launch the program, the app screen is shown like this:**
+
 ![img.png](images/img.png)
-Click any file in the navigation bar to view and edit it:
+
+**Click any file in the navigation bar to view and edit it:**
+
 ![img_1.png](images/img_1.png)
-Edit it and Open new terminal to test
+
+**Edit it and Open new terminal to test**
+
 ![img_7.png](images/img_7.png)
 ![img_8.png](images/img_8.png)
-Delete file:
+
+**Delete file:**
+
 ![img_3.png](images/img_3.png)
-Add file:
+
+**Add file:**
+
 ![img_4.png](images/img_4.png)
-Open RecycleBin:
+
+**Open RecycleBin:**
+
 ![img_5.png](images/img_5.png)
-Retore or Remove file in RecycleBin
+
+**Restore or Remove file in RecycleBin:**
+
 ![img_6.png](images/img_6.png)
 
 
