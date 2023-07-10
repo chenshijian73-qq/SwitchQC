@@ -1,32 +1,47 @@
-## Introduce
-介绍：以文件的形式，统一管理配置系统的别名，变量
-支持系统：Mac、Linux
-框架：wails2
-前端实现： Vue3 + Arco
-后端实现： Golang
+## QC Introduce
+以文件分类的形式，将所有的别名和变量集中在一个统一的地方进行管理，更好地管理配置系统中的别名和变量的，方便人员快速找到需要的配置项并进行修改，以及配置自己的快捷简洁命令
+- 支持系统：Mac、Linux
+- 框架：wails2
+- 前端： Vue3 + Arco
+- 后端： Golang
 
-# 开发项
-- 文件列表☑️
-- 新增文件☑️
-- 保存内容☑️
-- 删除文件☑️
-- 文件使用开关☑️
-- 文本框更换为代码编辑器☑️
-- 回收站功能☑️
-- 数据为空的显示☑️
-- 删除文件 编辑框依旧可用☑️
+## How to build
 
-## 安装 waild
+### install waild
 ```
 go install github.com/wailsapp/wails/v2/cmd/wails@latest
 ```
 
-## 运行项目测试
+### develop the program
 ```
 wails dev
 ```
 
-## 编译项目
+### build app
 ```
 wails build -clean
 ```
+
+### run app
+```
+# mac: After copying, double-click the app to run
+cp -r build/bin/QC.app ~/Applications/
+```
+
+## How to Use
+When you launch the program, the app screen is shown like this:
+![img.png](images/img.png)
+Click any file in the navigation bar to view and edit it:
+![img_1.png](images/img_1.png)
+Edit it and Open new terminal to test
+![img_7.png](images/img_7.png)
+![img_8.png](images/img_8.png)
+Delete file:
+![img_3.png](images/img_3.png)
+Add file:
+![img_4.png](images/img_4.png)
+Open RecycleBin:
+![img_5.png](images/img_5.png)
+Retore or Remove file in RecycleBin
+![img_6.png](images/img_6.png)
+
