@@ -1,4 +1,4 @@
-## Introduce
+## Introduce For SwitchQC
 In the form of file classification, all aliases and variables are centralized in the desktop application for management, so that personnel can quickly find and modify the required configuration items, as well as add quick and concise commands to configure themselves.
 
 ![appicon.png](build%2Fappicon.png)
@@ -28,7 +28,7 @@ wails build -clean
 ### run app
 ```
 # mac: After copying, double-click the app to run
-cp -r build/bin/QC.app /Applications
+cp -r build/bin/SwitchQC.app /Applications
 ```
 
 ## How to Use
@@ -64,4 +64,4 @@ cp -r build/bin/QC.app /Applications
 
 ## Star History
 
-[![Star History Chart](https://api.star-history.com/svg?repos=chenshijian73-qq/quickcmd&type=Date)](https://star-history.com/#chenshijian73-qq/quickcmd&Date)
+[![Star History Chart](https://api.star-history.com/svg?repos=chenshijian73-qq/SwitchQC&type=Date)](https://star-history.com/#chenshijian73-qq/SwitchQC&Date)
