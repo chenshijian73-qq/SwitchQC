@@ -83,7 +83,6 @@ func DeleteMatchRow(filePath, key string) (err error) {
 		return
 	}
 	defer file.Close()
-
 	scanner := bufio.NewScanner(file)
 	var lines []string
 	for scanner.Scan() {
@@ -95,7 +94,6 @@ func DeleteMatchRow(filePath, key string) (err error) {
 		log.Error(err)
 		return
 	}
-
 	// 3. 遍历切片并删除匹配特定模式的行
 	var filteredLines []string
 	re := regexp.MustCompile(key)
@@ -104,11 +102,15 @@ func DeleteMatchRow(filePath, key string) (err error) {
 			filteredLines = append(filteredLines, line)
 		}
 	}
-
+	var output []byte
 	// 4. 将切片重新组合成一个字符串，并将其写回到原始文件中
-	output := []byte(fmt.Sprintf("%s\n", filteredLines[0]))
-	for _, line := range filteredLines[1:] {
-		output = append(output, []byte(fmt.Sprintf("%s\n", line))...)
+	if len(filteredLines) < 1 {
+		output = []byte{}
+	} else {
+		output = []byte(fmt.Sprintf("%s\n", filteredLines[0]))
+		for _, line := range filteredLines[1:] {
+			output = append(output, []byte(fmt.Sprintf("%s\n", line))...)
+		}
 	}
 
 	err = file.Truncate(0)
@@ -116,18 +118,15 @@ func DeleteMatchRow(filePath, key string) (err error) {
 		log.Error(err)
 		return
 	}
-
 	_, err = file.Seek(0, 0)
 	if err != nil {
 		log.Error(err)
 		return
 	}
-
 	_, err = file.Write(output)
 	if err != nil {
 		log.Error(err)
 		return
 	}
-
 	return
 }

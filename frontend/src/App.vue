@@ -3,6 +3,9 @@
     <div class="main">
       <div class="nav" >
         <FileNav :selectedFile="selectedFile" :selectFile="selectFile" :qcFiles="qcFiles" :removeFile="removeFile"/>
+        <a-empty v-if="Object.keys(qcFiles).length==0">
+          No data, please add!
+        </a-empty>
         <div class="options">
           <a-button type="primary" shape="circle" size="mini" @click="showAddFile">
             <icon-plus />
@@ -43,6 +46,7 @@ function getFiles() {
     // response.forEach((file, index) => {
     //   console.log(`File ${index}:`, file.Name);
     // });
+    console.log(qcFiles)
   });
 }
 

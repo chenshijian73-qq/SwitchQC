@@ -98,8 +98,12 @@ func (qcLogic *QcLogic) UpdateQC(qc tables.Qc) (err error) {
 }
 
 func (qcLogic *QcLogic) DeleteQC(qc tables.Qc) (err error) {
-	DeleteQcConfig(qc)
+	err = DeleteQcConfig(qc)
+	if err != nil {
+		return err
+	}
 
+	log.Info("hello2")
 	m := model.NewModels[tables.Qc]()
 	qc.DeleteAt = gtime.Now()
 	m.Model = &qc
@@ -254,6 +258,7 @@ func DeleteQcConfig(qc tables.Qc) (err error) {
 	homeDir, _ := os.UserHomeDir()
 	qcConfigPath := homeDir + "/.qc/.qc"
 	err = file.DeleteMatchRow(qcConfigPath, qc.Name)
+	log.Info("hello5")
 	if err != nil {
 		return
 	}
