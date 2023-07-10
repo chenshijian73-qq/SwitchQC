@@ -69,9 +69,9 @@ func RunApp() {
 		AssetServer: &assetserver.Options{
 			Assets: assets,
 		},
-		OnStartup: app.startup,
-		//OnDomReady:                       app.DomReady,
-		OnShutdown:                       app.Shutdown,
+		OnStartup:                        app.startup,
+		OnDomReady:                       app.domReady,
+		OnShutdown:                       app.shutdown,
 		CSSDragProperty:                  "--wails-draggable",
 		CSSDragValue:                     "drag",
 		EnableFraudulentWebsiteDetection: false,

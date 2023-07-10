@@ -24,7 +24,11 @@ func (a *App) startup(ctx context.Context) {
 	a.Ctx = ctx
 }
 
-func (a *App) Shutdown(ctx context.Context) {
+func (a *App) domReady(ctx context.Context) {
+
+}
+
+func (a *App) shutdown(ctx context.Context) {
 
 }
 
