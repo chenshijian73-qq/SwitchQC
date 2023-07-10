@@ -84,7 +84,7 @@ func (qcLogic *QcLogic) UpdateQC(qc tables.Qc) (err error) {
 	m := model.NewModels[tables.Qc]()
 	qc.UpdateAt = gtime.New(time.Now())
 	m.Model = &qc
-	m.Update("name", "path", "status", "content", "update_at")
+	m.Update("name", "path", "enabled", "content", "update_at")
 	err = file.SaveFileIfModified(qc.Filepath+qc.Name, qc.Content)
 	if err != nil {
 		return
