@@ -6,7 +6,7 @@
                 :extensions="extensions"
                 placeholder="Please select file to display content"
                 @blur="handleBlur"
-                :disabled="disableCode" />
+                :disabled="props.disableCode" />
 </template>
 
 <script setup>
@@ -58,9 +58,11 @@ const props = defineProps({
     type: Object,
     required: true,
   },
+  disableCode: {
+    type: Boolean,
+    required: true,
+  }
 });
-
-const disableCode = ref(true);
 
 function handleBlur() {
   EditFile(props.selectedFile).then(err => {
@@ -71,12 +73,12 @@ function handleBlur() {
   })
 }
 
-watch(() => props.selectedFile, (value) => {
-  if (value) {
-    disableCode.value = false;
-  } else {
-    disableCode.value = true;
-  }
-});
+// watch(() => props.selectedFile, (value) => {
+//   if (value) {
+//     disableCode.value = false;
+//   } else {
+//     disableCode.value = true;
+//   }
+// });
 
 </script>

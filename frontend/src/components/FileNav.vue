@@ -55,11 +55,11 @@ const props = defineProps({
     type: Object,
     required: true,
   },
-  getFiles: {
+  selectFile: {
     type: Function,
     required: true,
   },
-  selectFile: {
+  removeFile: {
     type: Function,
     required: true,
   }
@@ -74,12 +74,7 @@ function changeStatus(file) {
 }
 
 function removeFile(file) {
-  RemoveFile(file).then(err => {
-    if (err !== ""){
-      message.error(`删除文件 ${file.Name} 失败: ${err}`)
-    }
-    props.getFiles()
-  })
+  props.removeFile(file)
 }
 
 </script>

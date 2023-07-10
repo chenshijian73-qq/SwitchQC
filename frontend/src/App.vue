@@ -2,7 +2,7 @@
   <div class="app">
     <div class="main">
       <div class="nav" >
-        <FileNav :selectedFile="selectedFile" :selectFile="selectFile" :qcFiles="qcFiles" :getFiles="getFiles"/>
+        <FileNav :selectedFile="selectedFile" :selectFile="selectFile" :qcFiles="qcFiles" :removeFile="removeFile"/>
         <div class="options">
           <a-button type="primary" shape="circle" size="mini" @click="showAddFile">
             <icon-plus />
@@ -11,7 +11,7 @@
         </div>
       </div>
       <div class="content">
-        <CodeEditor :selectedFile="selectedFile"/>
+        <CodeEditor :selectedFile="selectedFile" :disableCode="disableCode"/>
       </div>
     </div>
     <AddFileDrawer :qcFiles="qcFiles" :addFileVisible="addFileVisible" :getFiles="getFiles" :closeAddFile="closeAddFile" />
@@ -21,7 +21,7 @@
 <script setup>
 import './assets/app.css'
 import {onBeforeMount, ref} from 'vue';
-import {GetFiles, LogInfo} from '../wailsjs';
+import {GetFiles, LogInfo, RemoveFile} from '../wailsjs';
 import {
   IconPlus,
 } from '@arco-design/web-vue/es/icon';
@@ -29,9 +29,11 @@ import CodeEditor from "@/components/CodeEditor.vue";
 import AddFileDrawer from "@/components/AddFileDrawer.vue";
 import FileNav from "@/components/FileNav.vue";
 import RecycleBin from "@/components/RecycleBin.vue";
+import {message} from "ant-design-vue";
 
 const fileMenuVisible = ref(false);
 const addFileVisible = ref(false);
+const disableCode = ref(true);
 
 let qcFiles = ref([]);
 
@@ -56,9 +58,27 @@ function selectFile(file) {
   for (const f of qcFiles.value) {
     if (f.Name === file.Name) {
       selectedFile.value = f;
+      disableCode.value = false;
       return;
     }
   }
+}
+
+function removeFile(file) {
+  RemoveFile(file).then(err => {
+    if (err !== ""){
+      message.error(`删除文件 ${file.Name} 失败: ${err}`)
+    } else {
+      LogInfo(file.Name)
+      console.log(selectedFile)
+      if ( file.Name === selectedFile.value.Name) {
+        LogInfo("lll")
+        selectedFile.value = {}
+        disableCode.value = true
+      }
+    }
+    getFiles()
+  })
 }
 
 onBeforeMount(
