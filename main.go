@@ -57,7 +57,7 @@ func RunApp() {
 	err := wails.Run(&options.App{
 		Width:            1024,
 		Height:           768,
-		Title:            "QC",
+		Title:            "SwitchQC",
 		BackgroundColour: &options.RGBA{R: 27, G: 38, B: 54, A: 0},
 		//DisableResize:    true,
 		Fullscreen: false,
