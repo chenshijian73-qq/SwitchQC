@@ -6,24 +6,27 @@
     <template #title>
       RecycleBin
     </template>
-    <a-list :style="{ width: '50vh'}" titleAlign="center">
-      <a-list-item v-for="(file, index) in recycleList" :index="index">
-        <div class="list">
+    <a-space direction="vertical">
+      <a-input-search v-model="searchInput" :style="{width:'100%'}" placeholder="Search ..." @search="getRecycleList" @input="getRecycleList" search-button/>
+      <a-list :style="{ width: '50vh'}" titleAlign="center">
+        <a-list-item v-for="(file, index) in recycleList" :index="index">
+          <div class="list">
           <span class="name">
               {{ file.Name.slice(0, file.Name.lastIndexOf('.')) }}
            </span>
-          <a-space>
-            <span class="deleted-date-font">Deleted: {{ file.DeleteAt }}</span>
-            <a-button type="dashed" status="success" shape="circle" size="mini" @click="restoreFile(file)">
-              <icon-refresh />
-            </a-button>
-            <a-button type="dashed" status="danger" shape="circle" size="mini" @click="removeFromBin(file)">
-              <icon-minus />
-            </a-button>
-          </a-space>
-        </div>
-      </a-list-item>
-    </a-list>
+            <a-space>
+              <span class="deleted-date-font">Deleted: {{ file.DeleteAt }}</span>
+              <a-button type="dashed" status="success" shape="circle" size="mini" @click="restoreFile(file)">
+                <icon-refresh />
+              </a-button>
+              <a-button type="dashed" status="danger" shape="circle" size="mini" @click="removeFromBin(file)">
+                <icon-minus />
+              </a-button>
+            </a-space>
+          </div>
+        </a-list-item>
+      </a-list>
+    </a-space>
   </a-modal>
 </template>
 
@@ -37,6 +40,7 @@ import {
 import {GetRecycleList, CleanFileFromBin, RestoreFileFromBin} from "../../wailsjs/go/main/Recycle";
 import {ref} from "vue";
 import {message} from "ant-design-vue";
+import search from "@/components/Search.vue";
 
 const props = defineProps({
   getFiles: {
@@ -45,21 +49,24 @@ const props = defineProps({
   },
 });
 
+const searchInput = ref('')
 const recycleList = ref({})
-function getRecycleList() {
+function getRecycleList(value) {
   GetRecycleList().then(response => {
-    recycleList.value = response;
+    console.log(value)
+    recycleList.value = response.filter(file => file.Name?.includes(value));
     // response.forEach((file, index) => {
     //   console.log(`File ${index}:`, file);
     // });
   });
 }
+
 const restoreFile = (file) => {
   RestoreFileFromBin(file).then(err => {
     if (err !== ""){
       message.error(`恢复文件 ${file.Name} 失败: ${err}`)
     }
-    getRecycleList()
+    getRecycleList(searchInput.value)
     props.getFiles()
   })
 }
@@ -69,19 +76,20 @@ function removeFromBin(file) {
     if (err !== ""){
       message.error(`删除文件 ${file.Name} 失败: ${err}`)
     }
-    getRecycleList()
+    getRecycleList(searchInput.value)
   })
 }
 
 const isShowBin = ref(false)
 const showBin = () => {
-  getRecycleList()
+  getRecycleList("")
   isShowBin.value = true
 }
 const handleOk = () => {
 }
 const handleCancel = () => {
   isShowBin.value = false
+  searchInput.value = ''
 }
 
 defineExpose({
