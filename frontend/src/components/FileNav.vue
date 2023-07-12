@@ -1,10 +1,12 @@
 <template>
-  <a-menu mode="pop" :style="{ width: '200px', borderRadius: '4px', backgroundColor: 'transparent'}">
-    <a-menu-item v-for="(file, index) in props.qcFiles" :key="index" :style="{ backgroundColor: props.selectedFile.Name === file.Name ? '#d9e5f6' : 'transparent' }" @click="props.selectFile(file)">
-      <div class="file-info">
-        <a-switch v-model="file.Enabled" size="small" @change="changeStatus(file)"/>
-        <span class="name">{{ file.Name.slice(0, file.Name.lastIndexOf('.')) }}</span>
-        <span class="menu-trigger">
+  <a-space direction="vertical" :style="{ width: '200px', borderRadius: '4px', backgroundColor: 'transparent'}">
+    <a-input-search :style="{width:'99%'}" placeholder="Search ..." @search="handleSearch" @input="handleSearch" search-button/>
+    <a-menu mode="pop">
+      <a-menu-item v-for="(file, index) in searchFiles" :key="index" :style="{ backgroundColor: props.selectedFile.Name === file.Name ? '#d9e5f6' : 'transparent' }" @click="props.selectFile(file)">
+        <div class="file-info">
+          <a-switch v-model="file.Enabled" size="small" @change="changeStatus(file)"/>
+          <span class="name">{{ file.Name.slice(0, file.Name.lastIndexOf('.')) }}</span>
+          <span class="menu-trigger">
               <a-trigger
                   :trigger="['hover']"
                   clickToClose
@@ -30,9 +32,10 @@
                 </template>
               </a-trigger>
             </span>
-      </div>
-    </a-menu-item>
-  </a-menu>
+        </div>
+      </a-menu-item>
+    </a-menu>
+  </a-space>
 </template>
 
 <script setup>
@@ -44,7 +47,6 @@ import {
   IconDoubleRight,
   IconDelete,
 } from '@arco-design/web-vue/es/icon';
-import {RemoveFile} from "../../wailsjs";
 
 const props = defineProps({
   qcFiles: {
@@ -65,6 +67,8 @@ const props = defineProps({
   }
 });
 
+const files = ref([])
+
 function changeStatus(file) {
   EditFile(file).then(err => {
     if (err !== ""){
@@ -77,8 +81,20 @@ function removeFile(file) {
   props.removeFile(file)
 }
 
+const searchFiles = ref([])
+function handleSearch(value) {
+  searchFiles.value = props.qcFiles.filter(file => file.Name?.includes(value))
+}
+
+watch(() => props.qcFiles, (value) => {
+  if (value) {
+    searchFiles.value = value;
+  } else {
+    searchFiles.value = [];
+  }
+});
+
 </script>
 
 <style scoped>
-
 </style>
