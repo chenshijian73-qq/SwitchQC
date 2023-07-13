@@ -18,6 +18,7 @@
       </div>
     </div>
     <AddFileDrawer :qcFiles="qcFiles" :addFileVisible="addFileVisible" :getFiles="getFiles" :closeAddFile="closeAddFile" />
+    <SuspendBot />
   </div>
 </template>
 
@@ -33,6 +34,7 @@ import AddFileDrawer from "@/components/AddFileDrawer.vue";
 import FileNav from "@/components/FileNav.vue";
 import RecycleBin from "@/components/RecycleBin.vue";
 import {message} from "ant-design-vue";
+import SuspendBot from "@/components/SuspendBot.vue";
 
 const fileMenuVisible = ref(false);
 const addFileVisible = ref(false);
