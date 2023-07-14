@@ -9,15 +9,24 @@
     <a-popover class="dialog" :class="{ 'dialog-left': isLeft, 'dialog-right': !isLeft }">
       <img src="../assets/cat.gif" style="width: 100px; height: 100px;" alt="icon" />
       <template #content>
-        <p>Hello, nice to chat with you!<a-button type="text"> Click here to chat more!</a-button> </p>
+        <p>Hello, nice to chat with you!<a-button type="text" @click="handleClick"> Click here to chat more!</a-button> </p>
       </template>
     </a-popover>
+    <AiChatWeb ref="aiChatWebComRef"/>
   </div>
 </template>
 
 <script setup>
 import { ref } from 'vue';
 import '../assets/suspend-bot.css'
+import AiChatWeb from "@/components/AiChatWeb.vue";
+
+const aiChatWebComRef = ref(null);
+const handleClick = () => {
+  if (aiChatWebComRef.value) {
+    aiChatWebComRef.value.openModal()
+  }
+}
 
 const x = ref(0);
 const y = ref(0);
@@ -80,9 +89,6 @@ const isLeft = ref(false);
 const toggleDialog = () => {
   showDialog.value = !showDialog.value;
   isLeft.value = Math.abs(x.value) > window.innerWidth / 2;
-  console.log(x.value)
-  console.log( window.innerWidth / 2)
-  console.log(isLeft.value)
 };
 </script>
 
