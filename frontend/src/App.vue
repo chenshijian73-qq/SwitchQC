@@ -34,7 +34,7 @@ import AddFileDrawer from "@/components/AddFileDrawer.vue";
 import FileNav from "@/components/FileNav.vue";
 import RecycleBin from "@/components/RecycleBin.vue";
 import {message} from "ant-design-vue";
-import SuspendBot from "@/components/SuspendBot.vue";
+import SuspendBot from "@/components/AiChat/SuspendBot.vue";
 
 const fileMenuVisible = ref(false);
 const addFileVisible = ref(false);

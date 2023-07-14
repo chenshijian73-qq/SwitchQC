@@ -7,7 +7,7 @@
        @click="toggleDialog"
        :style="{ transform: `translate3d(${x}px, ${y}px, 0)` }">
     <a-popover class="dialog" :class="{ 'dialog-left': isLeft, 'dialog-right': !isLeft }">
-      <img src="../assets/cat.gif" style="width: 100px; height: 100px;" alt="icon" />
+      <img src="../../assets/cat.gif" style="width: 100px; height: 100px;" alt="icon" />
       <template #content>
         <p>Hello, nice to chat with you!<a-button type="text" @click="handleClick"> Click here to chat more!</a-button> </p>
       </template>
@@ -18,13 +18,13 @@
 
 <script setup>
 import { ref } from 'vue';
-import '../assets/suspend-bot.css'
-import AiChatWeb from "@/components/AiChatWeb.vue";
+import '../../assets/suspend-bot.css'
+import AiChatWeb from "@/components/AiChat/AiChatWeb.vue";
 
 const aiChatWebComRef = ref(null);
 const handleClick = () => {
   if (aiChatWebComRef.value) {
-    aiChatWebComRef.value.openModal()
+    aiChatWebComRef.value.openAiChatWeb()
   }
 }
 

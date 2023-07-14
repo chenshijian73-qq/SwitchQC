@@ -34,6 +34,7 @@ func (l *AiLinkLogic) SaveAiLink(data tables.AiLink) (err error) {
 func (l *AiLinkLogic) GetAiLinkList() (links []tables.AiLink, err error) {
 	m := model.NewModels[tables.AiLink]()
 	links, err = m.GetsNoDeleted()
+	log.Info(links)
 	if err != nil {
 		log.Error("get list error")
 		return nil, err
