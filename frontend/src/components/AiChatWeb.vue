@@ -6,7 +6,6 @@
     <iframe
         :src="externalUrl"
         style="width: 100%; height: 90vh;"
-        frameborder="0"
         allow="microphone">
     </iframe>
   </a-modal>

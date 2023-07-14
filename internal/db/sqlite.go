@@ -54,7 +54,7 @@ func Init() (err error) {
 
 func autoMigrate() (err error) {
 	return Db.AutoMigrate(
-		&tables.Event{},
+		&tables.AiLink{},
 		&tables.Qc{},
 	)
 }

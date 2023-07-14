@@ -8,7 +8,7 @@ import (
 )
 
 type Type interface {
-	tables.Qc | tables.Event
+	tables.Qc | tables.AiLink
 }
 
 type Models[T Type] struct {

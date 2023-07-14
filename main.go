@@ -43,6 +43,7 @@ func initData() {
 func RunApp() {
 	app := NewApp()
 	recycle := NewRecycle()
+	aiLink := logic.NewAiLinkLogic()
 
 	AppMenu := menu.NewMenu()
 	FileMenu := AppMenu.AddSubmenu("File")
@@ -79,6 +80,7 @@ func RunApp() {
 		Bind: []interface{}{
 			app,
 			recycle,
+			aiLink,
 		},
 		// Windows平台特定选项
 		Windows: &windows.Options{
