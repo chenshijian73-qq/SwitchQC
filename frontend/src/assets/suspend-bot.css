@@ -1,0 +1,41 @@
+
+.suspended-ball {
+    position: fixed;
+    bottom: 20px;
+    right: 30px;
+    width: 80px;
+    height: 80px;
+    background-color: transparent;
+    border-radius: 50%;
+    color: transparent;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 14px;
+    /* box-shadow: 0 0 10px rgba(0, 0, 0, 0.5); */
+    cursor: pointer;
+}
+
+.dialog {
+    position: absolute;
+    width: 220px;
+    background-color: #fff;
+    border-radius: 5px;
+    box-shadow: 0 0 10px rgba(252, 225, 225, 0.49);
+    top: -110px;
+    color: #333;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-family: "Comic Sans MS", cursive, sans-serif;
+}
+
+.dialog-left {
+    left: 0;
+    transform: translate(40%, 0);
+}
+
+.dialog-right {
+    right: 0;
+    transform: translate(-40%, 0);
+}

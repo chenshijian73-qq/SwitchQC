@@ -4,11 +4,10 @@ import (
 	"github.com/gogf/gf/v2/os/gtime"
 )
 
-type Qc struct {
+type AiLink struct {
 	ID       uint        `gorm:"primaryKey"`
 	Name     string      `gorm:"column:name"`
-	Content  string      `gorm:"type:text"`
-	Filepath string      `gorm:"column:filepath"`
+	Link     string      `gorm:"column:link"`
 	Enabled  bool        `gorm:"type:boolean;default:false"`
 	CreateAt *gtime.Time `json:"CreateAt"` //
 	UpdateAt *gtime.Time `json:"UpdateAt"` //
