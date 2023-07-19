@@ -1,12 +1,12 @@
 <template>
   <a-drawer
-      title="Add AI Link"
+      title="Edit Link"
       title-align="'center'"
       :visible="addLinkVisible"
       :closable="false"
       :placement="'right'"
       width="50%"
-      @ok="handleAddLinkSubmit"
+      @ok="handleEditLinkSubmit"
       @cancel="closeModal"
   >
     <a-form :model="form">
@@ -24,8 +24,13 @@
 import '../../assets/add-file-drawer.css'
 import {ref} from "vue";
 import {message} from "ant-design-vue";
-import {SaveAiLink} from "../../../wailsjs/go/logic/AiLinkLogic";
+import {UpdateAiLink} from "../../../wailsjs/go/logic/AiLinkLogic";
 
+const form = ref({
+  id: 0,
+  name: '',
+  link: '',
+});
 const props = defineProps({
   getLinks: {
     type: Function,
@@ -34,30 +39,28 @@ const props = defineProps({
 });
 
 const addLinkVisible = ref(false);
-const showModal = () => {
+const showEditModal = (input) => {
   addLinkVisible.value = true
+  form.value.id = input.ID
+  form.value.name = input.Name
+  form.value.link = input.Link
 }
+
 const closeModal = () => {
   addLinkVisible.value = false
 }
 
-const form = ref({
-  name: '',
-  link: '',
-});
-
-function handleAddLinkSubmit() {
-  const {name, link} = form.value;
-  SaveAiLink({
+function handleEditLinkSubmit() {
+  const {id, name, link} = form.value;
+  UpdateAiLink({
+    ID: id,
     Name: name,
     Link: link,
   }).then(err => {
     if (err) {
-      message.error(`添加 ${name} 失败: ${err}`)
+      message.error(`更新 ${name} 失败: ${err}`)
     } else {
-      message.info(`添加 ${name} 成功`)
-      form.value.name = ''
-      form.value.link = ''
+      message.info(`更新 ${name} 成功`)
       props.getLinks()
       closeModal()
     }
@@ -65,7 +68,7 @@ function handleAddLinkSubmit() {
 }
 
 defineExpose({
-  showModal,
+  showEditModal,
 })
 
 </script>

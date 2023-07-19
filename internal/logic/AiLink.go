@@ -46,7 +46,7 @@ func (l *AiLinkLogic) UpdateAiLink(link tables.AiLink) (err error) {
 	m := model.NewModels[tables.AiLink]()
 	link.UpdateAt = gtime.New(time.Now())
 	m.Model = &link
-	m.Update("link", "update_at")
+	m.Update("id", "name", "link", "update_at")
 
 	return
 }

@@ -11,6 +11,9 @@
                 <span class="select-text"> {{ link.Name }} </span>
             </a-tooltip>
             <a-space>
+              <a-button type="dashed" status="success" shape="circle" size="mini" @click="openEditLinkForm(link)">
+                <icon-pen />
+              </a-button>
               <a-button type="dashed" status="danger" shape="circle" size="mini" @click="removeFromManage(link)">
                 <icon-minus />
               </a-button>
@@ -24,6 +27,7 @@
           <icon-plus />
         </a-button>
       </div>
+      <EditLinkDrawer :getLinks="props.getLinks" ref="EditLinkRef"/>
     </a-space>
   </a-modal>
 </template>
@@ -33,10 +37,12 @@ import '../../assets/ai-chat-web.css'
 import {
   IconPlus,
   IconMinus,
+    IconPen,
 } from '@arco-design/web-vue/es/icon';
 import {DeleteAiLink} from "../../../wailsjs/go/logic/AiLinkLogic";
 import {ref} from "vue";
 import {message} from "ant-design-vue";
+import EditLinkDrawer from "@/components/AiChat/EditLinkDrawer.vue";
 
 const props = defineProps({
   links:{
@@ -52,6 +58,11 @@ const props = defineProps({
     required: true,
   }
 });
+const EditLinkRef = ref('')
+const openEditLinkForm = (value) => {
+  EditLinkRef.value.showEditModal(value)
+  props.getLinks()
+}
 
 function removeFromManage(link) {
   DeleteAiLink(link).then(err => {
