@@ -1,0 +1,73 @@
+# This workflow will build a golang project
+# For more information see: https://docs.github.com/en/actions/automating-builds-and-tests/building-and-testing-go
+
+name: Go
+
+on:
+  push:
+    branches: [ "main" ]
+  pull_request:
+    branches: [ "main" ]
+
+jobs:
+  build:
+    runs-on: macos-latest
+    env:
+      RELEASE: v1.0.2
+    permissions:
+      contents: write
+      pull-requests: write
+      repository-projects: write
+    steps:
+    - uses: actions/checkout@v3
+
+    - name: Set up Go
+      uses: actions/setup-go@v4
+      with:
+        go-version: '1.20'
+        
+    - name: Set up Node.js
+      uses: actions/setup-node@v2
+      with:
+        node-version: '14'
+
+    - name: Install Waild
+      run: go install github.com/wailsapp/wails/v2/cmd/wails@latest 
+
+    - name: Create Release
+      id: create_release
+      uses: actions/create-release@latest
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      with:
+        tag_name: ${{ env.RELEASE }}
+        release_name: ${{ env.RELEASE }}
+        body: Automatic Release 
+        draft: false
+        prerelease: false
+
+    - name: Build darwin/amd64
+      run: wails build -platform darwin/amd64 -clean && tar czvf SwitchQC-drawin-amd64-${{ env.RELEASE }}.tar.gz build/bin/SwitchQC.app
+ 
+    - name: Upload Darwin/amd64 App
+      uses: actions/upload-release-asset@v1
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      with:
+        upload_url: ${{ steps.create_release.outputs.upload_url }}
+        asset_path: ./SwitchQC-drawin-amd64-${{ env.RELEASE }}.tar.gz
+        asset_name: SwitchQC-drawin-amd64-${{ env.RELEASE }}.tar.gz
+        asset_content_type: application/octet-stream
+        
+    - name: Build darwin/arm64
+      run: wails build -platform darwin/amd64 -clean && tar czvf SwitchQC-drawin-arm64-${{ env.RELEASE }}.tar.gz build/bin/SwitchQC.app
+ 
+    - name: Upload Darwin/arm64 App
+      uses: actions/upload-release-asset@v1
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      with:
+        upload_url: ${{ steps.create_release.outputs.upload_url }}
+        asset_path: ./SwitchQC-drawin-arm64-${{ env.RELEASE }}.tar.gz
+        asset_name: SwitchQC-drawin-arm64-${{ env.RELEASE }}.tar.gz
+        asset_content_type: application/octet-stream
