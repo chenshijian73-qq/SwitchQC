@@ -26,9 +26,11 @@ jobs:
       with:
         node-version: '14'
 
-    - name: Build
-      run: go install github.com/wailsapp/wails/v2/cmd/wails@latest && wails build -clean
- 
+    - name: Install Waild
+      run: go install github.com/wailsapp/wails/v2/cmd/wails@latest 
 
+    - name: Build darwin/amd64
+      run: wails build -platform darwin/amd64 -clean && tar czvf SwitchQC-drawin-amd64-x.0.x.tar.gz build/bin/SwitchQC.app
+ 
     - name: Test
       run: ls
