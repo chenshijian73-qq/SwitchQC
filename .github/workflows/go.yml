@@ -13,6 +13,10 @@ jobs:
 
   build:
     runs-on: macos-latest
+    permissions:
+      contents: write
+      pull-requests: write
+      repository-projects: write
     steps:
     - uses: actions/checkout@v3
 
@@ -31,17 +35,18 @@ jobs:
 
     - name: Create Release
       id: create_release
-      uses: actions/create-release@v1
+      uses: actions/create-release@latest
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       with:
-        tag_name: ${{ github.ref }}
-        release_name: Release ${{ github.ref }}
-        body: |
-          自动发布新版本
+        tag_name: v${{steps.version.outputs.value}}
+        release_name: v${{steps.version.outputs.value}}
+        body: ${{steps.description.outputs.content}}
+        draft: false
+        prerelease: false
 
     - name: Build darwin/amd64
-      run: wails build -platform darwin/amd64 -clean && tar czvf SwitchQC-drawin-amd64-${{ github.ref }}.tar.gz build/bin/SwitchQC.app
+      run: wails build -platform darwin/amd64 -clean && tar czvf SwitchQC-drawin-amd64-v${{steps.version.outputs.value}}.tar.gz build/bin/SwitchQC.app
  
     - name: Upload Darwin/amd64 App
       uses: actions/upload-release-asset@v1
@@ -49,6 +54,6 @@ jobs:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       with:
         upload_url: ${{ steps.create_release.outputs.upload_url }}
-        asset_path: ./SwitchQC-drawin-amd64-${{ github.ref }}.tar.gz
-        asset_name: SwitchQC-drawin-amd64-${{ github.ref }}.tar.gz
+        asset_path: ./SwitchQC-drawin-amd64-v${{steps.version.outputs.value}}.tar.gz
+        asset_name: SwitchQC-drawin-amd64-v${{steps.version.outputs.value}}.tar.gz
         asset_content_type: application/octet-stream
