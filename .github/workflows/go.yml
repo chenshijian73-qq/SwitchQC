@@ -29,8 +29,26 @@ jobs:
     - name: Install Waild
       run: go install github.com/wailsapp/wails/v2/cmd/wails@latest 
 
+    - name: Create Release
+      id: create_release
+      uses: actions/create-release@v1
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      with:
+        tag_name: ${{ github.ref }}
+        release_name: Release ${{ github.ref }}
+        body: |
+          自动发布新版本
+
     - name: Build darwin/amd64
-      run: wails build -platform darwin/amd64 -clean && tar czvf SwitchQC-drawin-amd64-x.0.x.tar.gz build/bin/SwitchQC.app
+      run: wails build -platform darwin/amd64 -clean && tar czvf SwitchQC-drawin-amd64-${{ github.ref }}.tar.gz build/bin/SwitchQC.app
  
-    - name: Test
-      run: ls
+    - name: Upload Darwin/amd64 App
+      uses: actions/upload-release-asset@v1
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      with:
+        upload_url: ${{ steps.create_release.outputs.upload_url }}
+        asset_path: ./SwitchQC-drawin-amd64-${{ github.ref }}.tar.gz
+        asset_name: SwitchQC-drawin-amd64-${{ github.ref }}.tar.gz
+        asset_content_type: application/octet-stream
